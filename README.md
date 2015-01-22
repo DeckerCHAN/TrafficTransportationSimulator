@@ -1,5 +1,6 @@
-# Traffic Transportation Simulator
-====================
+Traffic Transportation Simulator
+====================  
+
 [![Build Status]][Travis CI]
 
 A simulator in order to virtualize the effects caused by road maintenance. 
