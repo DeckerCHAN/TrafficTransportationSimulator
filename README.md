@@ -17,5 +17,5 @@ We use maven to handle our dependencies.
 * Install [Maven 3](http://maven.apache.org/download.html)
 * Check out this repo and: `mvn clean install`
 
-[Build Status]:https://img.shields.io/travis/ProcrastinationPatients/TrafficTransportationSimulator/master.svg?style=flat
+[Build Status]:https://travis-ci.org/ProcrastinationPatients/TrafficTransportationSimulator.svg
 [Travis CI]:https://travis-ci.org/ProcrastinationPatients/TrafficTransportationSimulator
