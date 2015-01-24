@@ -7,12 +7,12 @@ import java.util.Collection;
 /**
  * @Author Decker & his father -- Jeffrey
  */
-public class Line extends VisualEntity implements Container {
+public class Link extends VisualEntity implements Container {
 
 	private Vehicle[][] line;
 	private int line_Length;
 
-	public Line(int num) {
+	public Link(int num) {
 		line = new Vehicle[4][num];
 		this.line_Length = num;
 	}
