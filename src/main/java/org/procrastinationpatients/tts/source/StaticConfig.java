@@ -5,8 +5,10 @@ package org.procrastinationpatients.tts.source;
  * @Author Decker
  */
 public class StaticConfig {
-    public static double STAGE_SIZE_WIDTH=1030D;
-    public static double STAGE_SIZE_HEIGHT=795D;
-    public static double PANE_SIZE_WIDTH=1024D;
-    public static double PANE_SIZE_HEIGHT=768D;
+    public static Double STAGE_SIZE_WIDTH=1030D;
+    public static Double STAGE_SIZE_HEIGHT=795D;
+    public static Double PANE_SIZE_WIDTH=1024D;
+    public static Double PANE_SIZE_HEIGHT=768D;
+
+    public static Integer TICK_INTERVAL=200;
 }

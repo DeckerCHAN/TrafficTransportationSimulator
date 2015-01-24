@@ -18,7 +18,6 @@ import org.procrastinationpatients.tts.source.StaticConfig;
  */
 public class MainWindow extends Application {
 
-
     private Group rootGroup;
     private StackPane stackPane;
     private ScrollPane scrollPane;
@@ -26,6 +25,7 @@ public class MainWindow extends Application {
     private Canvas dynamicCanvas;
 
     private Thread tickThread;
+    private Boolean isTickPaused;
 
     public MainWindow() {
         super();
@@ -33,6 +33,7 @@ public class MainWindow extends Application {
         //TODO:将大小修改为最高点和最宽点
         this.backgroundCanvas = new Canvas(4000, 4000);
         this.dynamicCanvas = new Canvas(4000, 4000);
+
         this.rootGroup = new Group();
         this.scrollPane = new ScrollPane();
         this.scrollPane.setPrefSize(StaticConfig.PANE_SIZE_WIDTH, StaticConfig.PANE_SIZE_HEIGHT);
@@ -43,7 +44,7 @@ public class MainWindow extends Application {
         this.stackPane.getChildren().add(this.backgroundCanvas);
         this.stackPane.getChildren().add(this.dynamicCanvas);
 
-
+        this.isTickPaused = false;
         this.tickThread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -51,8 +52,11 @@ public class MainWindow extends Application {
 
                 try {
                     while (true) {
-                        tick();
-                        Thread.sleep(500);
+                        if (!isTickPaused) {
+                            tick();
+                            Thread.sleep(StaticConfig.TICK_INTERVAL);
+                        }
+
                     }
                 } catch (InterruptedException e) {
                     System.out.println("Tick thread stopped!");
