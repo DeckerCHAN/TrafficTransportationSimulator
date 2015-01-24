@@ -7,7 +7,7 @@ import java.util.Collection;
 /**
  * @Author Decker
  */
-public class Line implements Container,Drawable {
+public class Line extends VisualEntity implements Container {
 
     @Override
     public Collection<Vehicle> getVehicles() {
@@ -24,8 +24,13 @@ public class Line implements Container,Drawable {
 		return 0;
 	}
 
-	@Override
-    public void draw( GraphicsContext gc) {
+    @Override
+    public void drawStaticGraphic(GraphicsContext gc) {
+
+    }
+
+    @Override
+    public void drawDynamicGraphic(GraphicsContext gc) {
 
     }
 }
