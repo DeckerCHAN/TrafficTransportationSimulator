@@ -17,7 +17,20 @@ public class Vehicle {
 	}
 
 	public int move_Next_Location(){
-		int safety_distance = cont.getSafetyDistanceByID(Cur_Loc) ;
 		return 0 ;
+	}
+
+	//速度变化规则
+	public int Speed_From_VDR(int MAX_Speed){
+		if( this.Cur_Spd < MAX_Speed){
+			Cur_Spd++ ;
+		}
+		int safety_distance = cont.getSafetyDistanceByID(Cur_Loc) ;
+		this.Cur_Spd = (safety_distance < this.Cur_Spd) ? (safety_distance) : (this.Cur_Spd) ;
+		return this.Cur_Spd ;
+	}
+
+	public int getCur_Spd(){
+		return this.Cur_Spd ;
 	}
 }

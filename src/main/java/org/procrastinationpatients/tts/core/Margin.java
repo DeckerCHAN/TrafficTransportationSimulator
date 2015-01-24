@@ -5,7 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import java.util.Collection;
 
 /**
- * @Author Decker
+ * @Author Decker & his father -- Jeffrey
  */
 public class Margin implements Container,Drawable{
 

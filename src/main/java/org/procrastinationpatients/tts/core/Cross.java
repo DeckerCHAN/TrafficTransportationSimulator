@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 /**
- * @Author Decker
+ * @Author Decker & his father -- Jeffrey
  */
 public class Cross implements Container,Drawable {
 

@@ -1,11 +1,12 @@
 package org.procrastinationpatients.tts.core;
 
+
 /**
  * 作为所有实例的可达索引
  * 例子：Engine.getA().getB()
  * 可以获得任何一个公开的实例
  *
- * @Author Decker
+ * @Author Decker & his father -- Jeffrey
  */
 public class Engine {
     /**
