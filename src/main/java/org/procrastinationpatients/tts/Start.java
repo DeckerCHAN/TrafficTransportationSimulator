@@ -1,7 +1,6 @@
 package org.procrastinationpatients.tts;
 
-import javafx.application.Application;
-import org.procrastinationpatients.tts.gui.MainWindow;
+import org.procrastinationpatients.tts.core.Engine;
 
 /**
  * @Author Decker
@@ -9,7 +8,8 @@ import org.procrastinationpatients.tts.gui.MainWindow;
 public class Start {
     public static void main(String[] args) {
         try {
-            Application.launch(MainWindow.class);
+            Engine engine = Engine.getInstance();
+            engine.run();
         } catch (Exception e) {
             e.printStackTrace();
         }
