@@ -8,4 +8,5 @@ import java.util.Collection;
 public interface Container {
     public Collection<Vehicle> getVehicles();
     public void setVehicles();
+	public int getSafetyDistanceByID(int index);
 }

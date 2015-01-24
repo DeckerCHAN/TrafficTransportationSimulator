@@ -26,4 +26,9 @@ public class Cross implements Container,Drawable {
     public void setVehicles() {
         this.vehicles=vehicles;
     }
+
+	@Override
+	public int getSafetyDistanceByID(int index) {
+		return 0;
+	}
 }
