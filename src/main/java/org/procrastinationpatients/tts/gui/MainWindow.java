@@ -8,8 +8,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import org.procrastinationpatients.tts.core.Drawable;
 import org.procrastinationpatients.tts.core.Engine;
+import org.procrastinationpatients.tts.core.VisualEntity;
 import org.procrastinationpatients.tts.source.StaticConfig;
 
 
@@ -35,7 +35,7 @@ public class MainWindow extends Application {
         this.dynamicCanvas = new Canvas(4000, 4000);
         this.rootGroup = new Group();
         this.scrollPane = new ScrollPane();
-        this.scrollPane.setPrefSize(StaticConfig.PANE_SIZE_WIDTH,StaticConfig.PANE_SIZE_HEIGHT);
+        this.scrollPane.setPrefSize(StaticConfig.PANE_SIZE_WIDTH, StaticConfig.PANE_SIZE_HEIGHT);
         this.stackPane = new StackPane();
         //建立显示的层级嵌套结构
         this.rootGroup.getChildren().add(this.scrollPane);
@@ -74,8 +74,8 @@ public class MainWindow extends Application {
         stage.setTitle("Traffic Transportation Simulator");
         //画出静态物体
         GraphicsContext gc = backgroundCanvas.getGraphicsContext2D();
-        for (Drawable drawable : Engine.getInstance().getStaticDrawables()) {
-            drawable.draw(gc);
+        for (VisualEntity visualEntity : Engine.getInstance().getVisualEntities()) {
+            visualEntity.drawStaticGraphic(gc);
         }
         stage.setScene(new Scene(rootGroup));
         stage.show();
@@ -84,8 +84,10 @@ public class MainWindow extends Application {
 
     private void tick() {
         GraphicsContext gc = dynamicCanvas.getGraphicsContext2D();
-        for (Drawable drawable : Engine.getInstance().getDynamicDrawables()) {
-            drawable.draw(gc);
+        //TODO:将大小修改为最高点和最宽点
+        gc.clearRect(0, 0, 4000, 4000);
+        for (VisualEntity visualEntity : Engine.getInstance().getVisualEntities()) {
+            visualEntity.drawDynamicGraphic(gc);
         }
     }
 }

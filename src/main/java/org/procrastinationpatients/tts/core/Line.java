@@ -7,7 +7,7 @@ import java.util.Collection;
 /**
  * @Author Decker & his father -- Jeffrey
  */
-public class Line implements Container, Drawable {
+public class Line extends VisualEntity implements Container {
 
 	private Vehicle[] line;
 	private int line_Length;
@@ -47,8 +47,15 @@ public class Line implements Container, Drawable {
 		return index - distance;
 	}
 
-	@Override
-	public void draw(GraphicsContext gc) {
+
+
+    @Override
+    public void drawStaticGraphic(GraphicsContext gc) {
+
+    }
+
+    @Override
+    public void drawDynamicGraphic(GraphicsContext gc) {
 
 	}
 }

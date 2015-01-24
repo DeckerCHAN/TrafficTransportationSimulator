@@ -37,14 +37,7 @@ public class Engine {
      * 窗口的类引用，用于初始化窗口
      */
     private Class<MainWindow> mainWindowClass;
-    /**
-     * 动态可被绘制的对象集，将随着tick做刷新
-     */
-    private Collection<Drawable> staticDrawables;
-    /**
-     * 静态可绘制对象集，将在窗口初始化的时候绘制完毕
-     */
-    private Collection<Drawable>  dynamicDrawables;
+    private Collection<VisualEntity> visualEntities;
 
     /**
      * 私有构造函数
@@ -68,22 +61,18 @@ public class Engine {
      */
     public void stop() {
     //TODO:停止所有运算，释放所有资源
+        System.out.println("Stop all!");
     }
 
 
-    public Collection<Drawable> getStaticDrawables() {
-        return staticDrawables;
+    /**
+     * 拥有图形的对象，可以通过其中的函数绘制静态或者动态图像
+     */
+    public Collection<VisualEntity> getVisualEntities() {
+        return visualEntities;
     }
 
-    public void setStaticDrawables(Collection<Drawable> staticDrawables) {
-        this.staticDrawables = staticDrawables;
-    }
-
-    public Collection<Drawable> getDynamicDrawables() {
-        return dynamicDrawables;
-    }
-
-    public void setDynamicDrawables(Collection<Drawable> dynamicDrawables) {
-        this.dynamicDrawables = dynamicDrawables;
+    public void setVisualEntities(Collection<VisualEntity> visualEntities) {
+        this.visualEntities = visualEntities;
     }
 }
