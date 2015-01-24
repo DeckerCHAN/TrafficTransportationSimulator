@@ -5,8 +5,10 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.procrastinationpatients.tts.core.Engine;
 import org.procrastinationpatients.tts.core.VisualEntity;
@@ -24,6 +26,10 @@ public class MainWindow extends Application {
     private Canvas backgroundCanvas;
     private Canvas dynamicCanvas;
 
+    private Button loadBtn;
+    private Button startBtn;
+    private Button pauseBtn;
+
     private Thread tickThread;
     private Boolean isTickPaused;
 
@@ -34,12 +40,32 @@ public class MainWindow extends Application {
         this.backgroundCanvas = new Canvas(4000, 4000);
         this.dynamicCanvas = new Canvas(4000, 4000);
 
+        //初始化载入按钮，并设置相关参数
+        this.loadBtn = new Button("Load");
+        this.loadBtn.setFont(new Font(20));
+        this.loadBtn.setLayoutX(60);
+        this.loadBtn.setLayoutY(50);
+        //初始化开始按钮，并设置相关参数
+        this.startBtn = new Button("Start");
+        this.startBtn.setFont(new Font(20));
+        this.startBtn.setLayoutX(this.loadBtn.getLayoutX()+this.loadBtn.getWidth()+100);
+        this.startBtn.setLayoutY(50);
+        //初始化暂停按钮，并设置相关参数
+        this.pauseBtn = new Button("Pause");
+        this.pauseBtn.setFont(new Font(20));
+        this.pauseBtn.setLayoutX(this.startBtn.getLayoutX()+this.startBtn.getWidth()+100);
+        this.pauseBtn.setLayoutY(50);
+
         this.rootGroup = new Group();
         this.scrollPane = new ScrollPane();
         this.scrollPane.setPrefSize(StaticConfig.PANE_SIZE_WIDTH, StaticConfig.PANE_SIZE_HEIGHT);
         this.stackPane = new StackPane();
         //建立显示的层级嵌套结构
         this.rootGroup.getChildren().add(this.scrollPane);
+        this.rootGroup.getChildren().add(this.loadBtn);
+        this.rootGroup.getChildren().add(this.startBtn);
+        this.rootGroup.getChildren().add(this.pauseBtn);
+
         this.scrollPane.setContent(this.stackPane);
         this.stackPane.getChildren().add(this.backgroundCanvas);
         this.stackPane.getChildren().add(this.dynamicCanvas);
@@ -48,8 +74,6 @@ public class MainWindow extends Application {
         this.tickThread = new Thread(new Runnable() {
             @Override
             public void run() {
-
-
                 try {
                     while (true) {
                         if (!isTickPaused) {
