@@ -1,6 +1,5 @@
 package org.procrastinationpatients.tts.core;
 
-import com.sun.istack.internal.NotNull;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.Collection;
@@ -26,7 +25,7 @@ public class Margin implements Container,Drawable{
 	}
 
 	@Override
-    public void draw(@NotNull GraphicsContext gc) {
+    public void draw( GraphicsContext gc) {
 
     }
 }
