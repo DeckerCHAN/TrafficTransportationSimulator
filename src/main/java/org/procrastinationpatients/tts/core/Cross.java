@@ -24,11 +24,6 @@ public class Cross extends VisualEntity implements Container {
     }
 
     @Override
-    public int getSafetyDistanceByID(int index) {
-        return 0;
-    }
-
-    @Override
     public void drawStaticGraphic(GraphicsContext gc) {
 
     }
@@ -37,4 +32,39 @@ public class Cross extends VisualEntity implements Container {
     public void drawDynamicGraphic(GraphicsContext gc) {
 
     }
+
+	@Override
+	public int getSafetyDistanceByID(int whichLine , int index) {
+		return 0;
+	}
+
+	@Override
+	public Vehicle[][] getAllLocation() {
+		return new Vehicle[0][];
+	}
+
+	@Override
+	public int getLineLength() {
+		return 0;
+	}
+
+	@Override
+	public boolean changeToNextContainer() {
+		return false;
+	}
+
+	@Override
+	public int changeLine(Vehicle vehicle) {
+		return 0;
+	}
+
+	@Override
+	public Vehicle getNextVehichle() {
+		return null;
+	}
+
+	@Override
+	public boolean canChangeLine(Vehicle vehicle) {
+		return false;
+	}
 }

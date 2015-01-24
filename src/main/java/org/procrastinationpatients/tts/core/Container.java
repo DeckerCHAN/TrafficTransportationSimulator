@@ -8,5 +8,12 @@ import java.util.Collection;
 public interface Container {
     public Collection<Vehicle> getVehicles();
     public void setVehicles();
-    public int getSafetyDistanceByID(int index);
+    public int getSafetyDistanceByID(int whichLine , int index);
+	public Vehicle[][] getAllLocation();
+	public int getLineLength();
+	public boolean changeToNextContainer() ;
+	public Vehicle getNextVehichle() ;
+
+	public int changeLine(Vehicle vehicle) ;
+	public boolean canChangeLine(Vehicle vehicle);
 }
