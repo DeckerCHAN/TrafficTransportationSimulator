@@ -12,7 +12,14 @@ public class Link extends VisualEntity implements Container {
 	private Vehicle[][] line;
 	private int line_Length;
 
-	public Link(int num) {
+	private final Cross containerA;
+	private final Cross containerB;
+
+	protected Link(Cross A,Cross B) {
+		this.containerA=A;
+		this.containerB=B;
+		//TODO:通过两个Connection计算数组拥有的AvailablePoint数量
+		int num=new Integer("");
 		line = new Vehicle[4][num];
 		this.line_Length = num;
 	}
@@ -123,5 +130,13 @@ public class Link extends VisualEntity implements Container {
 				break ;
 		}
 		return v_line ;
+	}
+
+	public Cross getContainerA() {
+		return containerA;
+	}
+
+	public Cross getContainerB() {
+		return containerB;
 	}
 }
