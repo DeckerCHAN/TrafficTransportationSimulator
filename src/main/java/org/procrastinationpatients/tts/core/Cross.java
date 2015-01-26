@@ -2,6 +2,8 @@ package org.procrastinationpatients.tts.core;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import org.procrastinationpatients.tts.utils.DrawUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,15 +38,21 @@ public class Cross implements Container, Dot, VisualEntity, Connectible {
 		return this.vehicles;
 	}
 
-	@Override
-	public void addVehicles(Vehicle vehicle) {
-		this.vehicles.add(vehicle);
-	}
+    @Override
+    public void addVehicles(Vehicle vehicle) {
 
-	@Override
-	public int getLineLength() {
-		return 0;
-	}
+    }
+
+    @Override
+    public int getLineLength() {
+        return 0;
+    }
+
+
+    @Override
+    public void drawStaticGraphic(GraphicsContext gc) {
+        DrawUtils.drawBallAtCoordinate(gc, this.getPosition(), 30, Color.RED);
+    }
 
 	@Override
 	public int changeLine(Vehicle vehicle) {
@@ -64,11 +72,6 @@ public class Cross implements Container, Dot, VisualEntity, Connectible {
 	@Override
 	public Vehicle getNextVehicle(Vehicle vehicle) {
 		return null;
-	}
-
-	@Override
-	public void drawStaticGraphic(GraphicsContext gc) {
-
 	}
 
 	@Override
