@@ -2,7 +2,10 @@ package org.procrastinationpatients.tts.source;
 
 import javafx.geometry.Point2D;
 import org.apache.commons.io.FileUtils;
-import org.procrastinationpatients.tts.core.*;
+import org.procrastinationpatients.tts.core.Connectible;
+import org.procrastinationpatients.tts.core.Cross;
+import org.procrastinationpatients.tts.core.Link;
+import org.procrastinationpatients.tts.core.Margin;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -14,7 +17,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -23,8 +25,16 @@ import java.util.HashMap;
 public class ContainersLoader {
     private Node root;
     private Document doc;
+    private HashMap<Integer, Cross> crossCache;
+    private HashMap<Integer, Margin> marginCache;
+    private HashMap<Integer, Link> linkCache;
 
-    public ContainersLoader(File xmlFile) throws ParserConfigurationException, IOException, SAXException {
+    public ContainersLoader() {
+
+
+    }
+
+    public void LoadFromFile(File xmlFile) throws ParserConfigurationException, IOException, SAXException {
 
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         dbFactory.setIgnoringComments(true);
@@ -34,12 +44,9 @@ public class ContainersLoader {
         doc = dBuilder.parse(FileUtils.openInputStream(xmlFile));
         doc.getDocumentElement().normalize();
         root = doc.getElementsByTagName("Data").item(0);
-    }
-
-    public Container[] getContainers() {
         //建立Cross的集合
         NodeList crosses = ((Element) root).getElementsByTagName("Cross");
-        HashMap<Integer, Cross> crossCache = new HashMap<>();
+        crossCache = new HashMap<>();
         for (int i = 0; i < crosses.getLength(); i++) {
             Node node = crosses.item(i);
             Element element = ((Element) node.getChildNodes());
@@ -51,12 +58,12 @@ public class ContainersLoader {
             Double crossPositionY = Double.valueOf(element.getElementsByTagName("y").item(0).getTextContent());
 
             Cross cross = new Cross(crossID, new Point2D(crossPositionX, crossPositionY));
-            crossCache.put(crossID, cross);
+            this.crossCache.put(crossID, cross);
         }
 
         //建立Margin的集合
         NodeList margins = ((Element) root).getElementsByTagName("MarginalPoint");
-        HashMap<Integer, Margin> marginCache = new HashMap<>();
+        marginCache = new HashMap<>();
         for (int i = 0; i < margins.getLength(); i++) {
             Node node = margins.item(i);
             Element element = ((Element) node.getChildNodes());
@@ -68,13 +75,13 @@ public class ContainersLoader {
             Double marginPositionY = Double.valueOf(element.getElementsByTagName("y").item(0).getTextContent());
 
             Margin margin = new Margin(marginID, new Point2D(marginPositionX, marginPositionY));
-            marginCache.put(marginID, margin);
+            this.marginCache.put(marginID, margin);
 
         }
 
         //建立link集合并连接
         NodeList links = ((Element) root).getElementsByTagName("Link");
-        HashMap<Integer, Link> linkCache = new HashMap<>();
+        linkCache = new HashMap<>();
         for (int i = 0; i < links.getLength(); i++) {
             Node node = links.item(i);
             Element element = ((Element) node.getChildNodes());
@@ -91,15 +98,15 @@ public class ContainersLoader {
             //先将两个Connectible取出来(有可能是Margin也有可能是Cross)
             Connectible connectibleA, connectibleB;
             if (connectionATypeString.toLowerCase().equals("m")) {
-                connectibleA = marginCache.get(connectionAID);
+                connectibleA = this.marginCache.get(connectionAID);
             } else {
-                connectibleA = crossCache.get(connectionAID);
+                connectibleA = this.marginCache.get(connectionAID);
             }
 
             if (connectionBTypeString.toLowerCase().equals("m")) {
-                connectibleB = marginCache.get(connectionBID);
+                connectibleB = this.marginCache.get(connectionBID);
             } else {
-                connectibleB = crossCache.get(connectionBID);
+                connectibleB = this.marginCache.get(connectionBID);
             }
 
             Link link = new Link(linkID, new Connectible[]{connectibleA, connectibleB});
@@ -145,20 +152,23 @@ public class ContainersLoader {
 //            }
 
 
-
             //将link加入cache
-            linkCache.put(linkID, link);
+            this.linkCache.put(linkID, link);
         }
-
-        ArrayList<Container> res=new ArrayList<>();
-        res.addAll(crossCache.values());
-        res.addAll(marginCache.values());
-        res.addAll(linkCache.values());
-        Container[] resContainers=new Container[res.size()];
-        res.toArray(resContainers);
-        return resContainers;
 
     }
 
 
+    public Cross[] getCrosses() {
+        return crossCache.values().toArray(new Cross[]{});
+    }
+
+    public Margin[] getMargins() {
+
+        return marginCache.values().toArray(new Margin[]{});
+    }
+
+    public Link[] getLinks() {
+        return this.linkCache.values().toArray(new Link[]{});
+    }
 }
