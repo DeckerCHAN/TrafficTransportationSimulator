@@ -3,6 +3,7 @@ package org.procrastinationpatients.tts.core;
 import javafx.application.Application;
 import org.procrastinationpatients.tts.gui.MainWindow;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -37,13 +38,13 @@ public class Engine {
      * 窗口的类引用，用于初始化窗口
      */
     private Class<MainWindow> mainWindowClass;
-    private Collection<VisualEntity> visualEntities;
+    private Container[] containers;
 
     /**
      * 私有构造函数
      */
     private Engine() {
-        this.mainWindowClass=MainWindow.class;
+        this.mainWindowClass = MainWindow.class;
 
     }
 
@@ -60,7 +61,7 @@ public class Engine {
      * 停止Engine
      */
     public void stop() {
-    //TODO:停止所有运算，释放所有资源
+        //TODO:停止所有运算，释放所有资源
         System.out.println("Stop all!");
     }
 
@@ -69,10 +70,12 @@ public class Engine {
      * 拥有图形的对象，可以通过其中的函数绘制静态或者动态图像
      */
     public Collection<VisualEntity> getVisualEntities() {
+        ArrayList<VisualEntity> visualEntities = new ArrayList<>();
+        for (Container container : this.containers) {
+            visualEntities.add((VisualEntity) container);
+        }
+
         return visualEntities;
     }
 
-    public void setVisualEntities(Collection<VisualEntity> visualEntities) {
-        this.visualEntities = visualEntities;
-    }
 }

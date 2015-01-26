@@ -1,29 +1,34 @@
 package org.procrastinationpatients.tts.core;
 
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 
 /**
  * @Author Decker & his father -- Jeffrey
  */
-public class Cross extends VisualEntity implements Container {
+public class Cross implements Container, Dot, VisualEntity, Connectible {
 
     private LinkedList<Vehicle> vehicles;
 
-    private Container connectionN;
-    private Container connectionS;
-    private Container connectionW;
-    private Container connectionE;
+    private Point2D location;
+    private final Integer id;
 
+    private Connectible[] connections;
 
-    public Cross(Container connectionN, Container connectionS, Container connectionW, Container connectionE) {
-        this.connectionN = connectionN;
-        this.connectionS = connectionS;
-        this.connectionW = connectionW;
-        this.connectionE = connectionE;
-        this.vehicles=new LinkedList<>();
+    public Cross(Integer crossID, Point2D location) {
+        this.connections = new Connectible[4];
+        this.id = crossID;
+        this.location = location;
+    }
+
+    public Cross(Integer crossID, Point2D location, Collection<Connectible> connections) {
+        this(crossID, location);
+        this.vehicles = new LinkedList<>();
     }
 
     @Override
@@ -79,5 +84,29 @@ public class Cross extends VisualEntity implements Container {
     @Override
     public boolean canChangeLine(Vehicle vehicle) {
         return false;
+    }
+
+    @Override
+    public Point2D getPosition() {
+        return this.location;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    @Override
+    public Collection<Connectible> getConnections() {
+        return new ArrayList<>(Arrays.asList(this.connections));
+    }
+
+    @Override
+    public void addConnection(Connectible connection) {
+        ArrayList<Connectible> arrayList = new ArrayList<>(Arrays.asList(this.connections));
+        if (arrayList.size() > 4) {
+            throw new ArrayIndexOutOfBoundsException("Cross只能连接四个点");
+        }
+        arrayList.add(connection);
+        arrayList.toArray(this.connections);
     }
 }

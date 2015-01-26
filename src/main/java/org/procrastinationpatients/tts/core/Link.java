@@ -1,142 +1,174 @@
 package org.procrastinationpatients.tts.core;
 
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @Author Decker & his father -- Jeffrey
  */
-public class Link extends VisualEntity implements Container {
+public class Link implements Container, Dot, VisualEntity, Connectible {
 
-	private Vehicle[][] line;
-	private int line_Length;
+    public static final Link EMPTY;
 
-	private final Cross containerA;
-	private final Cross containerB;
+    static {
+        EMPTY = new Link(-1);
+    }
 
-	protected Link(Cross A,Cross B) {
-		this.containerA=A;
-		this.containerB=B;
-		//TODO:通过两个Connection计算数组拥有的AvailablePoint数量
-		int num=new Integer("");
-		line = new Vehicle[4][num];
-		this.line_Length = num;
-	}
+    private Vehicle[][] line;
+    private int line_Length;
 
-	@Override
-	public Collection<Vehicle> getVehicles() {
-		return null;
-	}
+    private Connectible[] connections;
 
-	@Override
-	public void setVehicles() {
+    private final Integer id;
 
-	}
+    public Link(Integer linkID) {
+        this.id = linkID;
+    }
 
-	//通过索引位置,得到与下一辆车之间的安全距离
-	@Override
-	public int getSafetyDistanceByID(int whichLine,int index) {
-		if (index < 0 || index >= this.line_Length)
-			return -1;
-		if (line[whichLine][index] == null)
-			return 0;
+    public Link(Integer linkID, Connectible[] connections) {
+        this(linkID);
+        if (connections.length != 2) {
+            throw new ArrayIndexOutOfBoundsException("Link能且只能连接两个Dot点");
+        }
+        this.connections = connections;
+        //TODO:通过两个Connection计算数组拥有的AvailablePoint数量
+//		int num=new Integer("");
+//		line = new Vehicle[4][num];
+//		this.line_Length = num;
+    }
 
-		int distance = index;
-		for (index++; index < this.line_Length; index++) {
-			if (line[whichLine][index] != null) {
-				break;
-			}
-		}
-		if (index == this.line_Length) {
-			index--;
-		}
-		return index - distance;
-	}
+    @Override
+    public Collection<Vehicle> getVehicles() {
+        return null;
+    }
 
-	@Override
-	public void drawStaticGraphic(GraphicsContext gc) {
+    @Override
+    public void setVehicles() {
 
-	}
+    }
 
-	@Override
-	public void drawDynamicGraphic(GraphicsContext gc) {
+    //通过索引位置,得到与下一辆车之间的安全距离
+    @Override
+    public int getSafetyDistanceByID(int whichLine, int index) {
+        if (index < 0 || index >= this.line_Length)
+            return -1;
+        if (line[whichLine][index] == null)
+            return 0;
 
-	}
+        int distance = index;
+        for (index++; index < this.line_Length; index++) {
+            if (line[whichLine][index] != null) {
+                break;
+            }
+        }
+        if (index == this.line_Length) {
+            index--;
+        }
+        return index - distance;
+    }
 
-	@Override
-	public Vehicle[][] getAllLocation() {
-		return line;
-	}
+    @Override
+    public void drawStaticGraphic(GraphicsContext gc) {
 
-	@Override
-	public int getLineLength() {
-		return line_Length;
-	}
+    }
 
-	public boolean changeToNextContainer(){
-		return false ;
-	}
+    @Override
+    public void drawDynamicGraphic(GraphicsContext gc) {
 
-	@Override
-	public Vehicle getNextVehichle() {
-		return null;
-	}
+    }
 
-	@Override
-	public int changeLine(Vehicle vehicle) {
-		int v_line = vehicle.getCur_line() ;
-		int v_location = vehicle.getCur_Loc() ;
-		int v_speed = vehicle.getCur_Spd() ;
+    @Override
+    public Vehicle[][] getAllLocation() {
+        return line;
+    }
 
-		v_line = change_Line_NUMBER(v_line) ;
-		vehicle.setCur_Loc(v_location + v_speed) ;
-		vehicle.setCur_Line(v_line) ;
+    @Override
+    public int getLineLength() {
+        return line_Length;
+    }
 
-		return v_line ;
-	}
+    public boolean changeToNextContainer() {
+        return false;
+    }
 
-	@Override
-	public boolean canChangeLine(Vehicle vehicle) {
-		int v_line = vehicle.getCur_line() ;
-		int v_location = vehicle.getCur_Loc() ;
-		int v_speed = vehicle.getCur_Spd() ;
-		boolean flag = true ;
+    @Override
+    public Vehicle getNextVehichle() {
+        return null;
+    }
 
-		v_line = change_Line_NUMBER(v_line) ;
-		for(int i = v_location + 1 ; i <= v_location + v_speed ;i++ ){
-			if(line[v_line][i] != null) {
-				flag = false;
-				break ;
-			}
-		}
+    @Override
+    public int changeLine(Vehicle vehicle) {
+        int v_line = vehicle.getCur_line();
+        int v_location = vehicle.getCur_Loc();
+        int v_speed = vehicle.getCur_Spd();
 
-		return flag ;
-	}
+        v_line = change_Line_NUMBER(v_line);
+        vehicle.setCur_Loc(v_location + v_speed);
+        vehicle.setCur_Line(v_line);
 
-	public int change_Line_NUMBER(int v_line){
-		switch(v_line){
-			case 1 :
-				v_line = 2 ;
-				break ;
-			case 2 :
-				v_line = 1 ;
-				break ;
-			case 3 :
-				v_line = 4 ;
-				break ;
-			case 4 :
-				v_line = 3 ;
-				break ;
-		}
-		return v_line ;
-	}
+        return v_line;
+    }
 
-	public Cross getContainerA() {
-		return containerA;
-	}
+    @Override
+    public boolean canChangeLine(Vehicle vehicle) {
+        int v_line = vehicle.getCur_line();
+        int v_location = vehicle.getCur_Loc();
+        int v_speed = vehicle.getCur_Spd();
+        boolean flag = true;
 
-	public Cross getContainerB() {
-		return containerB;
-	}
+        v_line = change_Line_NUMBER(v_line);
+        for (int i = v_location + 1; i <= v_location + v_speed; i++) {
+            if (line[v_line][i] != null) {
+                flag = false;
+                break;
+            }
+        }
+
+        return flag;
+    }
+
+    public int change_Line_NUMBER(int v_line) {
+        switch (v_line) {
+            case 1:
+                v_line = 2;
+                break;
+            case 2:
+                v_line = 1;
+                break;
+            case 3:
+                v_line = 4;
+                break;
+            case 4:
+                v_line = 3;
+                break;
+        }
+        return v_line;
+    }
+
+
+    @Override
+    public Point2D getPosition() {
+        return null;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    @Override
+    public Collection<Connectible> getConnections() {
+        return Arrays.asList(this.connections);
+    }
+
+    @Override
+    public void addConnection(Connectible connection) {
+        List<Connectible> arrayList = Arrays.asList(this.connections);
+        arrayList.add(connection);
+
+        this.connections = connections;
+    }
 }
