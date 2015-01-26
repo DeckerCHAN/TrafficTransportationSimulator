@@ -21,6 +21,10 @@ public class NetUtils {
         for (Container container : containers) {
             if (container instanceof Dot) {
                 Dot dot = ((Dot) container);
+                if((dot.getPosition()==null))
+                {
+                    System.out.println("对象坐标空，无法将操作应用到实例！");
+                }
                 maxX = dot.getPosition().getX() > maxX ? dot.getPosition().getX() : maxX;
                 maxY = dot.getPosition().getY() > maxY ? dot.getPosition().getY() : maxY;
             }

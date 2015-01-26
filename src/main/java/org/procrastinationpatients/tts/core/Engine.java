@@ -70,10 +70,19 @@ public class Engine {
      */
     public Collection<VisualEntity> getVisualEntities() {
         ArrayList<VisualEntity> visualEntities = new ArrayList<>();
-        for (Container container : this.containers) {
+        for (Container container : this.getContainers()) {
             visualEntities.add((VisualEntity) container);
         }
 
         return visualEntities;
+    }
+
+
+    public Container[] getContainers() {
+        return containers;
+    }
+
+    public void setContainers(Container[] containers) {
+        this.containers = containers;
     }
 }

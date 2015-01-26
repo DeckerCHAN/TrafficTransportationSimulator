@@ -2,6 +2,8 @@ package org.procrastinationpatients.tts.core;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import org.procrastinationpatients.tts.utils.DrawUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,8 +38,10 @@ public class Margin implements Container, Dot, VisualEntity, Connectible {
 		return 0;
 	}
 
-	@Override
-	public void drawStaticGraphic(GraphicsContext gc) {
+
+    @Override
+    public void drawStaticGraphic(GraphicsContext gc) {
+        DrawUtils.drawBallAtCoordinate(gc, this.getPosition(), 30, Color.BLUE);
 
     }
 
