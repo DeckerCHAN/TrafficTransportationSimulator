@@ -14,25 +14,25 @@ import java.util.Collection;
  * @Author Decker & his father -- Jeffrey
  */
 public class Engine {
-    /**
-     * 单例对象实例
-     */
-    private static Engine instance;
+	/**
+	 * 单例对象实例
+	 */
+	private static Engine instance;
 
-    /**
-     * 获取单例
-     *
-     * @return 全局唯一单例
-     */
-    public static Engine getInstance() {
-        return instance;
-    }
+	/**
+	 * 获取单例
+	 *
+	 * @return 全局唯一单例
+	 */
+	public static Engine getInstance() {
+		return instance;
+	}
 
 
-    static {
-        //初始化单例
-        instance = new Engine();
-    }
+	static {
+		//初始化单例
+		instance = new Engine();
+	}
 
     /**
      * 窗口的类引用，用于初始化窗口
@@ -45,17 +45,16 @@ public class Engine {
      */
     private Engine() {
         this.mainWindowClass = MainWindow.class;
+	}
 
-    }
+	/**
+	 * 启动Engine
+	 */
+	public void run() {
 
-    /**
-     * 启动Engine
-     */
-    public void run() {
-
-        Application.launch(this.mainWindowClass);
-        this.stop();
-    }
+		Application.launch(this.mainWindowClass);
+		this.stop();
+	}
 
     /**
      * 停止Engine
@@ -77,5 +76,4 @@ public class Engine {
 
         return visualEntities;
     }
-
 }

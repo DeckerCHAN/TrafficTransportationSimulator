@@ -13,7 +13,7 @@ import java.util.LinkedList;
  */
 public class Cross implements Container, Dot, VisualEntity, Connectible {
 
-    private LinkedList<Vehicle> vehicles;
+	private LinkedList<Vehicle> vehicles;
 
     private Point2D location;
     private final Integer id;
@@ -31,57 +31,52 @@ public class Cross implements Container, Dot, VisualEntity, Connectible {
         this.vehicles = new LinkedList<>();
     }
 
-    @Override
-    public Collection<Vehicle> getVehicles() {
-        return this.vehicles;
-    }
+	@Override
+	public Collection<Vehicle> getVehicles() {
+		return this.vehicles;
+	}
 
-    @Override
-    public void setVehicles() {
-        this.vehicles = vehicles;
-    }
+	@Override
+	public void addVehicles(Vehicle vehicle) {
+		this.vehicles.add(vehicle);
+	}
 
-    @Override
-    public void drawStaticGraphic(GraphicsContext gc) {
+	@Override
+	public int getLineLength() {
+		return 0;
+	}
 
-    }
+	@Override
+	public int changeLine(Vehicle vehicle) {
+		return 0;
+	}
 
-    @Override
-    public void drawDynamicGraphic(GraphicsContext gc) {
+	@Override
+	public int getSafetyDistanceByID(int whichLine, int index) {
+		return 0;
+	}
 
-    }
+	@Override
+	public Container changeToNextContainer(Vehicle vehicle) {
+		return null;
+	}
 
-    @Override
-    public int getSafetyDistanceByID(int whichLine, int index) {
-        return 0;
-    }
+	@Override
+	public Vehicle getNextVehicle(Vehicle vehicle) {
+		return null;
+	}
 
-    @Override
-    public Vehicle[][] getAllLocation() {
-        return new Vehicle[0][];
-    }
+	@Override
+	public void drawStaticGraphic(GraphicsContext gc) {
 
-    @Override
-    public int getLineLength() {
-        return 0;
-    }
+	}
 
-    @Override
-    public boolean changeToNextContainer() {
-        return false;
-    }
+	@Override
+	public void drawDynamicGraphic(GraphicsContext gc) {
 
-    @Override
-    public int changeLine(Vehicle vehicle) {
-        return 0;
-    }
+	}
 
-    @Override
-    public Vehicle getNextVehichle() {
-        return null;
-    }
-
-    @Override
+	@Override
     public boolean canChangeLine(Vehicle vehicle) {
         return false;
     }
@@ -109,4 +104,5 @@ public class Cross implements Container, Dot, VisualEntity, Connectible {
         arrayList.add(connection);
         arrayList.toArray(this.connections);
     }
+
 }
