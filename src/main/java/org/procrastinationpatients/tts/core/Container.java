@@ -6,14 +6,19 @@ import java.util.Collection;
  * @Author Decker & his father -- Jeffrey
  */
 public interface Container {
-    public Collection<Vehicle> getVehicles();
-    public void setVehicles();
-    public int getSafetyDistanceByID(int whichLine , int index);
-	public Vehicle[][] getAllLocation();
-	public int getLineLength();
-	public boolean changeToNextContainer() ;
-	public Vehicle getNextVehichle() ;
+	public Collection<Vehicle> getVehicles();
 
-	public int changeLine(Vehicle vehicle) ;
+	public void addVehicles(Vehicle vehicle) ;
+
+	public int getLineLength();
+
+	public int changeLine(Vehicle vehicle);
+
+	public int getSafetyDistanceByID(int whichLine, int index);
+
 	public boolean canChangeLine(Vehicle vehicle);
+
+	public Container changeToNextContainer(Vehicle vehicle);
+
+	public Vehicle getNextVehicle(Vehicle vehicle);
 }

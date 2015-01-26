@@ -20,4 +20,18 @@ public class Street extends Link {
         return super.getContainerB();
     }
 
+	@Override
+	public void addVehicles(Vehicle vehicle) {
+
+	}
+
+	@Override
+	public Container changeToNextContainer(Vehicle vehicle) {
+		return null;
+	}
+
+	@Override
+	public Vehicle getNextVehicle(Vehicle vehicle) {
+		return null;
+	}
 }

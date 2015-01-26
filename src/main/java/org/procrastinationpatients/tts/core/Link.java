@@ -30,7 +30,7 @@ public class Link extends VisualEntity implements Container {
 	}
 
 	@Override
-	public void setVehicles() {
+	public void addVehicles(Vehicle vehicle) {
 
 	}
 
@@ -65,22 +65,12 @@ public class Link extends VisualEntity implements Container {
 	}
 
 	@Override
-	public Vehicle[][] getAllLocation() {
-		return line;
-	}
-
-	@Override
 	public int getLineLength() {
 		return line_Length;
 	}
 
 	public boolean changeToNextContainer(){
 		return false ;
-	}
-
-	@Override
-	public Vehicle getNextVehichle() {
-		return null;
 	}
 
 	@Override
@@ -112,6 +102,16 @@ public class Link extends VisualEntity implements Container {
 		}
 
 		return flag ;
+	}
+
+	@Override
+	public Container changeToNextContainer(Vehicle vehicle) {
+		return null;
+	}
+
+	@Override
+	public Vehicle getNextVehicle(Vehicle vehicle) {
+		return null;
 	}
 
 	public int change_Line_NUMBER(int v_line){

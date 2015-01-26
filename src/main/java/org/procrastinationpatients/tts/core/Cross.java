@@ -10,7 +10,7 @@ import java.util.LinkedList;
  */
 public class Cross extends VisualEntity implements Container {
 
-    private LinkedList<Vehicle> vehicles;
+	private LinkedList<Vehicle> vehicles;
 
     private Container connectionN;
     private Container connectionS;
@@ -26,58 +26,54 @@ public class Cross extends VisualEntity implements Container {
         this.vehicles=new LinkedList<>();
     }
 
-    @Override
-    public Collection<Vehicle> getVehicles() {
-        return this.vehicles;
-    }
+	@Override
+	public Collection<Vehicle> getVehicles() {
+		return this.vehicles;
+	}
 
-    @Override
-    public void setVehicles() {
-        this.vehicles = vehicles;
-    }
+	@Override
+	public void addVehicles(Vehicle vehicle) {
+		this.vehicles.add(vehicle);
+	}
 
-    @Override
-    public void drawStaticGraphic(GraphicsContext gc) {
+	@Override
+	public int getLineLength() {
+		return 0;
+	}
 
-    }
+	@Override
+	public int changeLine(Vehicle vehicle) {
+		return 0;
+	}
 
-    @Override
-    public void drawDynamicGraphic(GraphicsContext gc) {
+	@Override
+	public int getSafetyDistanceByID(int whichLine, int index) {
+		return 0;
+	}
 
-    }
+	@Override
+	public boolean canChangeLine(Vehicle vehicle) {
+		return false;
+	}
 
-    @Override
-    public int getSafetyDistanceByID(int whichLine, int index) {
-        return 0;
-    }
+	@Override
+	public Container changeToNextContainer(Vehicle vehicle) {
+		return null;
+	}
 
-    @Override
-    public Vehicle[][] getAllLocation() {
-        return new Vehicle[0][];
-    }
+	@Override
+	public Vehicle getNextVehicle(Vehicle vehicle) {
+		return null;
+	}
 
-    @Override
-    public int getLineLength() {
-        return 0;
-    }
+	@Override
+	public void drawStaticGraphic(GraphicsContext gc) {
 
-    @Override
-    public boolean changeToNextContainer() {
-        return false;
-    }
+	}
 
-    @Override
-    public int changeLine(Vehicle vehicle) {
-        return 0;
-    }
+	@Override
+	public void drawDynamicGraphic(GraphicsContext gc) {
 
-    @Override
-    public Vehicle getNextVehichle() {
-        return null;
-    }
+	}
 
-    @Override
-    public boolean canChangeLine(Vehicle vehicle) {
-        return false;
-    }
 }
