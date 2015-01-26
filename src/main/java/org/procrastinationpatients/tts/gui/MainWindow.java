@@ -14,6 +14,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.procrastinationpatients.tts.core.Container;
 import org.procrastinationpatients.tts.core.Engine;
 import org.procrastinationpatients.tts.core.VisualEntity;
 import org.procrastinationpatients.tts.source.ContainersLoader;
@@ -21,6 +22,8 @@ import org.procrastinationpatients.tts.source.StaticConfig;
 import org.procrastinationpatients.tts.utils.NetUtils;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
@@ -65,9 +68,19 @@ public class MainWindow extends Application {
                     File xml = fileChooser.showOpenDialog(mainStage);
 
                     //通过文件初始化Containers
-                    Engine.getInstance().setContainers(new ContainersLoader(xml).getContainers());
+
+                    ContainersLoader containersLoader = new ContainersLoader();
+                    containersLoader.LoadFromFile(xml);
+                    Engine.getInstance().setCrosses(containersLoader.getCrosses());
+                    Engine.getInstance().setLinks(containersLoader.getLinks());
+                    Engine.getInstance().setMargins(containersLoader.getMargins());
                     //通过UTILS计算出画板的大小
-                    Point2D maxSize = NetUtils.getMaxNetSize(Engine.getInstance().getContainers());
+                    ArrayList<Container> containers = new ArrayList<Container>();
+                    containers.addAll(Arrays.asList(containersLoader.getCrosses()));
+                    containers.addAll(Arrays.asList(containersLoader.getLinks()));
+                    containers.addAll(Arrays.asList(containersLoader.getMargins()));
+
+                    Point2D maxSize = NetUtils.getMaxNetSize(containers.toArray(new Container[]{}));
                     //重设画板大小
                     backgroundCanvas.setWidth(maxSize.getX());
                     backgroundCanvas.setHeight(maxSize.getY());

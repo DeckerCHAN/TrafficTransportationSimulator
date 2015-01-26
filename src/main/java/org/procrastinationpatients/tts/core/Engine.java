@@ -4,6 +4,7 @@ import javafx.application.Application;
 import org.procrastinationpatients.tts.gui.MainWindow;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -14,47 +15,49 @@ import java.util.Collection;
  * @Author Decker & his father -- Jeffrey
  */
 public class Engine {
-	/**
-	 * 单例对象实例
-	 */
-	private static Engine instance;
+    /**
+     * 单例对象实例
+     */
+    private static Engine instance;
 
-	/**
-	 * 获取单例
-	 *
-	 * @return 全局唯一单例
-	 */
-	public static Engine getInstance() {
-		return instance;
-	}
+    /**
+     * 获取单例
+     *
+     * @return 全局唯一单例
+     */
+    public static Engine getInstance() {
+        return instance;
+    }
 
 
-	static {
-		//初始化单例
-		instance = new Engine();
-	}
+    static {
+        //初始化单例
+        instance = new Engine();
+    }
 
     /**
      * 窗口的类引用，用于初始化窗口
      */
     private Class<MainWindow> mainWindowClass;
-    private Container[] containers;
+    private Cross[] crosses;
+    private Link[] links;
+    private Margin[] margins;
 
     /**
      * 私有构造函数
      */
     private Engine() {
         this.mainWindowClass = MainWindow.class;
-	}
+    }
 
-	/**
-	 * 启动Engine
-	 */
-	public void run() {
+    /**
+     * 启动Engine
+     */
+    public void run() {
 
-		Application.launch(this.mainWindowClass);
-		this.stop();
-	}
+        Application.launch(this.mainWindowClass);
+        this.stop();
+    }
 
     /**
      * 停止Engine
@@ -70,19 +73,35 @@ public class Engine {
      */
     public Collection<VisualEntity> getVisualEntities() {
         ArrayList<VisualEntity> visualEntities = new ArrayList<>();
-        for (Container container : this.getContainers()) {
-            visualEntities.add((VisualEntity) container);
-        }
+        visualEntities.addAll(Arrays.asList(this.getCrosses()));
+        visualEntities.addAll(Arrays.asList(this.getMargins()));
+        visualEntities.addAll(Arrays.asList(this.getLinks()));
 
         return visualEntities;
     }
 
 
-    public Container[] getContainers() {
-        return containers;
+    public Cross[] getCrosses() {
+        return crosses;
     }
 
-    public void setContainers(Container[] containers) {
-        this.containers = containers;
+    public void setCrosses(Cross[] crosses) {
+        this.crosses = crosses;
+    }
+
+    public Link[] getLinks() {
+        return links;
+    }
+
+    public void setLinks(Link[] links) {
+        this.links = links;
+    }
+
+    public Margin[] getMargins() {
+        return margins;
+    }
+
+    public void setMargins(Margin[] margins) {
+        this.margins = margins;
     }
 }
