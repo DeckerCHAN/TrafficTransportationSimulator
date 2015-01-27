@@ -1,16 +1,19 @@
 package org.procrastinationpatients.tts.core;
 
 import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * @Author Decker & his father -- Jeffrey
  */
 public interface Container {
-	public Collection<Vehicle> getVehicles();
+	public LinkedList<Vehicle> getVehicles();
 
-	public void addVehicles(Vehicle vehicle) ;
+	public boolean addVehicle(Vehicle vehicle) ;
 
 	public int getLineLength();
+
+	public void setLineLength(int length);
 
 	public int changeLine(Vehicle vehicle);
 

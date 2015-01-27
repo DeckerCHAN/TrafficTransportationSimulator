@@ -34,13 +34,14 @@ public class Cross implements Container, Dot, VisualEntity, Connectible {
     }
 
 	@Override
-	public Collection<Vehicle> getVehicles() {
+	public LinkedList<Vehicle> getVehicles() {
 		return this.vehicles;
 	}
 
     @Override
-    public void addVehicles(Vehicle vehicle) {
-
+    public boolean addVehicle(Vehicle vehicle) {
+		this.vehicles.add(vehicle);
+		return false ;
     }
 
     @Override
@@ -48,8 +49,13 @@ public class Cross implements Container, Dot, VisualEntity, Connectible {
         return 0;
     }
 
+	@Override
+	public void setLineLength(int length) {
 
-    @Override
+	}
+
+
+	@Override
     public void drawStaticGraphic(GraphicsContext gc) {
         DrawUtils.drawBallAtCoordinate(gc, this.getPosition(), 30, Color.RED);
     }

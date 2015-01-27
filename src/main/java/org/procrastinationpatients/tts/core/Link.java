@@ -6,6 +6,7 @@ import org.procrastinationpatients.tts.utils.DrawUtils;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -46,13 +47,13 @@ public class Link implements Container, VisualEntity, Connectible {
     }
 
     @Override
-    public Collection<Vehicle> getVehicles() {
+    public LinkedList<Vehicle> getVehicles() {
         return null;
     }
 
     @Override
-    public void addVehicles(Vehicle vehicle) {
-
+    public boolean addVehicle(Vehicle vehicle) {
+		return false ;
     }
 
 
@@ -95,7 +96,12 @@ public class Link implements Container, VisualEntity, Connectible {
         return line_Length;
     }
 
-    public boolean changeToNextContainer() {
+	@Override
+	public void setLineLength(int length) {
+
+	}
+
+	public boolean changeToNextContainer() {
         return false;
     }
 
