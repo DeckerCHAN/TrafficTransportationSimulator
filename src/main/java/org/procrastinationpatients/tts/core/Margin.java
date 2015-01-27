@@ -17,7 +17,7 @@ public class Margin implements Container, Dot, VisualEntity, Connectible {
 
 	private final Integer id;
 	private Point2D position;
-	private Link connectionLink;
+	private Cross connectionLink;
 
 	private int line_Length;
 
@@ -141,6 +141,7 @@ public class Margin implements Container, Dot, VisualEntity, Connectible {
 
 	@Override
 	public Container changeToNextContainer(Vehicle vehicle) {
+
 		return null;
 	}
 
@@ -165,11 +166,11 @@ public class Margin implements Container, Dot, VisualEntity, Connectible {
 		return id;
 	}
 
-	public Link getConnectionLink() {
+	public Cross getConnectionLink() {
 		return connectionLink;
 	}
 
-	public void setConnectionLink(Link connectionLink) {
+	public void setConnectionLink(Cross connectionLink) {
 		this.connectionLink = connectionLink;
 	}
 
@@ -182,7 +183,7 @@ public class Margin implements Container, Dot, VisualEntity, Connectible {
 
 	@Override
 	public void addConnection(Connectible connection) {
-		this.connectionLink = (Link) connection;
+		this.connectionLink = (Cross) connection;
 	}
 
 	public void setLine(Vehicle[][] line) {
