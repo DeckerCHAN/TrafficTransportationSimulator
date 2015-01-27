@@ -90,7 +90,6 @@ public class Link implements Container, VisualEntity, Connectible {
 
 	}
 
-
 	@Override
 	public int getLineLength() {
 		return line_Length;
@@ -160,14 +159,19 @@ public class Link implements Container, VisualEntity, Connectible {
 				v_line = 2;
 				break;
 			case 2:
-				v_line = 1;
-				break;
-			case 3:
-				v_line = 4;
-				break;
-			case 4:
 				v_line = 3;
 				break;
+			case 3:
+				v_line = 3;
+				break;
+			case 4:
+				v_line = 4;
+				break;
+			case 5:
+				v_line = 4;
+				break;
+			case 6:
+				v_line = 5;
 		}
 		return v_line;
 	}
