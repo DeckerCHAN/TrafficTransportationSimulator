@@ -2,6 +2,7 @@ package org.procrastinationpatients.tts.gui;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -12,7 +13,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -32,6 +32,8 @@ import java.util.Arrays;
  * @Author Decker
  */
 public class MainWindow extends Application {
+
+    private Point2D canvasMaxSizePoint;
 
     private Stage mainStage;
     private BorderPane root;
@@ -57,24 +59,26 @@ public class MainWindow extends Application {
 
         //初始化载入按钮，并设置相关参数
         this.loadBtn = new Button("Load");
-        this.loadBtn.setFont(new Font(20));
+        this.loadBtn.setPrefSize(100, 20);
         this.loadBtn.setLayoutX(60);
         this.loadBtn.setLayoutY(50);
         this.loadBtn.setOnMouseClicked(this.getLoadButtonEventHandler());
         //初始化开始按钮，并设置相关参数
         this.startBtn = new Button("Start");
-        this.startBtn.setFont(new Font(20));
+        this.startBtn.setPrefSize(100, 20);
         this.startBtn.setLayoutX(this.loadBtn.getLayoutX() + this.loadBtn.getWidth() + 100);
         this.startBtn.setLayoutY(50);
         this.startBtn.setOnMouseClicked(this.getStartButtonEventHandler());
         //初始化暂停按钮，并设置相关参数
         this.pauseBtn = new Button("Pause");
-        this.pauseBtn.setFont(new Font(20));
+        this.pauseBtn.setPrefSize(100, 20);
         this.pauseBtn.setLayoutX(this.startBtn.getLayoutX() + this.startBtn.getWidth() + 100);
         this.pauseBtn.setLayoutY(50);
         this.pauseBtn.setOnMouseClicked(this.getPauseButtonEventHandler());
 
         this.buttonsCantainer = new HBox();
+        buttonsCantainer.setPadding(new Insets(15, 12, 15, 12));
+        buttonsCantainer.setSpacing(10);
         this.scrollPane = new ScrollPane();
         this.scrollInnerPane = new StackPane();
         this.root = new BorderPane();
@@ -109,7 +113,9 @@ public class MainWindow extends Application {
         stage.show();
     }
 
-
+    /**
+     * 绘制全部的静态对象
+     */
     private void drawAllStatic() {
         GraphicsContext gc = backgroundCanvas.getGraphicsContext2D();
         for (VisualEntity visualEntity : Engine.getInstance().getVisualEntities()) {
@@ -119,13 +125,18 @@ public class MainWindow extends Application {
 
     private void drawAllDynamic() {
         GraphicsContext gc = dynamicCanvas.getGraphicsContext2D();
-        //TODO:将大小修改为最高点和最宽点
-        gc.clearRect(0, 0, 4000, 4000);
+        //DONE:将大小修改为最高点和最宽点
+        gc.clearRect(0, 0, this.canvasMaxSizePoint.getX(), this.canvasMaxSizePoint.getY());
         for (VisualEntity visualEntity : Engine.getInstance().getVisualEntities()) {
             visualEntity.drawDynamicGraphic(gc);
         }
     }
 
+    /**
+     * Load 键按下后的响应事件
+     *
+     * @return 响应事件
+     */
     private EventHandler<MouseEvent> getLoadButtonEventHandler() {
         return new EventHandler<MouseEvent>() {
             @Override
@@ -149,12 +160,12 @@ public class MainWindow extends Application {
                     containers.addAll(Arrays.asList(containersLoader.getLinks()));
                     containers.addAll(Arrays.asList(containersLoader.getMargins()));
 
-                    Point2D maxSize = NetUtils.getMaxNetSize(containers.toArray(new Container[]{}));
+                    canvasMaxSizePoint = NetUtils.getMaxNetSize(containers.toArray(new Container[]{}));
                     //重设画板大小
-                    backgroundCanvas.setWidth(maxSize.getX());
-                    backgroundCanvas.setHeight(maxSize.getY());
-                    dynamicCanvas.setWidth(maxSize.getX());
-                    dynamicCanvas.setHeight(maxSize.getY());
+                    backgroundCanvas.setWidth(canvasMaxSizePoint.getX());
+                    backgroundCanvas.setHeight(canvasMaxSizePoint.getY());
+                    dynamicCanvas.setWidth(canvasMaxSizePoint.getX());
+                    dynamicCanvas.setHeight(canvasMaxSizePoint.getY());
                     drawAllStatic();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -163,6 +174,11 @@ public class MainWindow extends Application {
         };
     }
 
+    /**
+     * Start 键按下后的响应事件
+     *
+     * @return 响应事件
+     */
     private EventHandler<MouseEvent> getStartButtonEventHandler() {
         return new EventHandler<MouseEvent>() {
             @Override
@@ -174,6 +190,11 @@ public class MainWindow extends Application {
         };
     }
 
+    /**
+     * Pause 键按下后的响应事件
+     *
+     * @return 响应事件
+     */
     private EventHandler<MouseEvent> getPauseButtonEventHandler() {
         return new EventHandler<MouseEvent>() {
             @Override
