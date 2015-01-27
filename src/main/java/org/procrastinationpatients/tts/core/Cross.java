@@ -17,37 +17,37 @@ public class Cross implements Container, Dot, VisualEntity, Connectible {
 
 	private LinkedList<Vehicle> vehicles;
 
-    private Point2D location;
-    private final Integer id;
+	private Point2D location;
+	private final Integer id;
 
-    private Connectible[] connections;
+	private Connectible[] connections;
 
-    public Cross(Integer crossID, Point2D location) {
-        this.connections = new Connectible[4];
-        this.id = crossID;
-        this.location = location;
-    }
+	public Cross(Integer crossID, Point2D location) {
+		this.connections = new Connectible[4];
+		this.id = crossID;
+		this.location = location;
+	}
 
-    public Cross(Integer crossID, Point2D location, Collection<Connectible> connections) {
-        this(crossID, location);
-        this.vehicles = new LinkedList<>();
-    }
+	public Cross(Integer crossID, Point2D location, Collection<Connectible> connections) {
+		this(crossID, location);
+		this.vehicles = new LinkedList<>();
+	}
 
 	@Override
 	public LinkedList<Vehicle> getVehicles() {
 		return this.vehicles;
 	}
 
-    @Override
-    public boolean addVehicle(Vehicle vehicle) {
+	@Override
+	public boolean addVehicle(Vehicle vehicle) {
 		this.vehicles.add(vehicle);
-		return false ;
-    }
+		return false;
+	}
 
-    @Override
-    public int getLineLength() {
-        return 0;
-    }
+	@Override
+	public int getLineLength() {
+		return 0;
+	}
 
 	@Override
 	public void setLineLength(int length) {
@@ -56,9 +56,9 @@ public class Cross implements Container, Dot, VisualEntity, Connectible {
 
 
 	@Override
-    public void drawStaticGraphic(GraphicsContext gc) {
-        DrawUtils.drawBallAtCoordinate(gc, this.getPosition(), 30, Color.RED);
-    }
+	public void drawStaticGraphic(GraphicsContext gc) {
+		DrawUtils.drawBallAtCoordinate(gc, this.getPosition(), 30, Color.RED);
+	}
 
 	@Override
 	public int changeLine(Vehicle vehicle) {
@@ -86,32 +86,32 @@ public class Cross implements Container, Dot, VisualEntity, Connectible {
 	}
 
 	@Override
-    public boolean canChangeLine(Vehicle vehicle) {
-        return false;
-    }
+	public boolean canChangeLine(Vehicle vehicle) {
+		return false;
+	}
 
-    @Override
-    public Point2D getPosition() {
-        return this.location;
-    }
+	@Override
+	public Point2D getPosition() {
+		return this.location;
+	}
 
-    public Integer getId() {
-        return id;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    @Override
-    public Collection<Connectible> getConnections() {
-        return new ArrayList<>(Arrays.asList(this.connections));
-    }
+	@Override
+	public Collection<Connectible> getConnections() {
+		return new ArrayList<>(Arrays.asList(this.connections));
+	}
 
-    @Override
-    public void addConnection(Connectible connection) {
-        ArrayList<Connectible> arrayList = new ArrayList<>(Arrays.asList(this.connections));
-        if (arrayList.size() > 4) {
-            throw new ArrayIndexOutOfBoundsException("Cross只能连接四个点");
-        }
-        arrayList.add(connection);
-        arrayList.toArray(this.connections);
-    }
+	@Override
+	public void addConnection(Connectible connection) {
+		ArrayList<Connectible> arrayList = new ArrayList<>(Arrays.asList(this.connections));
+		if (arrayList.size() > 4) {
+			throw new ArrayIndexOutOfBoundsException("Cross只能连接四个点");
+		}
+		arrayList.add(connection);
+		arrayList.toArray(this.connections);
+	}
 
 }

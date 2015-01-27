@@ -7,5 +7,5 @@ import javafx.geometry.Point2D;
  */
 public interface Dot {
 
-    public Point2D getPosition();
+	public Point2D getPosition();
 }

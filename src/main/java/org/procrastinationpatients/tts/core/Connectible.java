@@ -6,7 +6,7 @@ import java.util.Collection;
  * @Author Decker
  */
 public interface Connectible {
-    public Collection<Connectible> getConnections();
+	public Collection<Connectible> getConnections();
 
-    public void addConnection(Connectible connection);
+	public void addConnection(Connectible connection);
 }

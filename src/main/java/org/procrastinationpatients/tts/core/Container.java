@@ -9,7 +9,7 @@ import java.util.LinkedList;
 public interface Container {
 	public LinkedList<Vehicle> getVehicles();
 
-	public boolean addVehicle(Vehicle vehicle) ;
+	public boolean addVehicle(Vehicle vehicle);
 
 	public int getLineLength();
 

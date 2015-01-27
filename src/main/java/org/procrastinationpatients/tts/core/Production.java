@@ -12,7 +12,7 @@ public class Production {
 	 * 单例对象实例
 	 */
 	private static Production instance;
-	private Margin[] margins ;
+	private Margin[] margins;
 	private LinkedList<Vehicle> allVehicles = new LinkedList();
 
 	/**
@@ -30,12 +30,13 @@ public class Production {
 	}
 
 	//不断执行
-	public void run(){
+	public void run() {
 
-		while(true){
-			produceVehicles() ;
-			for(Vehicle vehicle : allVehicles){
-				vehicle.move_Next_Location() ;
+		while (true) {
+			produceVehicles();
+			for (Vehicle vehicle : allVehicles) {
+				vehicle.Speed_From_VDR(5);
+				vehicle.move_Next_Location();
 			}
 			try {
 				Thread.sleep(500);
@@ -46,10 +47,10 @@ public class Production {
 	}
 
 	//产生Vehicle
-	public void produceVehicles(){
+	public void produceVehicles() {
 
-		int start =  new Random().nextInt(margins.length);
-		if(margins[start] != null){
+		int start = new Random().nextInt(margins.length);
+		if (margins[start] != null) {
 			Vehicle vehicle = new Vehicle(margins[start]);
 			vehicle.setMAX_Speed(5);
 			margins[start].addVehicle(vehicle);
@@ -57,7 +58,11 @@ public class Production {
 		}
 	}
 
-	public void setMargins(Margin[] margins){ this.margins = margins; }
+	public void setMargins(Margin[] margins) {
+		this.margins = margins;
+	}
 
-	public LinkedList<Vehicle> getAllVehicles(){ return this.allVehicles ;}
+	public LinkedList<Vehicle> getAllVehicles() {
+		return this.allVehicles;
+	}
 }
