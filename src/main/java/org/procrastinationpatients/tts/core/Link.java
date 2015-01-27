@@ -21,15 +21,16 @@ public class Link implements Container, VisualEntity, Connectible {
 		EMPTY = new Link(-1);
 	}
 
+	private final Integer id;
 	private Vehicle[][] line;
 	private LinkedList<Vehicle> vehicles;
 	private int line_Length;
-
 	private Connectible[] connections;
-	private final Integer id;
+	private Lane[] lanes;
 
 	public Link(Integer linkID) {
 		this.id = linkID;
+		this.lanes = new Lane[6];
 	}
 
 	public Link(Integer linkID, Connectible[] connections) {

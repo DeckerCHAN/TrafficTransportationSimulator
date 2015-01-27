@@ -15,22 +15,18 @@ import java.util.LinkedList;
  */
 public class Cross implements Container, Dot, VisualEntity, Connectible {
 
-	private LinkedList<Vehicle> vehicles;
-
-	private Point2D location;
 	private final Integer id;
-
+	private LinkedList<Vehicle> vehicles;
+	private Point2D location;
 	private Connectible[] connections;
+
+	private Lane[][] lanes;
 
 	public Cross(Integer crossID, Point2D location) {
 		this.connections = new Connectible[4];
 		this.id = crossID;
 		this.location = location;
-	}
-
-	public Cross(Integer crossID, Point2D location, Collection<Connectible> connections) {
-		this(crossID, location);
-		this.vehicles = new LinkedList<>();
+		this.lanes = new Lane[9][4];
 	}
 
 	@Override

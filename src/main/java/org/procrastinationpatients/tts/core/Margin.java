@@ -21,6 +21,8 @@ public class Margin implements Container, Dot, VisualEntity, Connectible {
 
 	private int line_Length;
 
+	private Lane [] lanes;
+
 	//每条线路用一个数组表示
 	private Vehicle[][] line;
 	//所有Margin内的车的集合
@@ -30,8 +32,10 @@ public class Margin implements Container, Dot, VisualEntity, Connectible {
 	public Margin(Integer marginID, Point2D position) {
 		this.position = position;
 		this.id = marginID;
+		this.lanes=new Lane[6];
 	}
 
+	//TODO:我淦！length是什么鬼
 	public Margin(Integer marginID, Point2D position, int length) {
 		this.position = position;
 		this.id = marginID;
