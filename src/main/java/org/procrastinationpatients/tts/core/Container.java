@@ -11,6 +11,8 @@ public interface Container {
 
 	public boolean addVehicle(Vehicle vehicle);
 
+	public void removeVehicle(Vehicle vehicle) ;
+
 	public int getLineLength();
 
 	public void setLineLength(int length);
@@ -21,7 +23,8 @@ public interface Container {
 
 	public boolean canChangeLine(Vehicle vehicle);
 
-	public Container changeToNextContainer(Vehicle vehicle);
+	public void changeToNextContainer(Vehicle vehicle);
 
 	public Vehicle getNextVehicle(Vehicle vehicle);
+
 }

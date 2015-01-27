@@ -26,6 +26,7 @@ public class Margin implements Container, Dot, VisualEntity, Connectible {
 	//所有Margin内的车的集合
 	private LinkedList<Vehicle> vehicles;
 
+	//这个构造方法留给你测试用，早晚都要删的
 	public Margin(Integer marginID, Point2D position) {
 		this.position = position;
 		this.id = marginID;
@@ -59,8 +60,30 @@ public class Margin implements Container, Dot, VisualEntity, Connectible {
 	}
 
 	@Override
+	public void removeVehicle(Vehicle vehicle) {
+		int v_line = vehicle.getCur_line();
+		int v_location = vehicle.getCur_Loc();
+
+		if(line[v_line][v_location] != null){
+			this.vehicles.remove(vehicle) ;
+			this.line[v_line][v_location] = null ;
+		}
+	}
+
+	@Override
 	public int getSafetyDistanceByID(int whichLine, int index) {
-		return 0;
+		if (index < 0 || index >= this.line_Length)
+			return -1;
+		if (line[whichLine][index] == null)
+			return 0;
+
+		for (int i = index + 1; i < this.line_Length; i++) {
+			if (line[whichLine][index] != null) {
+				return i - index ;
+			}
+		}
+
+		return line_Length - index ;
 	}
 
 
@@ -140,9 +163,15 @@ public class Margin implements Container, Dot, VisualEntity, Connectible {
 	}
 
 	@Override
-	public Container changeToNextContainer(Vehicle vehicle) {
+	public void changeToNextContainer(Vehicle vehicle) {
+		this.removeVehicle(vehicle);
+		this.changeProperty(vehicle);
+		this.connectionLink.addVehicle(vehicle) ;
+	}
 
-		return null;
+	public void changeProperty(Vehicle vehicle){
+//		vehicle.setCur_Line();
+//		vehicle.setCur_Loc();
 	}
 
 	@Override

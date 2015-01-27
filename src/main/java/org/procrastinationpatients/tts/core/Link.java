@@ -15,7 +15,6 @@ import java.util.List;
 
 public class Link implements Container, VisualEntity, Connectible {
 
-
 	public static final Link EMPTY;
 
 	static {
@@ -23,10 +22,10 @@ public class Link implements Container, VisualEntity, Connectible {
 	}
 
 	private Vehicle[][] line;
+	private LinkedList<Vehicle> vehicles;
 	private int line_Length;
 
 	private Connectible[] connections;
-
 	private final Integer id;
 
 	public Link(Integer linkID) {
@@ -53,7 +52,21 @@ public class Link implements Container, VisualEntity, Connectible {
 
 	@Override
 	public boolean addVehicle(Vehicle vehicle) {
+		int cur_line = vehicle.getCur_line();
+		for (int j = 0; j < line_Length; j++) {
+			if (line[cur_line][j] == null) {
+				vehicle.setCur_Loc(j);
+				this.vehicles.add(vehicle);
+				this.line[cur_line][j] = vehicle;
+				return true;
+			}
+		}
 		return false;
+	}
+
+	@Override
+	public void removeVehicle(Vehicle vehicle) {
+		this.vehicles.remove(vehicle) ;
 	}
 
 
@@ -65,16 +78,13 @@ public class Link implements Container, VisualEntity, Connectible {
 		if (line[whichLine][index] == null)
 			return 0;
 
-		int distance = index;
-		for (index++; index < this.line_Length; index++) {
+		for (int i = index + 1; i < this.line_Length; i++) {
 			if (line[whichLine][index] != null) {
-				break;
+				return i - index ;
 			}
 		}
-		if (index == this.line_Length) {
-			index--;
-		}
-		return index - distance;
+
+		return line_Length - index ;
 	}
 
 	@Override
@@ -96,13 +106,7 @@ public class Link implements Container, VisualEntity, Connectible {
 	}
 
 	@Override
-	public void setLineLength(int length) {
-
-	}
-
-	public boolean changeToNextContainer() {
-		return false;
-	}
+	public void setLineLength(int length) { this.line_Length = length ; }
 
 	@Override
 	public int changeLine(Vehicle vehicle) {
@@ -136,8 +140,9 @@ public class Link implements Container, VisualEntity, Connectible {
 	}
 
 	@Override
-	public Container changeToNextContainer(Vehicle vehicle) {
-		return null;
+	public void changeToNextContainer(Vehicle vehicle) {
+		this.removeVehicle(vehicle);
+		((Cross)this.connections[0]).addVehicle(vehicle) ;
 	}
 
 	@Override

@@ -34,14 +34,22 @@ public class Vehicle {
 
 	//终于开始能动了啦
 	public int move_Next_Location() {
-		Vehicle nextVehicle = pare_cont.getNextVehicle(this);
-		if (this.Cur_Spd + this.Cur_Loc > pare_cont.getLineLength())
+
+		if (this.Cur_Spd + this.Cur_Loc > pare_cont.getLineLength()) {
 			pare_cont.changeToNextContainer(this);
-		if (this.Cur_Spd > nextVehicle.getCur_Spd())
-			if (pare_cont.canChangeLine(this))
-				pare_cont.changeLine(this);
+			return 1 ;
+		}
+
+		Vehicle nextVehicle = pare_cont.getNextVehicle(this);
+		if(nextVehicle != null)
+			if (this.Cur_Spd > nextVehicle.getCur_Spd())
+				if (pare_cont.canChangeLine(this)) {
+					pare_cont.changeLine(this);
+					return 2 ;
+				}
+
 		this.Cur_Loc = this.Cur_Loc + this.Cur_Spd;
-		return this.Cur_Loc;
+		return 3;
 	}
 
 	public void setCur_Line(int Cur_Line) {

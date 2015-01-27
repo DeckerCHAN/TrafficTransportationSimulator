@@ -45,6 +45,11 @@ public class Cross implements Container, Dot, VisualEntity, Connectible {
 	}
 
 	@Override
+	public void removeVehicle(Vehicle vehicle) {
+		this.vehicles.remove(vehicle) ;
+	}
+
+	@Override
 	public int getLineLength() {
 		return 0;
 	}
@@ -71,8 +76,8 @@ public class Cross implements Container, Dot, VisualEntity, Connectible {
 	}
 
 	@Override
-	public Container changeToNextContainer(Vehicle vehicle) {
-		return null;
+	public void changeToNextContainer(Vehicle vehicle) {
+
 	}
 
 	@Override
