@@ -136,9 +136,8 @@ public class MainWindow extends Application {
                     FileChooser fileChooser = new FileChooser();
                     fileChooser.setTitle("Open XML File");
                     File xml = fileChooser.showOpenDialog(mainStage);
-
+                    if(xml==null){return;}
                     //通过文件初始化Containers
-
                     ContainersLoader containersLoader = new ContainersLoader();
                     containersLoader.LoadFromFile(xml);
                     Engine.getInstance().setCrosses(containersLoader.getCrosses());
