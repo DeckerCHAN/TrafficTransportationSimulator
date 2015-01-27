@@ -47,7 +47,7 @@ public class Link implements Container, VisualEntity, Connectible {
 
 	@Override
 	public LinkedList<Vehicle> getVehicles() {
-		return null;
+		return this.vehicles;
 	}
 
 	@Override
@@ -66,7 +66,13 @@ public class Link implements Container, VisualEntity, Connectible {
 
 	@Override
 	public void removeVehicle(Vehicle vehicle) {
-		this.vehicles.remove(vehicle) ;
+		int v_line = vehicle.getCur_line();
+		int v_location = vehicle.getCur_Loc();
+
+		if(line[v_line][v_location] != null){
+			this.vehicles.remove(vehicle) ;
+			this.line[v_line][v_location] = null ;
+		}
 	}
 
 
