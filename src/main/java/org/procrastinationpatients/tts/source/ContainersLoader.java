@@ -100,13 +100,13 @@ public class ContainersLoader {
             if (connectionATypeString.toLowerCase().equals("m")) {
                 connectibleA = this.marginCache.get(connectionAID);
             } else {
-                connectibleA = this.marginCache.get(connectionAID);
+                connectibleA = this.crossCache.get(connectionAID);
             }
 
             if (connectionBTypeString.toLowerCase().equals("m")) {
                 connectibleB = this.marginCache.get(connectionBID);
             } else {
-                connectibleB = this.marginCache.get(connectionBID);
+                connectibleB = this.crossCache.get(connectionBID);
             }
 
             Link link = new Link(linkID, new Connectible[]{connectibleA, connectibleB});
