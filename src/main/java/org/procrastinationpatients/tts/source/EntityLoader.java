@@ -3,6 +3,7 @@ package org.procrastinationpatients.tts.source;
 import javafx.geometry.Point2D;
 import org.apache.commons.io.FileUtils;
 import org.procrastinationpatients.tts.entities.*;
+import org.procrastinationpatients.tts.utils.LaneUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -182,6 +183,77 @@ public class EntityLoader {
                 }
                 this.linkCache.put(linkID, street);
             }
+        }
+
+        for (Cross cross : this.crossCache.values()) {
+//            for (int i = 0; i < 5; i++) {
+//                if (i < 3) {
+//                    LaneUtils.connectLane(cross.getNorthLanes()[i], cross.getNorthRoad().getLanes()[5 - i]);
+//                    LaneUtils.connectLane(cross.getEastLanes()[i], cross.getEastStreet().getLanes()[5 - i]);
+//
+//                    LaneUtils.connectLane(cross.getWestLanes()[i], cross.getWestStreet().getLanes()[i]);
+//                    LaneUtils.connectLane(cross.getSouthLanes()[i], cross.getSouthRoad().getLanes()[i]);
+//
+//                } else {
+//                    LaneUtils.connectLane(cross.getNorthRoad().getLanes()[5 - i], cross.getNorthLanes()[i]);
+//                    LaneUtils.connectLane(cross.getEastStreet().getLanes()[5 - i], cross.getEastLanes()[i]);
+//
+//                    LaneUtils.connectLane(cross.getWestStreet().getLanes()[i], cross.getWestLanes()[i]);
+//                    LaneUtils.connectLane(cross.getSouthRoad().getLanes()[i], cross.getSouthLanes()[i]);
+//                }
+//            }
+            //North departure
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[0],cross.getNorthLanes()[0],cross.getWestStreet().getLanes()[5]);
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[0],cross.getNorthLanes()[1],cross.getWestStreet().getLanes()[4]);
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[0],cross.getNorthLanes()[2],cross.getWestStreet().getLanes()[3]);
+
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[1],cross.getNorthLanes()[3],cross.getSouthRoad().getLanes()[1]);
+
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[2],cross.getNorthLanes()[4],cross.getEastStreet().getLanes()[0]);
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[2],cross.getNorthLanes()[5],cross.getEastStreet().getLanes()[1]);
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[2],cross.getNorthLanes()[6],cross.getEastStreet().getLanes()[2]);
+
+
+
+
+
+            //East departure
+            LaneUtils.connectLane(cross.getEastStreet().getLanes()[5],cross.getEastLanes()[0],cross.getNorthRoad().getLanes()[5]);
+            LaneUtils.connectLane(cross.getEastStreet().getLanes()[5],cross.getEastLanes()[1],cross.getNorthRoad().getLanes()[4]);
+            LaneUtils.connectLane(cross.getEastStreet().getLanes()[5],cross.getEastLanes()[2],cross.getNorthRoad().getLanes()[3]);
+
+            LaneUtils.connectLane(cross.getEastStreet().getLanes()[4],cross.getEastLanes()[3],cross.getNorthRoad().getLanes()[4]);
+
+            LaneUtils.connectLane(cross.getEastStreet().getLanes()[3],cross.getEastLanes()[4],cross.getNorthRoad().getLanes()[0]);
+            LaneUtils.connectLane(cross.getEastStreet().getLanes()[3],cross.getEastLanes()[5],cross.getNorthRoad().getLanes()[1]);
+            LaneUtils.connectLane(cross.getEastStreet().getLanes()[3],cross.getEastLanes()[6],cross.getNorthRoad().getLanes()[2]);
+
+
+
+            //South departure
+            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[5],cross.getSouthLanes()[0],cross.getNorthRoad().getLanes()[0]);
+            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[5],cross.getSouthLanes()[1],cross.getNorthRoad().getLanes()[1]);
+            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[5],cross.getSouthLanes()[2],cross.getNorthRoad().getLanes()[2]);
+
+            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[4],cross.getSouthLanes()[3],cross.getNorthRoad().getLanes()[4]);
+
+            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[3],cross.getSouthLanes()[4],cross.getNorthRoad().getLanes()[5]);
+            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[3],cross.getSouthLanes()[5],cross.getNorthRoad().getLanes()[4]);
+            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[3],cross.getSouthLanes()[6],cross.getNorthRoad().getLanes()[3]);
+
+
+
+            //West departure
+            LaneUtils.connectLane(cross.getWestStreet().getLanes()[0],cross.getWestLanes()[0],cross.getNorthRoad().getLanes()[0]);
+            LaneUtils.connectLane(cross.getWestStreet().getLanes()[0],cross.getWestLanes()[1],cross.getNorthRoad().getLanes()[1]);
+            LaneUtils.connectLane(cross.getWestStreet().getLanes()[0],cross.getWestLanes()[2],cross.getNorthRoad().getLanes()[2]);
+
+            LaneUtils.connectLane(cross.getWestStreet().getLanes()[1],cross.getWestLanes()[3],cross.getNorthRoad().getLanes()[1]);
+
+            LaneUtils.connectLane(cross.getWestStreet().getLanes()[2],cross.getWestLanes()[4],cross.getNorthRoad().getLanes()[5]);
+            LaneUtils.connectLane(cross.getWestStreet().getLanes()[2],cross.getWestLanes()[5],cross.getNorthRoad().getLanes()[4]);
+            LaneUtils.connectLane(cross.getWestStreet().getLanes()[2],cross.getWestLanes()[6],cross.getNorthRoad().getLanes()[3]);
+
         }
 
     }
