@@ -167,4 +167,14 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
 		//TODO
 		return 0;
 	}
+
+	@Override
+	public boolean addVehicle(Vehicle vehicle) {
+		return false;
+	}
+
+	@Override
+	public void removeVehicle(Vehicle vehicle) {
+
+	}
 }

@@ -1,5 +1,7 @@
 package org.procrastinationpatients.tts.entities;
 
+import org.procrastinationpatients.tts.utils.RandomUtils;
+
 /**
  * Created by decker on 15-1-28.
  */
@@ -57,12 +59,14 @@ public class Vehicle {
 	}
 
 	public void updateGoalLine(){
-		//TODO
+		this.setGoal_line(RandomUtils.getNewLine(this.Cur_line)); ;
 	}
 
 	public boolean isOnRoad(){
-		//TODO
-		return false ;
+		if(this.Cur_line == this.goal_line)
+			return true ;
+		else
+			return false ;
 	}
 
 

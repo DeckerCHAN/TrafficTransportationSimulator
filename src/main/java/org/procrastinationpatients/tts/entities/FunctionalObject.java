@@ -17,4 +17,9 @@ public interface FunctionalObject {
 	public abstract int changeLine(Vehicle vehicle);
 
 	public abstract int getLane_Length();
+
+	public boolean addVehicle(Vehicle vehicle);
+
+	public void removeVehicle(Vehicle vehicle);
+
 }

@@ -1,5 +1,7 @@
 package org.procrastinationpatients.tts.entities;
 
+import java.util.LinkedList;
+
 /**
  * Created by decker on 15-1-28.
  */
@@ -9,10 +11,12 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
     private Dot b;
 	private int lane_Length;
     private Lane [] lanes;
+	private LinkedList<Vehicle> vehicles;
 
     public Link(Integer id) {
         super(id);
         this.lanes=new Lane[6];
+		vehicles = new LinkedList();
         for (Lane l:lanes)
         {
             l=new Lane();
@@ -142,7 +146,7 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 
 	@Override
 	public boolean changeToNextContainer(Vehicle vehicle) {
-		return false;
+		return false ;
 	}
 
 	@Override
@@ -154,6 +158,29 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 			lanes[vehicle.getCur_line()].getVehicles()[v_location] = null ;
 			lanes[v_line].getVehicles()[v_location] = vehicle ;
 		}
+	}
+
+	public void removeVehicle(Vehicle vehicle) {
+		int v_line = vehicle.getCur_line();
+		int v_location = vehicle.getCur_Loc();
+
+		if(lanes[v_line].getVehicles()[v_location] != null){
+			this.vehicles.remove(vehicle) ;
+			this.lanes[v_line].getVehicles()[v_location] = null ;
+		}
+	}
+
+	public boolean addVehicle(Vehicle vehicle) {
+		int cur_line = vehicle.getCur_line();
+		for (int j = 0; j < lane_Length; j++) {
+			if (lanes[cur_line].getVehicles()[j] == null) {
+				vehicle.setCur_Loc(j);
+				this.vehicles.add(vehicle);
+				this.lanes[cur_line].getVehicles()[j] = vehicle;
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean hasVehicle(int line , int loc){
