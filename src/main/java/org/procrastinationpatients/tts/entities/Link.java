@@ -7,6 +7,7 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 
     private Dot a;
     private Dot b;
+	private int lane_Length;
     private Lane [] lanes;
 
     public Link(Integer id) {
@@ -24,6 +25,10 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 
     public void setLanes(Lane[] lanes) {
         this.lanes = lanes;
+		if(lanes.length > 0)
+			this.lane_Length = lanes[0].getLength() ;
+		else
+			this.lane_Length = 0 ;
     }
 
     protected Dot getA() {
@@ -55,23 +60,84 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
     }
 
 	@Override
-	public int getSafetyDistanceByID(int Cur_line, int Cur_Loc) {
-		return 0;
+	public int getSafetyDistanceByID(int whichLine, int index) {
+		if (index < 0 || index >= this.lanes[0].getLength())
+			return -1;
+		if (lanes[whichLine].getVehicles()[index] == null)
+			return 0;
+
+		for (int i = index + 1; i < this.lane_Length; i++) {
+			if (lanes[whichLine].getVehicles()[index] != null) {
+				return i - index ;
+			}
+		}
+
+		return lane_Length - index ;
 	}
 
 	@Override
 	public Vehicle getNextVehicle(Vehicle vehicle) {
+		int v_line = vehicle.getCur_line();
+		int v_location = vehicle.getCur_Loc();
+
+		for (int i = v_location + 1; i < this.lane_Length; i++) {
+			if (lanes[v_line].getVehicles()[i] != null)
+				return lanes[v_line].getVehicles()[i];
+		}
 		return null;
 	}
 
 	@Override
 	public boolean canChangeLine(Vehicle vehicle) {
-		return false;
+		int v_line = vehicle.getCur_line();
+		int v_location = vehicle.getCur_Loc();
+		int v_speed = vehicle.getCur_Spd();
+		boolean flag = true;
+
+		v_line = change_Line_NUMBER(v_line);
+		for (int i = v_location + 1; i <= v_location + v_speed; i++) {
+			if (lanes[v_line].getVehicles()[i] != null) {
+				flag = false;
+				break;
+			}
+		}
+		return flag;
+	}
+
+	public int change_Line_NUMBER(int v_line) {
+		switch (v_line) {
+			case 1:
+				v_line = 2;
+				break;
+			case 2:
+				v_line = 3;
+				break;
+			case 3:
+				v_line = 3;
+				break;
+			case 4:
+				v_line = 4;
+				break;
+			case 5:
+				v_line = 4;
+				break;
+			case 6:
+				v_line = 5;
+		}
+		return v_line;
 	}
 
 	@Override
-	public boolean changeLine(Vehicle vehicle) {
-		return false;
+	public int changeLine(Vehicle vehicle) {
+		int v_line = vehicle.getCur_line();
+		int v_location = vehicle.getCur_Loc();
+		int v_speed = vehicle.getCur_Spd();
+
+		v_line = change_Line_NUMBER(v_line);
+		vehicle.setCur_Loc(v_location + v_speed);
+		vehicle.setCur_line(v_line);
+
+		return v_line;
 	}
 
 	@Override
@@ -80,12 +146,25 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 	}
 
 	@Override
-	public boolean toGoalLine(Vehicle vehicle) {
-		return false;
+	public void toGoalLine(Vehicle vehicle) {
+		int v_line = vehicle.getGoal_line();
+		int v_location = vehicle.getCur_Loc();
+
+		if(!hasVehicle(v_line,v_location)){
+			lanes[vehicle.getCur_line()].getVehicles()[v_location] = null ;
+			lanes[v_line].getVehicles()[v_location] = vehicle ;
+		}
+	}
+
+	public boolean hasVehicle(int line , int loc){
+		if(this.lanes[line].getVehicles()[loc] != null)
+			return true ;
+		else
+			return false ;
 	}
 
 	@Override
-	public int getLineLength() {
-		return 0;
+	public int getLane_Length() {
+		return this.lane_Length;
 	}
 }

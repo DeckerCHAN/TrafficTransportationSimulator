@@ -146,9 +146,9 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
 	}
 
 	@Override
-	public boolean changeLine(Vehicle vehicle) {
+	public int changeLine(Vehicle vehicle) {
 		//TODO
-		return false;
+		return 0;
 	}
 
 	@Override
@@ -158,13 +158,12 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
 	}
 
 	@Override
-	public boolean toGoalLine(Vehicle vehicle) {
+	public void toGoalLine(Vehicle vehicle) {
 		//TODO
-		return false;
 	}
 
 	@Override
-	public int getLineLength() {
+	public int getLane_Length() {
 		//TODO
 		return 0;
 	}

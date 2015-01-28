@@ -81,4 +81,8 @@ public class Vehicle {
 	public int getCur_line() { return Cur_line; }
 
 	public void setCur_line(int cur_line) { Cur_line = cur_line; }
+
+	public int getGoal_line() { return goal_line; }
+
+	public void setGoal_line(int goal_line) { this.goal_line = goal_line; }
 }
