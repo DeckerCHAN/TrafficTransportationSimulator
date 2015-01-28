@@ -37,7 +37,7 @@ public class Vehicle {
 		if(!isOnRoad())
 			on_Link.toGoalLine(this);
 
-		if (this.Cur_Spd + this.Cur_Loc > on_Link.getLineLength()) {
+		if (this.Cur_Spd + this.Cur_Loc > on_Link.getLane_Length()) {
 			on_Link.changeToNextContainer(this);
 			this.updateGoalLine();
 			return 1 ;
