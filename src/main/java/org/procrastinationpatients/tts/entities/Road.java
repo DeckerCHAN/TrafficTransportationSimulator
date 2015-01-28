@@ -38,4 +38,5 @@ public class Road extends Link {
     public void setSouthDot(Dot southDot) {
         this.setB(southDot);
     }
+
 }

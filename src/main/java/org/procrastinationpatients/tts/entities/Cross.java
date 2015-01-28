@@ -6,7 +6,7 @@ import javafx.scene.canvas.GraphicsContext;
 /**
  * Created by decker on 15-1-28.
  */
-public class Cross extends IdentifiableObject implements Visible, Dot {
+public class Cross extends IdentifiableObject implements Visible, Dot, FunctionalObject {
 
     private  Point2D position;
     private Lane[] northLanes;
@@ -127,4 +127,45 @@ public class Cross extends IdentifiableObject implements Visible, Dot {
         return new Link[]{this.getNorthRoad(),this.getEastStreet(),this.getSouthRoad(),this.getWestStreet()};
     }
 
+	@Override
+	public int getSafetyDistanceByID(int Cur_line, int Cur_Loc) {
+		//TODO
+		return 0;
+	}
+
+	@Override
+	public Vehicle getNextVehicle(Vehicle vehicle) {
+		//TODO
+		return null;
+	}
+
+	@Override
+	public boolean canChangeLine(Vehicle vehicle) {
+		//TODO
+		return false;
+	}
+
+	@Override
+	public boolean changeLine(Vehicle vehicle) {
+		//TODO
+		return false;
+	}
+
+	@Override
+	public boolean changeToNextContainer(Vehicle vehicle) {
+		//TODO
+		return false;
+	}
+
+	@Override
+	public boolean toGoalLine(Vehicle vehicle) {
+		//TODO
+		return false;
+	}
+
+	@Override
+	public int getLineLength() {
+		//TODO
+		return 0;
+	}
 }

@@ -10,7 +10,6 @@ public abstract class IdentifiableObject extends Object {
         this.id = id;
     }
 
-    public Integer getId() {
-        return id;
-    }
+    public Integer getId() { return id; }
+
 }

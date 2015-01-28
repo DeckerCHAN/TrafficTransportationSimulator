@@ -49,4 +49,5 @@ public class Lane {
     public void setLength(Integer length) {
         this.vehicles=new Vehicle[length];
     }
+
 }

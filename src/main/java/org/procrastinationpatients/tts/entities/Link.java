@@ -3,7 +3,7 @@ package org.procrastinationpatients.tts.entities;
 /**
  * Created by decker on 15-1-28.
  */
-public abstract class Link extends IdentifiableObject implements Visible {
+public abstract class Link extends IdentifiableObject implements Visible, FunctionalObject {
 
     private Dot a;
     private Dot b;
@@ -53,4 +53,39 @@ public abstract class Link extends IdentifiableObject implements Visible {
 //            l.setLength(-1);
 //        }
     }
+
+	@Override
+	public int getSafetyDistanceByID(int Cur_line, int Cur_Loc) {
+		return 0;
+	}
+
+	@Override
+	public Vehicle getNextVehicle(Vehicle vehicle) {
+		return null;
+	}
+
+	@Override
+	public boolean canChangeLine(Vehicle vehicle) {
+		return false;
+	}
+
+	@Override
+	public boolean changeLine(Vehicle vehicle) {
+		return false;
+	}
+
+	@Override
+	public boolean changeToNextContainer(Vehicle vehicle) {
+		return false;
+	}
+
+	@Override
+	public boolean toGoalLine(Vehicle vehicle) {
+		return false;
+	}
+
+	@Override
+	public int getLineLength() {
+		return 0;
+	}
 }
