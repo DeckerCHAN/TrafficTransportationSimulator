@@ -18,10 +18,9 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
     public Link(Integer id) {
         super(id);
         this.lanes=new Lane[6];
-        for (Lane l:lanes)
-        {
-            l=new Lane();
-        }
+		for (int i = 0; i < 6; i++) {
+			lanes[i] = new Lane(this);
+		}
     }
 
     public Lane[] getLanes() {
@@ -36,20 +35,20 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 			this.lane_Length = 0 ;
     }
 
-    protected Dot getA() {
+    public Dot getA() {
         return a;
     }
 
-    protected void setA(Dot a) {
+	public void setA(Dot a) {
         this.a = a;
         refreshLaneLength();
     }
 
-    protected Dot getB() {
+	public Dot getB() {
         return b;
     }
 
-    protected void setB(Dot b) {
+	public void setB(Dot b) {
         this.b = b;
         refreshLaneLength();
     }
@@ -57,7 +56,7 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
     private void refreshLaneLength()
     {
         //TODO：计算长度
-        throw new UnsupportedOperationException("还未实现");
+//        throw new UnsupportedOperationException("还未实现");
 //        for (Lane l :this.lanes)
 //        {
 //            l.setLength(-1);

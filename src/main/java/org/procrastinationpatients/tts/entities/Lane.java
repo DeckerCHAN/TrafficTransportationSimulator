@@ -13,13 +13,17 @@ public class Lane {
     private List<Lane> inputs;
     private List<Lane> outputs;
     private Vehicle [] vehicles;
+
 	private LinkedList<Vehicle> allVehicles ;
+    private FunctionalObject parent;
 
 
-    public Lane() {
+
+    public Lane(FunctionalObject parent) {
         this.inputs = new ArrayList<>();
         this.outputs = new ArrayList<>();
-		allVehicles = new LinkedList<>();
+		this.allVehicles = new LinkedList<>();
+		this.parent = parent;
     }
 
     public List<Lane> getInputs() {
