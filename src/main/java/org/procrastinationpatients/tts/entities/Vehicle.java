@@ -37,10 +37,10 @@ public class Vehicle {
 	public int move_Next_Location() {
 
 		if(!isOnRoad())
-			on_Link.toGoalLine(this);
+			on_Link.getParent().toGoalLine(this);
 
 		if (this.Cur_Spd + this.Cur_Loc > on_Link.getLength()) {
-			on_Link.changeToNextContainer(this);
+			on_Link.getParent().changeToNextContainer(this);
 			this.updateGoalLine();
 			return 1 ;
 		}
@@ -48,8 +48,8 @@ public class Vehicle {
 		Vehicle nextVehicle = on_Link.getNextVehicle(this);
 		if(nextVehicle != null)
 			if (this.Cur_Spd > nextVehicle.getCur_Spd())
-				if ( this.Cur_line!=3 && this.Cur_line!=4 && on_Link.canChangeLine(this)) {
-					on_Link.changeLine(this);
+				if ( this.Cur_line!=3 && this.Cur_line!=4 && on_Link.getParent().canChangeLine(this)) {
+					on_Link.getParent().changeLine(this);
 					return 2 ;
 				}
 

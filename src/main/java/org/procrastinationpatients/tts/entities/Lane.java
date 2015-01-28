@@ -46,6 +46,10 @@ public class Lane {
         return vehicles;
     }
 
+	public FunctionalObject getParent(){
+		return this.parent ;
+	}
+
     public void setVehicles(Vehicle[] vehicles) {
         this.vehicles = vehicles;
     }
