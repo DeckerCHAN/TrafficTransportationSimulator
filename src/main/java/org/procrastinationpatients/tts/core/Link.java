@@ -33,7 +33,7 @@ public class Link implements Container, VisualEntity, Connectible {
 		this.id = linkID;
 		//DONE:树组实例化之后再赋值嘛
 		this.lanes = new Lane[6];
-		this.setType(LinkType.UNKNOW);
+		this.setType(LinkType.UNKNOWN);
 	}
 
 	public Link(Integer linkID, Connectible[] connections) {

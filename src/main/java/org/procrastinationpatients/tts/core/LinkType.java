@@ -5,5 +5,16 @@ package org.procrastinationpatients.tts.core;
  * Created by decker on 15-1-28.
  */
 public enum LinkType {
-    STREET,ROAD,UNKNOW
+    /**
+     * 南北走向
+     */
+    STREET,
+    /**
+     * 东西走向
+     */
+    ROAD,
+    /**
+     * 未知
+     */
+    UNKNOWN
 }
