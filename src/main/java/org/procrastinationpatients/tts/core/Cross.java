@@ -58,7 +58,21 @@ public class Cross implements Container, Dot, VisualEntity, Connectible {
 
 	@Override
 	public void drawStaticGraphic(GraphicsContext gc) {
-		DrawUtils.drawBallAtCoordinate(gc, this.getPosition(), 30, Color.RED);
+		DrawUtils.drawBallAtCoordinate(gc, this.getPosition(), 6, Color.RED);
+		Point2D a = new Point2D(this.getPosition().getX() - 30D, this.getPosition().getY() - 60D);
+		Point2D b = new Point2D(this.getPosition().getX() + 30D, this.getPosition().getY() - 60D);
+
+		Point2D c = new Point2D(this.getPosition().getX() + 60D, this.getPosition().getY() - 30D);
+		Point2D d = new Point2D(this.getPosition().getX() + 60D, this.getPosition().getY() + 30D);
+
+		Point2D e = new Point2D(this.getPosition().getX() + 30D, this.getPosition().getY() + 60D);
+		Point2D f = new Point2D(this.getPosition().getX() - 30D, this.getPosition().getY() + 60D);
+
+		Point2D g = new Point2D(this.getPosition().getX() - 60D, this.getPosition().getY() + 30D);
+		Point2D h = new Point2D(this.getPosition().getX() - 60D, this.getPosition().getY() - 30D);
+
+		DrawUtils.drawPolygon(gc, Color.AQUA, 3, a, b, c, d, e, f, g, h);
+
 	}
 
 	@Override

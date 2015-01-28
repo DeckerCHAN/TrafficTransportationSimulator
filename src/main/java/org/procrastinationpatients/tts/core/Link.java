@@ -3,7 +3,6 @@ package org.procrastinationpatients.tts.core;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import org.procrastinationpatients.tts.utils.DrawUtils;
 
 import java.util.Arrays;
@@ -102,35 +101,68 @@ public class Link implements Container, VisualEntity, Connectible {
 		Point2D positionB = dotB.getPosition();
 
 
-		DrawUtils.drawLine(gc, dotA.getPosition(), dotB.getPosition(), Color.BLACK, 3);
+		//DrawUtils.drawLine(gc, dotA.getPosition(), dotB.getPosition(), Color.BLACK, 1);
 		if (this.type == LinkType.STREET) {//若南北走向
+			Point2D[] a = new Point2D[7];
+			Point2D[] b = new Point2D[7];
 
-			Line portLineA = new Line(positionA.getX() - 30D, positionA.getY() + 60D, positionA.getX() + 30D, positionA.getY() + 60D);
-			Line portLineB = new Line(positionB.getX() - 30D, positionB.getY() - 60D, positionB.getX() + 30D, positionB.getY() - 60D);
-			Line portCenterLink = new Line(positionA.getX(), positionA.getY() + 60D, positionB.getX(), positionB.getY() - 60D);
-			Line portCenterLinkP = new Line(positionA.getX() + 10D, positionA.getY() + 60D, positionB.getX() + 10D, positionB.getY() - 60D);
-			Line portCenterLinkPP = new Line(positionA.getX() + 20D, positionA.getY() + 60D, positionB.getX() + 20D, positionB.getY() - 60D);
-			Line portCenterLinkPPP = new Line(positionA.getX() + 30D, positionA.getY() + 60D, positionB.getX() + 30D, positionB.getY() - 60D);
-			Line portCenterLinkM = new Line(positionA.getX() - 10D, positionA.getY() + 60D, positionB.getX() - 10D, positionB.getY() - 60D);
-			Line portCenterLinkMM = new Line(positionA.getX() - 20D, positionA.getY() + 60D, positionB.getX() - 20D, positionB.getY() - 60D);
-			Line portCenterLinkMMM = new Line(positionA.getX() - 30D, positionA.getY() + 60D, positionB.getX() - 30D, positionB.getY() - 60D);
+			a[0] = new Point2D(positionA.getX() - 30D, positionA.getY() - 60D);
+			a[1] = new Point2D(positionA.getX() - 20D, positionA.getY() - 60D);
+			a[2] = new Point2D(positionA.getX() - 10D, positionA.getY() - 60D);
+			a[3] = new Point2D(positionA.getX() - 0D, positionA.getY() - 60D);
+			a[4] = new Point2D(positionA.getX() + 10D, positionA.getY() - 60D);
+			a[5] = new Point2D(positionA.getX() + 20D, positionA.getY() - 60D);
+			a[6] = new Point2D(positionA.getX() + 30D, positionA.getY() - 60D);
 
+			b[0] = new Point2D(positionB.getX() - 30D, positionB.getY() + 60D);
+			b[1] = new Point2D(positionB.getX() - 20D, positionB.getY() + 60D);
+			b[2] = new Point2D(positionB.getX() - 10D, positionB.getY() + 60D);
+			b[3] = new Point2D(positionB.getX() - 0D, positionB.getY() + 60D);
+			b[4] = new Point2D(positionB.getX() + 10D, positionB.getY() + 60D);
+			b[5] = new Point2D(positionB.getX() + 20D, positionB.getY() + 60D);
+			b[6] = new Point2D(positionB.getX() + 30D, positionB.getY() + 60D);
 
-			//画出A的port线
-			DrawUtils.drawLine(gc, portLineA, Color.BROWN, 8);
-			//画出B的port线
-			DrawUtils.drawLine(gc, portLineB, Color.BROWN, 8);
-			//画出中线
-			DrawUtils.drawLine(gc, portCenterLink, Color.BROWN, 8);
-			DrawUtils.drawLine(gc, portCenterLinkP, Color.BROWN, 8);
-			DrawUtils.drawLine(gc, portCenterLinkPP, Color.BROWN, 8);
-			DrawUtils.drawLine(gc, portCenterLinkPPP, Color.BROWN, 8);
-			DrawUtils.drawLine(gc, portCenterLinkM, Color.BROWN, 8);
-			DrawUtils.drawLine(gc, portCenterLinkMM, Color.BROWN, 8);
-			DrawUtils.drawLine(gc, portCenterLinkMMM, Color.BROWN, 8);
+			DrawUtils.drawLine(gc, a[0], a[6], Color.BROWN, 5);
+			DrawUtils.drawLine(gc, b[0], b[6], Color.BROWN, 5);
 
+			for (int i = 0; i < 1; i++) {
+				DrawUtils.drawLine(gc, a[i], b[i], Color.BLACK, 2);
+			}
 
+			DrawUtils.drawText(gc,new Point2D(a[0].getX()-40D,a[0].getY()),Color.BLUE,"A"+this.getId());
+			DrawUtils.drawText(gc,new Point2D(b[0].getX()-40D,b[0].getY()),Color.GREEN,"B"+this.getId());
+			return;
 		}
+
+		if (this.type == LinkType.ROAD) {//若东西走向
+			Point2D[] a = new Point2D[7];
+			Point2D[] b = new Point2D[7];
+
+			a[0] = new Point2D(positionA.getX() + 60D, positionA.getY() - 30D);
+			a[1] = new Point2D(positionA.getX() + 60D, positionA.getY() - 10D);
+			a[2] = new Point2D(positionA.getX() + 60D, positionA.getY() - 5D);
+			a[3] = new Point2D(positionA.getX() + 60D, positionA.getY() + 0D);
+			a[4] = new Point2D(positionA.getX() + 60D, positionA.getY() + 5D);
+			a[5] = new Point2D(positionA.getX() + 60D, positionA.getY() + 10D);
+			a[6] = new Point2D(positionA.getX() + 60D, positionA.getY() + 30D);
+
+			b[0] = new Point2D(positionB.getX() - 60D, positionB.getY() - 30D);
+			b[1] = new Point2D(positionB.getX() - 60D, positionB.getY() - 10D);
+			b[2] = new Point2D(positionB.getX() - 60D, positionB.getY() - 5D);
+			b[3] = new Point2D(positionB.getX() - 60D, positionB.getY() + 0D);
+			b[4] = new Point2D(positionB.getX() - 60D, positionB.getY() + 5D);
+			b[5] = new Point2D(positionB.getX() - 60D, positionB.getY() - 10D);
+			b[6] = new Point2D(positionB.getX() - 60D, positionB.getY() - 30D);
+
+			DrawUtils.drawLine(gc, a[0], a[6], Color.BROWN, 5);
+			DrawUtils.drawLine(gc, b[0], b[6], Color.BROWN, 5);
+
+			for (int i = 0; i < 7; i++) {
+				DrawUtils.drawLine(gc, a[i], b[i], Color.BLACK, 2);
+			}
+			return;
+		}
+
 	}
 
 	@Override
