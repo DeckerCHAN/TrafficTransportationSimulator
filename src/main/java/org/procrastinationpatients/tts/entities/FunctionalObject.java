@@ -10,7 +10,7 @@ public interface FunctionalObject {
 
 	public abstract boolean canChangeLine(Vehicle vehicle);
 
-	public abstract boolean changeToNextContainer(Vehicle vehicle);
+	public abstract void changeToNextContainer(Vehicle vehicle);
 
 	public abstract void toGoalLine(Vehicle vehicle);
 

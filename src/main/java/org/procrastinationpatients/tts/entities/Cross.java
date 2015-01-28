@@ -152,9 +152,8 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
 	}
 
 	@Override
-	public boolean changeToNextContainer(Vehicle vehicle) {
+	public void changeToNextContainer(Vehicle vehicle) {
 		//TODO
-		return false;
 	}
 
 	@Override

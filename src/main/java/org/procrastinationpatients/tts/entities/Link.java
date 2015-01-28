@@ -1,6 +1,10 @@
 package org.procrastinationpatients.tts.entities;
 
+import org.procrastinationpatients.tts.utils.RandomUtils;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by decker on 15-1-28.
@@ -145,8 +149,12 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 	}
 
 	@Override
-	public boolean changeToNextContainer(Vehicle vehicle) {
-		return false ;
+	public void changeToNextContainer(Vehicle vehicle) {
+		this.removeVehicle(vehicle);
+		List<Lane> outputLanes = lanes[vehicle.getCur_line()].getOutputs();
+		Lane outputLane = outputLanes.get(RandomUtils.getStartLine()) ;
+		vehicle.setCur_Loc(vehicle.getCur_Loc()+vehicle.getCur_Spd()-this.getLane_Length());
+		outputLane.addVehicle(vehicle);
 	}
 
 	@Override

@@ -50,4 +50,16 @@ public class Lane {
         this.vehicles=new Vehicle[length];
     }
 
+	public void addVehicle(Vehicle vehicle){
+		int Cur_loc = vehicle.getCur_Loc() ;
+		int temp = 0 ;
+		for(int i = 0 ; i >= Cur_loc ; i++){
+			if(vehicles[Cur_loc] == null){
+				temp = i ;
+			}else{
+				break;
+			}
+		}
+		vehicles[temp] = vehicle ;
+	}
 }
