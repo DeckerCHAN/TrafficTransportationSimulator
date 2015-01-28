@@ -13,13 +13,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.procrastinationpatients.tts.core.Container;
 import org.procrastinationpatients.tts.core.Engine;
-import org.procrastinationpatients.tts.core.VisualEntity;
-import org.procrastinationpatients.tts.source.ContainersLoader;
+import org.procrastinationpatients.tts.entities.Dot;
+import org.procrastinationpatients.tts.entities.Visible;
+import org.procrastinationpatients.tts.source.EntityLoader;
 import org.procrastinationpatients.tts.source.StaticConfig;
 import org.procrastinationpatients.tts.utils.NetUtils;
 
@@ -118,7 +117,7 @@ public class MainWindow extends Application {
      */
     private void drawAllStatic() {
         GraphicsContext gc = backgroundCanvas.getGraphicsContext2D();
-        for (VisualEntity visualEntity : Engine.getInstance().getVisualEntities()) {
+        for (Visible visualEntity : Engine.getInstance().getVisualEntities()) {
             visualEntity.drawStaticGraphic(gc);
         }
     }
@@ -127,7 +126,7 @@ public class MainWindow extends Application {
         GraphicsContext gc = dynamicCanvas.getGraphicsContext2D();
         //DONE:将大小修改为最高点和最宽点
         gc.clearRect(0, 0, this.canvasMaxSizePoint.getX(), this.canvasMaxSizePoint.getY());
-        for (VisualEntity visualEntity : Engine.getInstance().getVisualEntities()) {
+        for (Visible visualEntity : Engine.getInstance().getVisualEntities()) {
             visualEntity.drawDynamicGraphic(gc);
         }
     }
@@ -149,18 +148,17 @@ public class MainWindow extends Application {
                     File xml = fileChooser.showOpenDialog(mainStage);
                     if(xml==null){return;}
                     //通过文件初始化Containers
-                    ContainersLoader containersLoader = new ContainersLoader();
+                    EntityLoader containersLoader = new EntityLoader();
                     containersLoader.LoadFromFile(xml);
                     Engine.getInstance().setCrosses(containersLoader.getCrosses());
                     Engine.getInstance().setLinks(containersLoader.getLinks());
                     Engine.getInstance().setMargins(containersLoader.getMargins());
                     //通过UTILS计算出画板的大小
-                    ArrayList<Container> containers = new ArrayList<>();
-                    containers.addAll(Arrays.asList(containersLoader.getCrosses()));
-                    containers.addAll(Arrays.asList(containersLoader.getLinks()));
-                    containers.addAll(Arrays.asList(containersLoader.getMargins()));
+                    ArrayList<Dot> dots = new ArrayList<>();
+                    dots.addAll(Arrays.asList(containersLoader.getCrosses()));
+                    dots.addAll(Arrays.asList(containersLoader.getMargins()));
 
-                    canvasMaxSizePoint = NetUtils.getMaxNetSize(containers.toArray(new Container[]{}));
+                    canvasMaxSizePoint = NetUtils.getMaxNetSize(dots.toArray(new Dot[]{}));
                     //重设画板大小
                     backgroundCanvas.setWidth(canvasMaxSizePoint.getX());
                     backgroundCanvas.setHeight(canvasMaxSizePoint.getY());

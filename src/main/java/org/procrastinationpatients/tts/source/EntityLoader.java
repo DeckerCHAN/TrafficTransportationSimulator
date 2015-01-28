@@ -2,7 +2,7 @@ package org.procrastinationpatients.tts.source;
 
 import javafx.geometry.Point2D;
 import org.apache.commons.io.FileUtils;
-import org.procrastinationpatients.tts.core.*;
+import org.procrastinationpatients.tts.entities.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -19,14 +19,14 @@ import java.util.HashMap;
 /**
  * @Author Decker
  */
-public class ContainersLoader {
+public class EntityLoader {
     private Node root;
     private Document doc;
     private HashMap<Integer, Cross> crossCache;
     private HashMap<Integer, Margin> marginCache;
     private HashMap<Integer, Link> linkCache;
 
-    public ContainersLoader() {
+    public EntityLoader() {
 
 
     }
@@ -92,131 +92,106 @@ public class ContainersLoader {
             Integer connectionBID = Integer.valueOf(((Element) element.getElementsByTagName("Link_End").item(0)).getElementsByTagName("Object_ID").item(0).getTextContent());
 
 
-            //先将两个Connectible取出来(有可能是Margin也有可能是Cross)
-            Connectible connectibleA, connectibleB;
+            //先将两个Dot取出来(有可能是Margin也有可能是Cross)
+            Dot dotA, dotB;
             if (connectionATypeString.toLowerCase().equals("m")) {
-                connectibleA = this.marginCache.get(connectionAID);
+                dotA = this.marginCache.get(connectionAID);
             } else {
-                connectibleA = this.crossCache.get(connectionAID);
+                dotA = this.crossCache.get(connectionAID);
             }
 
             if (connectionBTypeString.toLowerCase().equals("m")) {
-                connectibleB = this.marginCache.get(connectionBID);
+                dotB = this.marginCache.get(connectionBID);
             } else {
-                connectibleB = this.crossCache.get(connectionBID);
+                dotB = this.crossCache.get(connectionBID);
             }
 
-            Link link = new Link(linkID, new Connectible[]{connectibleA, connectibleB});
-
-            connectibleA.addConnection(link);
-            connectibleB.addConnection(link);
-
-			Dot dotA = changeFormatToDot(connectibleA) ;
-			Dot dotB = changeFormatToDot(connectibleB) ;
-
-			double positionA_X = dotA.getPosition().getX() ;
-			double positionA_Y = dotA.getPosition().getY() ;
-			double positionB_X = dotB.getPosition().getX() ;
-			double positionB_Y = dotB.getPosition().getY() ;
-
-			if(positionA_X > positionB_X  && positionA_Y > positionB_Y){
-				Connectible temp = connectibleA ;
-				connectibleA = connectibleB ;
-				connectibleB = temp ;
-			}
-			if(positionA_X > positionB_X && positionA_Y > positionB_Y){
-				if((positionA_Y - positionB_Y) / (positionA_X - positionB_X) < 1) {
-					Connectible temp = connectibleA ;
-					connectibleA = connectibleB ;
-					connectibleB = temp ;
-				}
-			}
-			if(positionA_X < positionB_X && positionA_Y < positionB_Y) {
-				if((positionB_Y - positionA_Y) / (positionB_X - positionA_X) > 1) {
-					Connectible temp = connectibleA ;
-					connectibleA = connectibleB ;
-					connectibleB = temp ;
-				}
-			}
-
-			if( Math.abs(positionB_Y - positionA_Y) / Math.abs(positionB_X - positionA_X) < 1){
-				link.setType(LinkType.ROAD);
-			}else{
-				link.setType(LinkType.STREET);
-			}
+            //计算两个Cross的X差绝对值
+            Double differX = Math.abs(dotA.getPosition().getX() - dotB.getPosition().getX());
+            //计算两个Cross的Y差绝对值
+            Double differY = Math.abs(dotA.getPosition().getY() - dotB.getPosition().getY());
 
 
-//            //计算两个Cross的X差绝对值
-//            Double differX = Math.abs(dotA.getPosition().getX() - dotB.getPosition().getX());
-//            //计算两个Cross的Y差绝对值
-//            Double differY = Math.abs(dotA.getPosition().getY() - dotB.getPosition().getY());
-//
-//            Link link;
-//
-//            if (differX < differY) { //若X的差比Y的差要小，说明这是一条连接南北的道路
-//
-//                if (dotA.getPosition().getY() > dotB.getPosition().getY()) { //A点要更靠北的话
-//                    link = new Link(linkID,dotA, dotB);
-//                    if(dotA instanceof Cross)
-//                    {
-//                        ((Cross)dotA).setConnectionS(link);
-//                    }else
-//                    {
-//                        ()dotA
-//                    }
-//
-//                    crossB.setConnectionN(link);
-//                } else {//否则B点更靠北
-//                    link = new Link(crossB, crossA);
-//                    crossB.setConnectionS(link);
-//                    dotA.setConnectionN(link);
-//                }
-//            } else { //若Y的差比X的差要小，说明这是一条连接东西的道路
-//                if (dotA.getPosition().getX() > crossB.getPosition().getX()) { //A点要更靠西的话
-//                    link = new Link(crossA, crossB);
-//                    dotA.setConnectionW(link);
-//                    crossB.setConnectionE(link);
-//                } else {//否则B点更靠西
-//                    link = new Link(crossB, dotA);
-//                    crossB.setConnectionW(link);
-//                    dotA.setConnectionE(link);
-//                }
-//            }
+            if (differX < differY) { //若X的差比Y的差要小，说明这是一条连接南北的道路
+                Road road = new Road(linkID);
+                if (dotA.getPosition().getY() > dotB.getPosition().getY()) { //A点要更靠北的话
+                    road.setNorthDot(dotA);
+                    road.setSouthDot(dotB);
 
-            //将link加入cache
-            this.linkCache.put(linkID, link);
+                    if (dotA instanceof Cross) {
+                        ((Cross) dotA).setNorthRoad(road);
+                    } else {
+                        ((Margin) dotA).setConnectedLink(road);
+                    }
+
+                    if (dotB instanceof Cross) {
+                        ((Cross) dotB).setSouthRoad(road);
+                    } else {
+                        ((Margin) dotB).setConnectedLink(road);
+                    }
+                } else {//否则B点更靠北
+                    road.setNorthDot(dotB);
+                    road.setSouthDot(dotA);
+
+                    if (dotA instanceof Cross) {
+                        ((Cross) dotA).setSouthRoad(road);
+                    } else {
+                        ((Margin) dotA).setConnectedLink(road);
+                    }
+
+                    if (dotB instanceof Cross) {
+                        ((Cross) dotB).setNorthRoad(road);
+                    } else {
+                        ((Margin) dotB).setConnectedLink(road);
+                    }
+                }
+                this.linkCache.put(linkID, road);
+            } else { //若Y的差比X的差要小，说明这是一条连接东西的道路
+                Street street = new Street(linkID);
+                if (dotA.getPosition().getX() > dotB.getPosition().getX()) { //A点要更靠西的话
+                    street.setWestDot(dotA);
+                    street.setEastDot(dotB);
+
+                    if (dotA instanceof Cross) {
+                        ((Cross) dotA).setEastStreet(street);
+                    } else {
+                        ((Margin) dotA).setConnectedLink(street);
+                    }
+
+                    if (dotB instanceof Cross) {
+                        ((Cross) dotB).setWestStreet(street);
+                    } else {
+                        ((Margin) dotB).setConnectedLink(street);
+                    }
+
+                } else {//否则B点更靠西
+                    street.setWestDot(dotB);
+                    street.setEastDot(dotA);
+
+                    if (dotA instanceof Cross) {
+                        ((Cross) dotA).setWestStreet(street);
+                    } else {
+                        ((Margin) dotA).setConnectedLink(street);
+                    }
+
+                    if (dotB instanceof Cross) {
+                        ((Cross) dotB).setEastStreet(street);
+                    } else {
+                        ((Margin) dotB).setConnectedLink(street);
+                    }
+                }
+                this.linkCache.put(linkID, street);
+            }
         }
 
     }
 
-
-	public Dot changeFormatToDot(Connectible connectible){
-		Dot dot = null ;
-		if(connectible instanceof Cross) {
-			dot = ((Cross) connectible) ;
-		}
-		if(connectible instanceof Margin) {
-			dot = ((Margin) connectible) ;
-		}
-		return dot ;
-	}
-
-	public void createLane(){
-
-		Lane[] lanes = new Lane[6] ;
-		for(int i = 0 ; i < 6 ; i++ ){
-			lanes[i] = new Lane() ;
-//			lanes[i].setInput();
-//			lanes[i].setOutput();
-		}
-	}
 
     public Cross[] getCrosses() {
         return crossCache.values().toArray(new Cross[]{});
     }
 
     public Margin[] getMargins() {
-
         return marginCache.values().toArray(new Margin[]{});
     }
 
