@@ -8,8 +8,6 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public class Street extends Link {
 
-    private Dot eastDot;
-    private Dot westDot;
 
 
     public Street(Integer id) {
@@ -27,18 +25,18 @@ public class Street extends Link {
     }
 
     public Dot getEastDot() {
-        return eastDot;
+        return this.b;
     }
 
     public void setEastDot(Dot eastDot) {
-        this.eastDot = eastDot;
+        this.b = eastDot;
     }
 
     public Dot getWestDot() {
-        return westDot;
+        return this.a;
     }
 
     public void setWestDot(Dot westDot) {
-        this.westDot = westDot;
+        this.a = westDot;
     }
 }

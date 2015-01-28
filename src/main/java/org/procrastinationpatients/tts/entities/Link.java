@@ -5,7 +5,9 @@ package org.procrastinationpatients.tts.entities;
  */
 public abstract class Link extends IdentifiableObject implements Visible {
 
-    private Lane [] lanes;
+    protected Dot a;
+    protected Dot b;
+    protected Lane [] lanes;
 
     public Link(Integer id) {
         super(id);
