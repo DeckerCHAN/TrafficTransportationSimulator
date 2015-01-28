@@ -21,6 +21,8 @@ public class Link implements Container, VisualEntity, Connectible {
 		EMPTY = new Link(-1);
 	}
 
+	private LinkType type;
+
 	private final Integer id;
 	private LinkedList<Vehicle> vehicles;
 	private int line_Length;
@@ -29,8 +31,9 @@ public class Link implements Container, VisualEntity, Connectible {
 
 	public Link(Integer linkID) {
 		this.id = linkID;
-		//TODO:兄弟你别逗我。。。Lane怎么在这里实例化了。。。
+		//DONE:树组实例化之后再赋值嘛
 		this.lanes = new Lane[6];
+		this.setType(LinkType.UNKNOW);
 	}
 
 	public Link(Integer linkID, Connectible[] connections) {
@@ -221,5 +224,13 @@ public class Link implements Container, VisualEntity, Connectible {
 		arrayList.add(connection);
 
 		this.connections = connections;
+	}
+
+	public LinkType getType() {
+		return type;
+	}
+
+	public void setType(LinkType type) {
+		this.type = type;
 	}
 }
