@@ -1,7 +1,9 @@
 package org.procrastinationpatients.tts.core;
 
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import org.procrastinationpatients.tts.utils.DrawUtils;
 
 import java.util.Arrays;
@@ -20,10 +22,8 @@ public class Link implements Container, VisualEntity, Connectible {
 	static {
 		EMPTY = new Link(-1);
 	}
-
-	private LinkType type;
-
 	private final Integer id;
+	private LinkType type;
 	private LinkedList<Vehicle> vehicles;
 	private int line_Length;
 	private Connectible[] connections;
@@ -98,7 +98,39 @@ public class Link implements Container, VisualEntity, Connectible {
 
 		Dot dotA = (Dot) this.connections[0];
 		Dot dotB = (Dot) this.connections[1];
-		DrawUtils.drawLineThrowTwoPoint(gc, dotA.getPosition(), dotB.getPosition(), Color.BLACK, 3);
+		Point2D positionA = dotA.getPosition();
+		Point2D positionB = dotB.getPosition();
+
+
+		DrawUtils.drawLine(gc, dotA.getPosition(), dotB.getPosition(), Color.BLACK, 3);
+		if (this.type == LinkType.STREET) {//若南北走向
+
+			Line portLineA = new Line(positionA.getX() - 30D, positionA.getY() + 60D, positionA.getX() + 30D, positionA.getY() + 60D);
+			Line portLineB = new Line(positionB.getX() - 30D, positionB.getY() - 60D, positionB.getX() + 30D, positionB.getY() - 60D);
+			Line portCenterLink = new Line(positionA.getX(), positionA.getY() + 60D, positionB.getX(), positionB.getY() - 60D);
+			Line portCenterLinkP = new Line(positionA.getX() + 10D, positionA.getY() + 60D, positionB.getX() + 10D, positionB.getY() - 60D);
+			Line portCenterLinkPP = new Line(positionA.getX() + 20D, positionA.getY() + 60D, positionB.getX() + 20D, positionB.getY() - 60D);
+			Line portCenterLinkPPP = new Line(positionA.getX() + 30D, positionA.getY() + 60D, positionB.getX() + 30D, positionB.getY() - 60D);
+			Line portCenterLinkM = new Line(positionA.getX() - 10D, positionA.getY() + 60D, positionB.getX() - 10D, positionB.getY() - 60D);
+			Line portCenterLinkMM = new Line(positionA.getX() - 20D, positionA.getY() + 60D, positionB.getX() - 20D, positionB.getY() - 60D);
+			Line portCenterLinkMMM = new Line(positionA.getX() - 30D, positionA.getY() + 60D, positionB.getX() - 30D, positionB.getY() - 60D);
+
+
+			//画出A的port线
+			DrawUtils.drawLine(gc, portLineA, Color.BROWN, 8);
+			//画出B的port线
+			DrawUtils.drawLine(gc, portLineB, Color.BROWN, 8);
+			//画出中线
+			DrawUtils.drawLine(gc, portCenterLink, Color.BROWN, 8);
+			DrawUtils.drawLine(gc, portCenterLinkP, Color.BROWN, 8);
+			DrawUtils.drawLine(gc, portCenterLinkPP, Color.BROWN, 8);
+			DrawUtils.drawLine(gc, portCenterLinkPPP, Color.BROWN, 8);
+			DrawUtils.drawLine(gc, portCenterLinkM, Color.BROWN, 8);
+			DrawUtils.drawLine(gc, portCenterLinkMM, Color.BROWN, 8);
+			DrawUtils.drawLine(gc, portCenterLinkMMM, Color.BROWN, 8);
+
+
+		}
 	}
 
 	@Override
