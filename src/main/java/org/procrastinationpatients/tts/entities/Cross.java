@@ -23,14 +23,11 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
     public Cross(Integer id, Point2D position) {
         super(id);
         this.position = position;
-        for(Lane [] lanes:this.getRowLanes())
-        {
-            lanes=new Lane[7];
-            for (Lane lane:lanes)
-            {
-                lane=new Lane();
-            }
-        }
+        this.northLanes = new Lane[]{new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this)};
+        this.southLanes = new Lane[]{new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this)};
+        this.eastLanes = new Lane[]{new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this)};
+        this.westLanes = new Lane[]{new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this)};
+
 
     }
 
