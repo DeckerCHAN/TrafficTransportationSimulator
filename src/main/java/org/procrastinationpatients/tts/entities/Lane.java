@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class Lane {
 
+	private int Length;
     private List<Lane> inputs;
     private List<Lane> outputs;
     private Vehicle [] vehicles;
@@ -46,11 +47,12 @@ public class Lane {
     }
 
     public Integer getLength() {
-        return this.vehicles.length;
+        return this.Length;
     }
 
     public void setLength(Integer length) {
         this.vehicles=new Vehicle[length];
+		this.Length = length ;
     }
 
 	public void addVehicle(Vehicle vehicle){
@@ -86,4 +88,30 @@ public class Lane {
 		allVehicles.remove(vehicles) ;
 		return true ;
 	}
+
+	public int getSafetyDistanceByID(int index) {
+		if (index < 0 || index >= this.Length)
+			return -1;
+		if (vehicles[index] == null)
+			return 0;
+
+		for (int i = index + 1; i < this.Length; i++) {
+			if (vehicles[index] != null) {
+				return i - index ;
+			}
+		}
+
+		return this.Length - index ;
+	}
+
+	public Vehicle getNextVehicle(Vehicle vehicle) {
+		int v_location = vehicle.getCur_Loc();
+
+		for (int i = v_location + 1; i < this.Length; i++) {
+			if (vehicles[i] != null)
+				return vehicles[i];
+		}
+		return null;
+	}
+
 }

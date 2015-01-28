@@ -15,7 +15,7 @@ public class Vehicle {
 
 	private int goal_line;   //目标线路
 
-	private FunctionalObject on_Link;    //当前所在的Lane
+	private Lane on_Link;    //当前所在的FunctionalObject
 
 
 	public Vehicle() {
@@ -28,7 +28,7 @@ public class Vehicle {
 		if (this.Cur_Spd < MAX_Speed) {
 			Cur_Spd++;
 		}
-		int safety_distance = on_Link.getSafetyDistanceByID(Cur_line, Cur_Loc);
+		int safety_distance = on_Link.getSafetyDistanceByID(Cur_Loc);
 		this.Cur_Spd = (safety_distance < this.Cur_Spd) ? (safety_distance) : (this.Cur_Spd);
 		return this.Cur_Spd;
 	}
@@ -39,7 +39,7 @@ public class Vehicle {
 		if(!isOnRoad())
 			on_Link.toGoalLine(this);
 
-		if (this.Cur_Spd + this.Cur_Loc > on_Link.getLane_Length()) {
+		if (this.Cur_Spd + this.Cur_Loc > on_Link.getLength()) {
 			on_Link.changeToNextContainer(this);
 			this.updateGoalLine();
 			return 1 ;

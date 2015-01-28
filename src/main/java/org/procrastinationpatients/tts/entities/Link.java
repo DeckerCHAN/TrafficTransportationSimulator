@@ -64,33 +64,9 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 //        }
     }
 
-	@Override
-	public int getSafetyDistanceByID(int whichLine, int index) {
-		if (index < 0 || index >= this.lanes[0].getLength())
-			return -1;
-		if (lanes[whichLine].getVehicles()[index] == null)
-			return 0;
 
-		for (int i = index + 1; i < this.lane_Length; i++) {
-			if (lanes[whichLine].getVehicles()[index] != null) {
-				return i - index ;
-			}
-		}
 
-		return lane_Length - index ;
-	}
 
-	@Override
-	public Vehicle getNextVehicle(Vehicle vehicle) {
-		int v_line = vehicle.getCur_line();
-		int v_location = vehicle.getCur_Loc();
-
-		for (int i = v_location + 1; i < this.lane_Length; i++) {
-			if (lanes[v_line].getVehicles()[i] != null)
-				return lanes[v_line].getVehicles()[i];
-		}
-		return null;
-	}
 
 	@Override
 	public boolean canChangeLine(Vehicle vehicle) {
