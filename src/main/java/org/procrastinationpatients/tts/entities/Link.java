@@ -2,7 +2,6 @@ package org.procrastinationpatients.tts.entities;
 
 import org.procrastinationpatients.tts.utils.RandomUtils;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,12 +14,10 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
     private Dot b;
 	private int lane_Length;
     private Lane [] lanes;
-	private LinkedList<Vehicle> vehicles;
 
     public Link(Integer id) {
         super(id);
         this.lanes=new Lane[6];
-		vehicles = new LinkedList();
         for (Lane l:lanes)
         {
             l=new Lane();
@@ -173,8 +170,7 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 		int v_location = vehicle.getCur_Loc();
 
 		if(lanes[v_line].getVehicles()[v_location] != null){
-			this.vehicles.remove(vehicle) ;
-			this.lanes[v_line].getVehicles()[v_location] = null ;
+			this.lanes[v_line].removeVehicle(vehicle) ;
 		}
 	}
 
@@ -183,8 +179,7 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 		for (int j = 0; j < lane_Length; j++) {
 			if (lanes[cur_line].getVehicles()[j] == null) {
 				vehicle.setCur_Loc(j);
-				this.vehicles.add(vehicle);
-				this.lanes[cur_line].getVehicles()[j] = vehicle;
+				this.lanes[cur_line].addVehicle(vehicle);
 				return true;
 			}
 		}

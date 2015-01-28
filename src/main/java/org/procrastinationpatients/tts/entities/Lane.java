@@ -1,6 +1,7 @@
 package org.procrastinationpatients.tts.entities;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -11,11 +12,13 @@ public class Lane {
     private List<Lane> inputs;
     private List<Lane> outputs;
     private Vehicle [] vehicles;
+	private LinkedList<Vehicle> allVehicles ;
 
 
     public Lane() {
         this.inputs = new ArrayList<>();
         this.outputs = new ArrayList<>();
+		allVehicles = new LinkedList<>();
     }
 
     public List<Lane> getInputs() {
@@ -61,5 +64,18 @@ public class Lane {
 			}
 		}
 		vehicles[temp] = vehicle ;
+		allVehicles.add(vehicle);
+	}
+
+	public boolean removeVehicle(Vehicle vehicle){
+		if(vehicle == null)
+			return false;
+		int v_location = vehicle.getCur_Loc();
+		if(vehicles[v_location] != null){
+			vehicles[v_location] = null ;
+			allVehicles.remove(vehicle);
+			return true ;
+		}
+		return false ;
 	}
 }
