@@ -139,6 +139,13 @@ public class ContainersLoader {
 				}
 			}
 
+			if( Math.abs(positionB_Y - positionA_Y) / Math.abs(positionB_X - positionA_X) < 1){
+				link.setType(LinkType.ROAD);
+			}else{
+				link.setType(LinkType.STREET);
+			}
+
+
 //            //计算两个Cross的X差绝对值
 //            Double differX = Math.abs(dotA.getPosition().getX() - dotB.getPosition().getX());
 //            //计算两个Cross的Y差绝对值
