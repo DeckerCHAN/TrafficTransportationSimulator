@@ -9,7 +9,6 @@ import javafx.scene.canvas.GraphicsContext;
 public class Margin extends IdentifiableObject implements Visible, Dot {
 
     private Point2D position;
-    private Lane[] lanes;
 
     private Link connectedLink;
 
