@@ -48,7 +48,7 @@ public class Vehicle {
 		Vehicle nextVehicle = on_Link.getNextVehicle(this);
 		if(nextVehicle != null)
 			if (this.Cur_Spd > nextVehicle.getCur_Spd())
-				if (on_Link.canChangeLine(this)) {
+				if ( this.Cur_line!=3 && this.Cur_line!=4 && on_Link.canChangeLine(this)) {
 					on_Link.changeLine(this);
 					return 2 ;
 				}

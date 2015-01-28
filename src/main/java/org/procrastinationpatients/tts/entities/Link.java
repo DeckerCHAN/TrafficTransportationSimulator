@@ -138,9 +138,11 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 		int v_location = vehicle.getCur_Loc();
 		int v_speed = vehicle.getCur_Spd();
 
+		this.lanes[v_line].removeVehicle(v_location) ;
 		v_line = change_Line_NUMBER(v_line);
 		vehicle.setCur_Loc(v_location + v_speed);
 		vehicle.setCur_line(v_line);
+		this.lanes[v_line].addVehicle(vehicle);
 
 		return v_line;
 	}
@@ -160,8 +162,9 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 		int v_location = vehicle.getCur_Loc();
 
 		if(!hasVehicle(v_line,v_location)){
-			lanes[vehicle.getCur_line()].getVehicles()[v_location] = null ;
-			lanes[v_line].getVehicles()[v_location] = vehicle ;
+			vehicle.setCur_line(v_line);
+			lanes[vehicle.getCur_line()].removeVehicle(v_location) ;
+			lanes[v_line].addVehicle(vehicle) ;
 		}
 	}
 

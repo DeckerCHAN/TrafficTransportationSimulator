@@ -78,4 +78,12 @@ public class Lane {
 		}
 		return false ;
 	}
+
+	public boolean removeVehicle(int location){
+		if(vehicles[location] == null)
+			return false ;
+		vehicles[location] = null ;
+		allVehicles.remove(vehicles) ;
+		return true ;
+	}
 }
