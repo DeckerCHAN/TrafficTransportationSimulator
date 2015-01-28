@@ -181,7 +181,7 @@ public class Link implements Container, VisualEntity, Connectible {
 	public void changeToNextContainer(Vehicle vehicle) {
 		this.removeVehicle(vehicle);
 
-		Container nextCon = lanes[vehicle.getCur_line()].getOutput()[0].getContainer() ;
+		Container nextCon = lanes[vehicle.getCur_line()].getOutput().getContainer() ;
 		nextCon.addVehicle(vehicle) ;
 
 	}

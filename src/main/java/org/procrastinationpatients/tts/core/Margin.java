@@ -21,7 +21,7 @@ public class Margin implements Container, Dot, VisualEntity, Connectible {
 
 	private int line_Length;
 	//每条线路用一个数组表示
-	private Lane [] lanes;
+	private Lane[] lanes;
 //	private Vehicle[][] line;
 	//所有Margin内的车的集合
 	private LinkedList<Vehicle> vehicles;

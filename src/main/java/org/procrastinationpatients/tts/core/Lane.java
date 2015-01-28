@@ -5,8 +5,8 @@ package org.procrastinationpatients.tts.core;
  */
 public class Lane {
     Vehicle[] vehicles;
-    Lane  input;
-    Lane  output;
+    Lane input;
+    Lane output;
 	Container container ;
     public Lane()
     {
