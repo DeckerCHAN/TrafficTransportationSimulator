@@ -24,18 +24,18 @@ public class Road extends Link {
     }
 
     public Dot getNorthDot() {
-        return a;
+        return getA();
     }
 
     public void setNorthDot(Dot northDot) {
-        this.a = northDot;
+        this.setA(northDot);
     }
 
     public Dot getSouthDot() {
-        return b;
+        return getB();
     }
 
     public void setSouthDot(Dot southDot) {
-        this.b = southDot;
+        this.setB(southDot);
     }
 }

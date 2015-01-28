@@ -25,18 +25,18 @@ public class Street extends Link {
     }
 
     public Dot getEastDot() {
-        return this.b;
+        return this.getB();
     }
 
     public void setEastDot(Dot eastDot) {
-        this.b = eastDot;
+        this.setB(eastDot);
     }
 
     public Dot getWestDot() {
-        return this.a;
+        return this.getA();
     }
 
     public void setWestDot(Dot westDot) {
-        this.a = westDot;
+        this.setA(westDot);
     }
 }

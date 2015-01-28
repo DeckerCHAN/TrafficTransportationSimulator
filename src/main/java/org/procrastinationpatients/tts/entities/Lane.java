@@ -12,10 +12,10 @@ public class Lane {
     private List<Lane> outputs;
     private Vehicle [] vehicles;
 
-    public Lane(int length) {
+
+    public Lane() {
         this.inputs = new ArrayList<>();
         this.outputs = new ArrayList<>();
-        this.setVehicles(new Vehicle[length]);
     }
 
     public List<Lane> getInputs() {
@@ -40,5 +40,13 @@ public class Lane {
 
     public void setVehicles(Vehicle[] vehicles) {
         this.vehicles = vehicles;
+    }
+
+    public Integer getLength() {
+        return this.vehicles.length;
+    }
+
+    public void setLength(Integer length) {
+        this.vehicles=new Vehicle[length];
     }
 }
