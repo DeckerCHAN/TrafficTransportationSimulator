@@ -2,10 +2,7 @@ package org.procrastinationpatients.tts.source;
 
 import javafx.geometry.Point2D;
 import org.apache.commons.io.FileUtils;
-import org.procrastinationpatients.tts.core.Connectible;
-import org.procrastinationpatients.tts.core.Cross;
-import org.procrastinationpatients.tts.core.Link;
-import org.procrastinationpatients.tts.core.Margin;
+import org.procrastinationpatients.tts.core.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -114,6 +111,34 @@ public class ContainersLoader {
             connectibleA.addConnection(link);
             connectibleB.addConnection(link);
 
+			Dot dotA = changeFormatToDot(connectibleA) ;
+			Dot dotB = changeFormatToDot(connectibleB) ;
+
+			double positionA_X = dotA.getPosition().getX() ;
+			double positionA_Y = dotA.getPosition().getY() ;
+			double positionB_X = dotB.getPosition().getX() ;
+			double positionB_Y = dotB.getPosition().getY() ;
+
+			if(positionA_X > positionB_X  && positionA_Y > positionB_Y){
+				Connectible temp = connectibleA ;
+				connectibleA = connectibleB ;
+				connectibleB = temp ;
+			}
+			if(positionA_X > positionB_X && positionA_Y > positionB_Y){
+				if((positionA_Y - positionB_Y) / (positionA_X - positionB_X) < 1) {
+					Connectible temp = connectibleA ;
+					connectibleA = connectibleB ;
+					connectibleB = temp ;
+				}
+			}
+			if(positionA_X < positionB_X && positionA_Y < positionB_Y) {
+				if((positionB_Y - positionA_Y) / (positionB_X - positionA_X) > 1) {
+					Connectible temp = connectibleA ;
+					connectibleA = connectibleB ;
+					connectibleB = temp ;
+				}
+			}
+
 //            //计算两个Cross的X差绝对值
 //            Double differX = Math.abs(dotA.getPosition().getX() - dotB.getPosition().getX());
 //            //计算两个Cross的Y差绝对值
@@ -151,13 +176,33 @@ public class ContainersLoader {
 //                }
 //            }
 
-
             //将link加入cache
             this.linkCache.put(linkID, link);
         }
 
     }
 
+
+	public Dot changeFormatToDot(Connectible connectible){
+		Dot dot = null ;
+		if(connectible instanceof Cross) {
+			dot = ((Cross) connectible) ;
+		}
+		if(connectible instanceof Margin) {
+			dot = ((Margin) connectible) ;
+		}
+		return dot ;
+	}
+
+	public void createLane(){
+
+		Lane[] lanes = new Lane[6] ;
+		for(int i = 0 ; i < 6 ; i++ ){
+			lanes[i] = new Lane() ;
+//			lanes[i].setInput();
+//			lanes[i].setOutput();
+		}
+	}
 
     public Cross[] getCrosses() {
         return crossCache.values().toArray(new Cross[]{});

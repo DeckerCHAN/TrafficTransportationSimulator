@@ -9,4 +9,5 @@ public interface Connectible {
 	public Collection<Connectible> getConnections();
 
 	public void addConnection(Connectible connection);
+
 }
