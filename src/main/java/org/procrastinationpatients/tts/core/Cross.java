@@ -92,6 +92,11 @@ public class Cross implements Container, Dot, VisualEntity, Connectible {
 	}
 
 	@Override
+	public void addLanes(Lane[] lanes) {
+
+	}
+
+	@Override
 	public void drawDynamicGraphic(GraphicsContext gc) {
 
 	}
@@ -111,8 +116,8 @@ public class Cross implements Container, Dot, VisualEntity, Connectible {
 	}
 
 	@Override
-	public Collection<Connectible> getConnections() {
-		return new ArrayList<>(Arrays.asList(this.connections));
+	public Connectible[] getConnections() {
+		return this.connections;
 	}
 
 	@Override

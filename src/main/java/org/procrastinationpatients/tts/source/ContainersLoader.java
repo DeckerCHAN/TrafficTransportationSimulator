@@ -14,7 +14,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * @Author Decker
@@ -201,14 +204,27 @@ public class ContainersLoader {
 		return dot ;
 	}
 
-	public void createLane(){
+	public void createLane(Link link){
 
 		Lane[] lanes = new Lane[6] ;
+
+		Collection<Connectible> con = link.getConnections() ;
+		for(Connectible connectible : con){
+			if(connectible instanceof Cross){
+
+			}
+			if(connectible instanceof Margin){
+				
+			}
+		}
 		for(int i = 0 ; i < 6 ; i++ ){
 			lanes[i] = new Lane() ;
-//			lanes[i].setInput();
-//			lanes[i].setOutput();
+			if(i - 3 < 0)
+				lanes[i].setInput(null);
+			if(i - 3 >= 0)
+				lanes[i].setOutput(null);
 		}
+		link.addLanes(lanes);
 	}
 
     public Cross[] getCrosses() {

@@ -199,6 +199,11 @@ public class Margin implements Container, Dot, VisualEntity, Connectible {
 	}
 
 	@Override
+	public void addLanes(Lane[] lanes) {
+
+	}
+
+	@Override
 	public Point2D getPosition() {
 		return this.position;
 	}
@@ -216,10 +221,8 @@ public class Margin implements Container, Dot, VisualEntity, Connectible {
 	}
 
 	@Override
-	public Collection<Connectible> getConnections() {
-		ArrayList<Connectible> arrayList = new ArrayList<>();
-		arrayList.add(this.connectionLink);
-		return arrayList;
+	public Connectible[] getConnections() {
+		return new Connectible[]{(Connectible)this.connectionLink} ;
 	}
 
 	@Override

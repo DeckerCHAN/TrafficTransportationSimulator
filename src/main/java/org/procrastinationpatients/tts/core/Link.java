@@ -22,16 +22,17 @@ public class Link implements Container, VisualEntity, Connectible {
 	static {
 		EMPTY = new Link(-1);
 	}
+
 	private final Integer id;
-	private LinkType type;
-	private LinkedList<Vehicle> vehicles;
 	private int line_Length;
-	private Connectible[] connections;
+	private LinkType type;
 	private Lane[] lanes;
+	private LinkedList<Vehicle> vehicles;
+	private Connectible[] connections;
+
 
 	public Link(Integer linkID) {
 		this.id = linkID;
-		//DONE:树组实例化之后再赋值嘛
 		this.lanes = new Lane[6];
 		this.setType(LinkType.UNKNOWN);
 	}
@@ -205,6 +206,11 @@ public class Link implements Container, VisualEntity, Connectible {
 	}
 
 	@Override
+	public void addLanes(Lane[] lanes) {
+		this.lanes = lanes ;
+	}
+
+	@Override
 	public Vehicle getNextVehicle(Vehicle vehicle) {
 
 		int v_line = vehicle.getCur_line();
@@ -246,8 +252,8 @@ public class Link implements Container, VisualEntity, Connectible {
 	}
 
 	@Override
-	public Collection<Connectible> getConnections() {
-		return Arrays.asList(this.connections);
+	public Connectible[] getConnections() {
+		return this.connections;
 	}
 
 	@Override

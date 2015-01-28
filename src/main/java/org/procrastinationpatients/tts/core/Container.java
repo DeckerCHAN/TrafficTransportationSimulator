@@ -30,4 +30,6 @@ public interface Container {
 	public boolean hasVehicle(int line, int loc) ;
 
 	public void toGoalLine(Vehicle vehicle) ;
+
+	public void addLanes(Lane[] lanes) ;
 }
