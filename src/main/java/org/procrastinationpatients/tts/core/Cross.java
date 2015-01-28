@@ -82,6 +82,16 @@ public class Cross implements Container, Dot, VisualEntity, Connectible {
 	}
 
 	@Override
+	public boolean hasVehicle(int line, int loc) {
+		return false;
+	}
+
+	@Override
+	public void toGoalLine(Vehicle vehicle) {
+
+	}
+
+	@Override
 	public void drawDynamicGraphic(GraphicsContext gc) {
 
 	}

@@ -35,7 +35,7 @@ public class Production {
 		while (true) {
 			produceVehicles();
 			for (Vehicle vehicle : allVehicles) {
-				vehicle.Speed_From_VDR(5);
+				vehicle.Speed_From_VDR();
 				vehicle.move_Next_Location();
 			}
 			try {

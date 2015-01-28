@@ -20,11 +20,9 @@ public class Margin implements Container, Dot, VisualEntity, Connectible {
 	private Link connectionLink;
 
 	private int line_Length;
-
-	private Lane [] lanes;
-
 	//每条线路用一个数组表示
-	private Vehicle[][] line;
+	private Lane [] lanes;
+//	private Vehicle[][] line;
 	//所有Margin内的车的集合
 	private LinkedList<Vehicle> vehicles;
 
@@ -36,10 +34,10 @@ public class Margin implements Container, Dot, VisualEntity, Connectible {
 	}
 
 	//TODO:我淦！length是什么鬼
+	//TODO:这个要是你实例化啊
 	public Margin(Integer marginID, Point2D position, int length) {
 		this.position = position;
 		this.id = marginID;
-		this.line = new Vehicle[6][length];
 	}
 
 	@Override
@@ -53,10 +51,10 @@ public class Margin implements Container, Dot, VisualEntity, Connectible {
 
 		int cur_line = vehicle.getCur_line();
 		for (int j = 0; j < line_Length; j++) {
-			if (line[cur_line][j] == null) {
+			if (lanes[cur_line].vehicles[j] == null) {
 				vehicle.setCur_Loc(j);
 				this.vehicles.add(vehicle);
-				this.line[cur_line][j] = vehicle;
+				this.lanes[cur_line].vehicles[j] = vehicle;
 				return true;
 			}
 		}
@@ -68,9 +66,9 @@ public class Margin implements Container, Dot, VisualEntity, Connectible {
 		int v_line = vehicle.getCur_line();
 		int v_location = vehicle.getCur_Loc();
 
-		if(line[v_line][v_location] != null){
+		if(lanes[v_line].vehicles[v_location] != null){
 			this.vehicles.remove(vehicle) ;
-			this.line[v_line][v_location] = null ;
+			this.lanes[v_line].vehicles[v_location] = null ;
 		}
 	}
 
@@ -78,11 +76,11 @@ public class Margin implements Container, Dot, VisualEntity, Connectible {
 	public int getSafetyDistanceByID(int whichLine, int index) {
 		if (index < 0 || index >= this.line_Length)
 			return -1;
-		if (line[whichLine][index] == null)
+		if (lanes[whichLine].vehicles[index] == null)
 			return 0;
 
 		for (int i = index + 1; i < this.line_Length; i++) {
-			if (line[whichLine][index] != null) {
+			if (lanes[whichLine].vehicles[index] != null) {
 				return i - index ;
 			}
 		}
@@ -134,7 +132,7 @@ public class Margin implements Container, Dot, VisualEntity, Connectible {
 
 		v_line = change_Line_NUMBER(v_line);
 		for (int i = v_location + 1; i <= v_location + v_speed; i++) {
-			if (line[v_line][i] != null) {
+			if (lanes[v_line].vehicles[i] != null) {
 				flag = false;
 				break;
 			}
@@ -184,10 +182,20 @@ public class Margin implements Container, Dot, VisualEntity, Connectible {
 		int v_location = vehicle.getCur_Loc();
 
 		for (int i = v_location + 1; i < this.line_Length; i++) {
-			if (line[v_line][i] != null)
-				return line[v_line][i];
+			if (lanes[v_line].vehicles[i] != null)
+				return lanes[v_line].vehicles[i];
 		}
 		return null;
+	}
+
+	@Override
+	public boolean hasVehicle(int line, int loc) {
+		return false;
+	}
+
+	@Override
+	public void toGoalLine(Vehicle vehicle) {
+
 	}
 
 	@Override
@@ -219,11 +227,4 @@ public class Margin implements Container, Dot, VisualEntity, Connectible {
 		this.connectionLink = (Link) connection;
 	}
 
-	public void setLine(Vehicle[][] line) {
-		this.line = line;
-	}
-
-	public Vehicle[][] getLine() {
-		return this.line;
-	}
 }

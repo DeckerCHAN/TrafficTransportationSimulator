@@ -12,6 +12,7 @@ public class Vehicle {
 	private int Cur_line;     //当前线路
 	private int MAX_Speed;   //最大速度
 
+	private int goal_line;   //目标线路
 	Container pare_cont; //当前所在的容器
 
 	//构造方法
@@ -22,8 +23,7 @@ public class Vehicle {
 	}
 
 	//速度变化规则
-	public int Speed_From_VDR(int MAX_Speed) {
-		this.MAX_Speed = MAX_Speed;
+	public int Speed_From_VDR() {
 		if (this.Cur_Spd < MAX_Speed) {
 			Cur_Spd++;
 		}
@@ -35,8 +35,12 @@ public class Vehicle {
 	//终于开始能动了啦
 	public int move_Next_Location() {
 
+		if(!isOnRoad())
+			pare_cont.toGoalLine(this);
+
 		if (this.Cur_Spd + this.Cur_Loc > pare_cont.getLineLength()) {
 			pare_cont.changeToNextContainer(this);
+			this.updateGoalLine();
 			return 1 ;
 		}
 
@@ -49,7 +53,19 @@ public class Vehicle {
 				}
 
 		this.Cur_Loc = this.Cur_Loc + this.Cur_Spd;
+
 		return 3;
+	}
+
+	public void updateGoalLine(){
+		this.goal_line = RandomUtils.getNewLine(this.Cur_line) ;
+	}
+
+	public boolean isOnRoad(){
+		if(this.Cur_line == this.goal_line)
+			return true ;
+		else
+			return false ;
 	}
 
 	public void setCur_Line(int Cur_Line) {
@@ -72,9 +88,7 @@ public class Vehicle {
 		return this.Cur_Loc;
 	}
 
-	public int getMAX_Speed() {
-		return MAX_Speed;
-	}
+	public int getMAX_Speed() { return MAX_Speed; }
 
 	public void setCur_Spd(int Cur_Speed) {
 		this.Cur_Spd = Cur_Speed;
@@ -83,4 +97,7 @@ public class Vehicle {
 	public void setMAX_Speed(int MAX_Speed) {
 		this.MAX_Speed = MAX_Speed;
 	}
+
+	public int getGoal_line() { return goal_line; }
+
 }

@@ -27,4 +27,7 @@ public interface Container {
 
 	public Vehicle getNextVehicle(Vehicle vehicle);
 
+	public boolean hasVehicle(int line, int loc) ;
+
+	public void toGoalLine(Vehicle vehicle) ;
 }

@@ -22,7 +22,6 @@ public class Link implements Container, VisualEntity, Connectible {
 	}
 
 	private final Integer id;
-	private Vehicle[][] line;
 	private LinkedList<Vehicle> vehicles;
 	private int line_Length;
 	private Connectible[] connections;
@@ -30,6 +29,7 @@ public class Link implements Container, VisualEntity, Connectible {
 
 	public Link(Integer linkID) {
 		this.id = linkID;
+		//TODO:兄弟你别逗我。。。Lane怎么在这里实例化了。。。
 		this.lanes = new Lane[6];
 	}
 
@@ -40,10 +40,6 @@ public class Link implements Container, VisualEntity, Connectible {
 		}
 		this.connections = connections;
 		//TODO:通过两个Connection计算数组拥有的AvailablePoint数量
-//		int num=new Integer("");
-//		line = new Vehicle[4][num];
-//		this.line_Length = num;
-
 	}
 
 	@Override
@@ -55,10 +51,10 @@ public class Link implements Container, VisualEntity, Connectible {
 	public boolean addVehicle(Vehicle vehicle) {
 		int cur_line = vehicle.getCur_line();
 		for (int j = 0; j < line_Length; j++) {
-			if (line[cur_line][j] == null) {
+			if (lanes[cur_line].vehicles[j] == null) {
 				vehicle.setCur_Loc(j);
 				this.vehicles.add(vehicle);
-				this.line[cur_line][j] = vehicle;
+				this.lanes[cur_line].vehicles[j] = vehicle;
 				return true;
 			}
 		}
@@ -70,9 +66,9 @@ public class Link implements Container, VisualEntity, Connectible {
 		int v_line = vehicle.getCur_line();
 		int v_location = vehicle.getCur_Loc();
 
-		if(line[v_line][v_location] != null){
+		if(lanes[v_line].vehicles[v_location] != null){
 			this.vehicles.remove(vehicle) ;
-			this.line[v_line][v_location] = null ;
+			this.lanes[v_line].vehicles[v_location] = null ;
 		}
 	}
 
@@ -82,11 +78,11 @@ public class Link implements Container, VisualEntity, Connectible {
 	public int getSafetyDistanceByID(int whichLine, int index) {
 		if (index < 0 || index >= this.line_Length)
 			return -1;
-		if (line[whichLine][index] == null)
+		if (lanes[whichLine].vehicles[index] == null)
 			return 0;
 
 		for (int i = index + 1; i < this.line_Length; i++) {
-			if (line[whichLine][index] != null) {
+			if (lanes[whichLine].vehicles[index] != null) {
 				return i - index ;
 			}
 		}
@@ -137,7 +133,7 @@ public class Link implements Container, VisualEntity, Connectible {
 
 		v_line = change_Line_NUMBER(v_line);
 		for (int i = v_location + 1; i <= v_location + v_speed; i++) {
-			if (line[v_line][i] != null) {
+			if (lanes[v_line].vehicles[i] != null) {
 				flag = false;
 				break;
 			}
@@ -149,7 +145,28 @@ public class Link implements Container, VisualEntity, Connectible {
 	@Override
 	public void changeToNextContainer(Vehicle vehicle) {
 		this.removeVehicle(vehicle);
-		((Cross)this.connections[0]).addVehicle(vehicle) ;
+
+		Container nextCon = lanes[vehicle.getCur_line()].getOutput()[0].getContainer() ;
+		nextCon.addVehicle(vehicle) ;
+
+	}
+
+	public boolean hasVehicle(int line , int loc){
+		if(this.lanes[line].vehicles[loc] != null)
+			return true ;
+		else
+			return false ;
+	}
+
+	@Override
+	public void toGoalLine(Vehicle vehicle) {
+		int v_line = vehicle.getGoal_line();
+		int v_location = vehicle.getCur_Loc();
+
+		if(!hasVehicle(v_line,v_location)){
+			lanes[vehicle.getCur_line()].vehicles[v_location] = null ;
+			lanes[v_line].vehicles[v_location] = vehicle ;
+		}
 	}
 
 	@Override
@@ -159,8 +176,8 @@ public class Link implements Container, VisualEntity, Connectible {
 		int v_location = vehicle.getCur_Loc();
 
 		for (int i = v_location + 1; i < this.line_Length; i++) {
-			if (line[v_line][i] != null)
-				return line[v_line][i];
+			if (lanes[v_line].vehicles[i] != null)
+				return lanes[v_line].vehicles[i];
 		}
 		return null;
 	}
