@@ -2,13 +2,15 @@ package org.procrastinationpatients.tts.entities;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import org.procrastinationpatients.tts.utils.DrawUtils;
 
 /**
  * Created by decker on 15-1-28.
  */
 public class Cross extends IdentifiableObject implements Visible, Dot, FunctionalObject {
 
-    private  Point2D position;
+    private Point2D position;
     private Lane[] northLanes;
     private Lane[] southLanes;
     private Lane[] eastLanes;
@@ -38,12 +40,25 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
 
     @Override
     public void setPosition(Point2D position) {
-        this.position=position;
+        this.position = position;
     }
 
     @Override
     public void drawStaticGraphic(GraphicsContext gc) {
+        DrawUtils.drawBallAtCoordinate(gc, this.getPosition(), 6, Color.RED);
+        Point2D a = new Point2D(this.getPosition().getX() - 30D, this.getPosition().getY() - 60D);
+        Point2D b = new Point2D(this.getPosition().getX() + 30D, this.getPosition().getY() - 60D);
 
+        Point2D c = new Point2D(this.getPosition().getX() + 60D, this.getPosition().getY() - 30D);
+        Point2D d = new Point2D(this.getPosition().getX() + 60D, this.getPosition().getY() + 30D);
+
+        Point2D e = new Point2D(this.getPosition().getX() + 30D, this.getPosition().getY() + 60D);
+        Point2D f = new Point2D(this.getPosition().getX() - 30D, this.getPosition().getY() + 60D);
+
+        Point2D g = new Point2D(this.getPosition().getX() - 60D, this.getPosition().getY() + 30D);
+        Point2D h = new Point2D(this.getPosition().getX() - 60D, this.getPosition().getY() - 30D);
+
+        DrawUtils.drawPolygon(gc, Color.AQUA, 3, a, b, c, d, e, f, g, h);
     }
 
     @Override
@@ -118,7 +133,7 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
     public Lane[][] getRowLanes() {
         return new Lane[][]{this.getNorthLanes(), this.getEastLanes(), this.getSouthLanes(), this.getWestLanes()};
     }
-
+    
     public Link [] getRowLink()
     {
         return new Link[]{this.getNorthRoad(),this.getEastStreet(),this.getSouthRoad(),this.getWestStreet()};
@@ -153,4 +168,5 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
 	public void changeToNextContainer(Vehicle vehicle) {
 		//TODO
 	}
+
 }

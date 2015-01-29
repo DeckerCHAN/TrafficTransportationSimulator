@@ -96,15 +96,31 @@ public class EntityLoader {
             //先将两个Dot取出来(有可能是Margin也有可能是Cross)
             Dot dotA, dotB;
             if (connectionATypeString.toLowerCase().equals("m")) {
-                dotA = this.marginCache.get(connectionAID);
+                dotB = this.marginCache.get(connectionAID);
             } else {
-                dotA = this.crossCache.get(connectionAID);
+                dotB = this.crossCache.get(connectionAID);
             }
 
             if (connectionBTypeString.toLowerCase().equals("m")) {
-                dotB = this.marginCache.get(connectionBID);
+                dotA = this.marginCache.get(connectionBID);
             } else {
-                dotB = this.crossCache.get(connectionBID);
+                dotA = this.crossCache.get(connectionBID);
+            }
+
+            //去你麻痹的重
+            Boolean isDup = false;
+            for (Link link : this.linkCache.values()) {
+                if (link.getA().getPosition().equals(dotA.getPosition()) && link.getB().getPosition().equals(dotB.getPosition())) {
+                    isDup = true;
+                    break;
+                }
+                if (link.getA().getPosition().equals(dotB.getPosition()) && link.getB().getPosition().equals(dotA.getPosition())) {
+                    isDup = true;
+                    break;
+                }
+            }
+            if (isDup) {
+                continue;
             }
 
             //计算两个Cross的X差绝对值
@@ -115,24 +131,9 @@ public class EntityLoader {
 
             if (differX < differY) { //若X的差比Y的差要小，说明这是一条连接南北的道路
                 Road road = new Road(linkID);
-                if (dotA.getPosition().getY() > dotB.getPosition().getY()) { //A点要更靠北的话
+                if (dotA.getPosition().getY() < dotB.getPosition().getY()) { //A点要更靠北的话
                     road.setNorthDot(dotA);
                     road.setSouthDot(dotB);
-
-                    if (dotA instanceof Cross) {
-                        ((Cross) dotA).setNorthRoad(road);
-                    } else {
-                        ((Margin) dotA).setConnectedLink(road);
-                    }
-
-                    if (dotB instanceof Cross) {
-                        ((Cross) dotB).setSouthRoad(road);
-                    } else {
-                        ((Margin) dotB).setConnectedLink(road);
-                    }
-                } else {//否则B点更靠北
-                    road.setNorthDot(dotB);
-                    road.setSouthDot(dotA);
 
                     if (dotA instanceof Cross) {
                         ((Cross) dotA).setSouthRoad(road);
@@ -145,11 +146,26 @@ public class EntityLoader {
                     } else {
                         ((Margin) dotB).setConnectedLink(road);
                     }
+                } else {//否则B点更靠北
+                    road.setNorthDot(dotB);
+                    road.setSouthDot(dotA);
+
+                    if (dotA instanceof Cross) {
+                        ((Cross) dotA).setNorthRoad(road);
+                    } else {
+                        ((Margin) dotA).setConnectedLink(road);
+                    }
+
+                    if (dotB instanceof Cross) {
+                        ((Cross) dotB).setSouthRoad(road);
+                    } else {
+                        ((Margin) dotB).setConnectedLink(road);
+                    }
                 }
                 this.linkCache.put(linkID, road);
             } else { //若Y的差比X的差要小，说明这是一条连接东西的道路
                 Street street = new Street(linkID);
-                if (dotA.getPosition().getX() > dotB.getPosition().getX()) { //A点要更靠西的话
+                if (dotA.getPosition().getX() < dotB.getPosition().getX()) { //A点要更靠西的话
                     street.setWestDot(dotA);
                     street.setEastDot(dotB);
 

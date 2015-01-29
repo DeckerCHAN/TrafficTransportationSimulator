@@ -45,7 +45,7 @@ public class DrawUtils {
 
     public static void drawText(GraphicsContext gc, Point2D point, Color color,String text) {
         gc.setTextAlign(TextAlignment.CENTER);
-        gc.setStroke(color);
+        gc.setFill(color);
         gc.setTextBaseline(VPos.CENTER);
         gc.fillText(
                 text,

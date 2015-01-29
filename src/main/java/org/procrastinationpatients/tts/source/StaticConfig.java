@@ -11,4 +11,6 @@ public class StaticConfig {
     public static Double PANE_SIZE_HEIGHT=768D;
 
     public static Integer TICK_INTERVAL=200;
+
+    public static Double LANE_POINT_SKIP_DISTANCE=10D;
 }
