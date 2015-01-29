@@ -17,6 +17,10 @@ public class RandomUtils {
 		return random.nextInt(3) ;
 	}
 
+	public static int getStartLine(int i){
+		return random.nextInt(i) ;
+	}
+
 	public static int getStartSpd(){
 		return random.nextInt(5) ;
 	}

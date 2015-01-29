@@ -34,7 +34,7 @@ public class Margin extends IdentifiableObject implements Visible, Dot {
 
     @Override
     public void drawDynamicGraphic(GraphicsContext gc) {
-
+		
     }
 
     public Link getConnectedLink() {
