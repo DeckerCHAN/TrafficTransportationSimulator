@@ -19,8 +19,6 @@ public class Lane {
 	private LinkedList<Vehicle> allVehicles ;
     private FunctionalObject parent;
 
-
-
     public Lane(FunctionalObject parent) {
         this.inputs = new ArrayList<>();
         this.outputs = new ArrayList<>();
