@@ -53,15 +53,7 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
         refreshLaneLength();
     }
 
-    private void refreshLaneLength()
-    {
-        //TODO：计算长度
-//        throw new UnsupportedOperationException("还未实现");
-//        for (Lane l :this.lanes)
-//        {
-//            l.setLength(-1);
-//        }
-    }
+    protected abstract void refreshLaneLength();
 
 
 

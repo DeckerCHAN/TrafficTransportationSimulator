@@ -3,6 +3,8 @@ package org.procrastinationpatients.tts.entities;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import org.procrastinationpatients.tts.source.StaticConfig;
 import org.procrastinationpatients.tts.utils.DrawUtils;
 
 /**
@@ -15,6 +17,23 @@ public class Road extends Link {
     public Road(Integer id) {
         super(id);
     }
+
+    @Override
+    protected void refreshLaneLength() {
+        if(this.getA()==null||this.getB()==null)
+        {
+            return;
+        }
+        Point2D positionA = this.getA().getPosition();
+        Point2D positionB = this.getB().getPosition();
+        Line centerLine = new Line(positionA.getX(), positionA.getY() + 60, positionB.getX(), positionB.getY() + 60);
+        Double d = Math.sqrt(Math.pow(Math.abs(centerLine.getStartX() - centerLine.getEndX()), 2) + Math.pow(Math.abs(centerLine.getStartY() - centerLine.getEndY()), 2)) / StaticConfig.LANE_POINT_SKIP_DISTANCE;
+        Integer items = (int) Math.round(d);
+        for (Lane lane : this.getLanes()) {
+            lane.setLength(items);
+        }
+    }
+
 
     @Override
     public void drawStaticGraphic(GraphicsContext gc) {
@@ -54,7 +73,24 @@ public class Road extends Link {
 
     @Override
     public void drawDynamicGraphic(GraphicsContext gc) {
-
+        Point2D positionA = this.getA().getPosition();
+        Point2D positionB = this.getB().getPosition();
+        Double distX=positionA.getX() - positionB.getX();
+        Double distY=positionA.getY() - positionB.getY();
+        Line leftLine = new Line(positionA.getX()-30D, positionA.getY() + 60D, positionB.getX()-30D, positionB.getY() - 60D);
+        Double lineLength= Math.sqrt(Math.pow(Math.abs(leftLine.getStartX() - leftLine.getEndX()), 2) + Math.pow(Math.abs(leftLine.getStartY() - leftLine.getEndY()), 2));
+        Double perc=StaticConfig.LANE_POINT_SKIP_DISTANCE/lineLength;
+        for (int i=0;i<this.getLanes().length;i++)
+        {
+            Lane lane=this.getLanes()[i];
+            for(int j=0;j<lane.getVehicles().length;j++)
+            {
+                    if(lane.getVehicles()[j]==null)
+                    {
+                        DrawUtils.drawBallAtCoordinate(gc,new Point2D(leftLine.getStartX()+distX*perc*j,leftLine.getStartY()+distY*perc*j),4,Color.YELLOW);
+                    }
+            }
+        }
     }
 
     public Dot getNorthDot() {

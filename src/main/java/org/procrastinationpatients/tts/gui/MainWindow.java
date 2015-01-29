@@ -1,6 +1,10 @@
 package org.procrastinationpatients.tts.gui;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
@@ -15,6 +19,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.procrastinationpatients.tts.core.Engine;
 import org.procrastinationpatients.tts.entities.Dot;
 import org.procrastinationpatients.tts.entities.Visible;
@@ -46,7 +51,7 @@ public class MainWindow extends Application {
     private Button startBtn;
     private Button pauseBtn;
 
-    private Thread tickThread;
+    private Timeline timeline;
     private Boolean isTickPaused;
 
     public MainWindow() {
@@ -92,7 +97,8 @@ public class MainWindow extends Application {
         this.scrollInnerPane.getChildren().addAll(this.backgroundCanvas, this.dynamicCanvas);
 
         this.isTickPaused = false;
-        this.tickThread = new Thread(this.getTickRunnable());
+        this.timeline = new Timeline(new KeyFrame(Duration.millis(1000), this.getTickHandler()));
+        timeline.setCycleCount(Animation.INDEFINITE);
 
 
     }
@@ -183,7 +189,7 @@ public class MainWindow extends Application {
             public void handle(MouseEvent mouseEvent) {
                 System.out.println("Start!");
                 //启动动态绘制线程
-                tickThread.start();
+                timeline.play();
             }
         };
     }
@@ -197,36 +203,23 @@ public class MainWindow extends Application {
         return new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                System.out.println("Pause_Button_Clicked!");
-                if (isTickPaused) {//如果线程已经停止，则继续线程计算
-                    pauseBtn.setText("Pause");
-
-                } else {
-                    pauseBtn.setText("Resume");
-                }
-                isTickPaused = !isTickPaused;
-                return;
+                timeline.stop();
+                System.out.println("Stop!");
             }
         };
     }
 
-    private Runnable getTickRunnable() {
-        return new Runnable() {
+    private EventHandler<ActionEvent> getTickHandler() {
+        return new EventHandler<ActionEvent>() {
             @Override
-            public void run() {
-                try {
-                    while (true) {
-                        if (!isTickPaused) {
-                            drawAllDynamic();
-                            Thread.sleep(StaticConfig.TICK_INTERVAL);
-                        }
-
-                    }
-                } catch (InterruptedException e) {
-                    System.out.println("Tick thread stopped!");
-                }
+            public void handle(ActionEvent actionEvent) {
+                Long start = System.currentTimeMillis();
+                drawAllDynamic();
+                Long end = System.currentTimeMillis();
+                System.out.println(String.format("Draw coast %s ms.", end - start));
 
             }
         };
     }
+
 }

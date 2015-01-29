@@ -18,6 +18,11 @@ public class Street extends Link {
     }
 
     @Override
+    protected void refreshLaneLength() {
+
+    }
+
+    @Override
     public void drawStaticGraphic(GraphicsContext gc) {
         Point2D positionA = this.getA().getPosition();
         Point2D positionB = this.getB().getPosition();
