@@ -97,7 +97,7 @@ public class MainWindow extends Application {
         this.scrollInnerPane.getChildren().addAll(this.backgroundCanvas, this.dynamicCanvas);
 
         this.isTickPaused = false;
-        this.timeline = new Timeline(new KeyFrame(Duration.millis(1000), this.getTickHandler()));
+        this.timeline = new Timeline(new KeyFrame(Duration.millis(StaticConfig.TICK_INTERVAL), this.getTickHandler()));
         timeline.setCycleCount(Animation.INDEFINITE);
 
 

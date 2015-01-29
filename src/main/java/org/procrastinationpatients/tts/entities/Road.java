@@ -26,7 +26,7 @@ public class Road extends Link {
         }
         Point2D positionA = this.getA().getPosition();
         Point2D positionB = this.getB().getPosition();
-        Line centerLine = new Line(positionA.getX(), positionA.getY() + 60, positionB.getX(), positionB.getY() + 60);
+        Line centerLine = new Line(positionA.getX(), positionA.getY() + 60, positionB.getX(), positionB.getY() - 60);
         Double d = Math.sqrt(Math.pow(Math.abs(centerLine.getStartX() - centerLine.getEndX()), 2) + Math.pow(Math.abs(centerLine.getStartY() - centerLine.getEndY()), 2)) / StaticConfig.LANE_POINT_SKIP_DISTANCE;
         Integer items = (int) Math.round(d);
         for (Lane lane : this.getLanes()) {
@@ -87,7 +87,7 @@ public class Road extends Link {
             Lane lane=this.getLanes()[i];
             for(int j=0;j<lane.getVehicles().length;j++)
             {
-                    if(lane.getVehicles()[j]==null)
+                    if(lane.getVehicles()[j]!=null)
                     {
                         DrawUtils.drawBallAtCoordinate(gc, new Point2D(leftLineA.getX() + 5D + (10D * i) - distX * ((double) j / (double) lane.getVehicles().length), leftLineA.getY() +  - distY * ((double) j / (double) lane.getVehicles().length)), 4, Color.RED);
                     }
