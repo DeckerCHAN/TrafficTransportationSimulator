@@ -66,7 +66,7 @@ public class Street extends Link {
             DrawUtils.drawLine(gc, a[i], b[i], Color.BLACK, 2);
         }
 
-        DrawUtils.drawText(gc, new Point2D(a[0].getX(), a[0].getY() - 40D), Color.BLUE, "A" + this.getId());
+        DrawUtils.drawText(gc, new Point2D(a[0].getX(), a[0].getY() + 100D), Color.BLUE, "A" + this.getId());
         DrawUtils.drawText(gc, new Point2D(b[0].getX(), b[0].getY() - 40D), Color.GREEN, "B" + this.getId());
         return;
     }
