@@ -8,6 +8,7 @@ import org.procrastinationpatients.tts.utils.RandomUtils;
 public class Vehicle {
 
 	private int id ; 		  // ID
+	private String color ;    //颜色
 	private int Cur_Spd;      //当前速度
 	private int Cur_Loc;      //当前位置
 	private int Cur_line;     //当前线路
@@ -105,4 +106,8 @@ public class Vehicle {
 	public int getGoal_line() { return goal_line; }
 
 	public void setGoal_line(int goal_line) { this.goal_line = goal_line; }
+
+	public String getColor() { return color; }
+
+	public void setColor(String color) { this.color = color; }
 }
