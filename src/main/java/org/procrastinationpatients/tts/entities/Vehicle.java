@@ -18,15 +18,15 @@ public class Vehicle {
 
 	private Lane on_Link;    //当前所在的Lane
 
-
-	public Vehicle() {
-        super();
-    }
-
 	public Vehicle(Lane lane){
 		this.on_Link = lane ;
 	}
 
+
+	public void setSpeed(int Cur_Sped , int Gol_Sped){
+		this.Cur_Spd = Cur_Sped ;
+		this.MAX_Speed = Gol_Sped ;
+	}
 
 	//速度变化规则
 	public int Speed_From_VDR() {
