@@ -3,6 +3,8 @@ package org.procrastinationpatients.tts.entities;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import org.procrastinationpatients.tts.source.StaticConfig;
 import org.procrastinationpatients.tts.utils.DrawUtils;
 
 /**
@@ -19,7 +21,18 @@ public class Street extends Link {
 
     @Override
     protected void refreshLaneLength() {
-
+        if(this.getA()==null||this.getB()==null)
+        {
+            return;
+        }
+        Point2D positionWest = this.getA().getPosition();
+        Point2D positionEast = this.getB().getPosition();
+        Line centerLine = new Line(positionWest.getX()+ 60D, positionWest.getY() , positionEast.getX()- 60D, positionEast.getY() );
+        Double d = Math.sqrt(Math.pow(Math.abs(centerLine.getStartX() - centerLine.getEndX()), 2) + Math.pow(Math.abs(centerLine.getStartY() - centerLine.getEndY()), 2)) / StaticConfig.LANE_POINT_SKIP_DISTANCE;
+        Integer items = (int) Math.round(d);
+        for (Lane lane : this.getLanes()) {
+            lane.setLength(items);
+        }
     }
 
     @Override
@@ -60,7 +73,23 @@ public class Street extends Link {
 
     @Override
     public void drawDynamicGraphic(GraphicsContext gc) {
+        Point2D westDotPosition = this.getWestDot().getPosition();
+        Point2D eastDotPosition = this.getEastDot().getPosition();
 
+        Point2D bottomLineA = new Point2D(westDotPosition.getX() + 60D, westDotPosition.getY() + 30D);
+        Point2D bottomLineB = new Point2D(eastDotPosition.getX() - 60D, eastDotPosition.getY() + 30D);
+
+        Double distX = bottomLineA.getX() - bottomLineB.getX();
+        Double distY = bottomLineA.getY() - bottomLineB.getY();
+
+        for (int i = 0; i < this.getLanes().length; i++) {
+            Lane lane = this.getLanes()[i];
+            for (int j = 0; j < lane.getVehicles().length; j++) {
+                if (lane.getVehicles()[j] != null) {
+                    DrawUtils.drawBallAtCoordinate(gc, new Point2D(bottomLineA.getX() - distX * ((double) j / (double) lane.getVehicles().length), bottomLineA.getY() - 5D - (10D * i) - distY * ((double) j / (double) lane.getVehicles().length)), 4, Color.RED);
+                }
+            }
+        }
     }
 
     public Dot getEastDot() {
