@@ -46,7 +46,7 @@ public class Vehicle {
 				on_Link.getParent().toGoalLine(this);
 
 			if (this.Cur_Spd + this.Cur_Loc > on_Link.getLength()) {
-				on_Link.getParent().changeToNextContainer(this);
+				on_Link.changeToNextContainer(this);
 				this.updateGoalLine();
 				return 1 ;
 			}
@@ -63,6 +63,10 @@ public class Vehicle {
 
 			return 3;
 		}else if(fo instanceof Cross){
+			if (this.Cur_Spd + this.Cur_Loc > on_Link.getLength()) {
+				on_Link.changeToNextContainer(this);
+				return 1 ;
+			}
 			this.Cur_Loc = this.Cur_Loc + this.Cur_Spd;
 			return 3 ;
 		}

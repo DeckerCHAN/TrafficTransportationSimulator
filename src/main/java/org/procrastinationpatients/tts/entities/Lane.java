@@ -1,5 +1,7 @@
 package org.procrastinationpatients.tts.entities;
 
+import org.procrastinationpatients.tts.utils.RandomUtils;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -122,4 +124,12 @@ public class Lane {
 		return null;
 	}
 
+	public void changeToNextContainer(Vehicle vehicle){
+		this.removeVehicle(vehicle);
+		if(outputs != null){
+			Lane outputLane = outputs.get(RandomUtils.getStartLine(outputs.size())) ;
+			vehicle.setCur_Loc(vehicle.getCur_Loc() + vehicle.getCur_Spd() - this.getLength());
+			outputLane.addVehicle(vehicle);
+		}
+	}
 }
