@@ -73,11 +73,11 @@ public class Road extends Link {
 
     @Override
     public void drawDynamicGraphic(GraphicsContext gc) {
-        Point2D positionA = this.getA().getPosition();
-        Point2D positionB = this.getB().getPosition();
+        Point2D northDotPosition = this.getNorthDot().getPosition();
+        Point2D southDotPosition = this.getSouthDot().getPosition();
 
-        Point2D leftLineA = new Point2D(positionA.getX() - 30D, positionA.getY() - 60D);
-        Point2D leftLineB = new Point2D(positionB.getX() - 30D, positionB.getY() + 60D);
+        Point2D leftLineA = new Point2D(northDotPosition.getX() - 30D, northDotPosition.getY() + 60D);
+        Point2D leftLineB = new Point2D(southDotPosition.getX() - 30D, southDotPosition.getY() - 60D);
 
 
         Double distX = leftLineA.getX() - leftLineB.getX();
@@ -89,7 +89,7 @@ public class Road extends Link {
             {
                     if(lane.getVehicles()[j]==null)
                     {
-                        DrawUtils.drawBallAtCoordinate(gc, new Point2D(leftLineA.getX() + distX * ((double) j / (double) lane.getVehicles().length), leftLineA.getY() + distY * ((double) j / (double) lane.getVehicles().length)), 4, Color.YELLOW);
+                        DrawUtils.drawBallAtCoordinate(gc, new Point2D(leftLineA.getX() + 5D + (10D * i) - distX * ((double) j / (double) lane.getVehicles().length), leftLineA.getY() +  - distY * ((double) j / (double) lane.getVehicles().length)), 4, Color.RED);
                     }
             }
         }

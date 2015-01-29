@@ -12,5 +12,5 @@ public class StaticConfig {
 
     public static Integer TICK_INTERVAL=200;
 
-    public static Double LANE_POINT_SKIP_DISTANCE=4D;
+    public static Double LANE_POINT_SKIP_DISTANCE=10D;
 }
