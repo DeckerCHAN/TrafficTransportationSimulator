@@ -133,49 +133,60 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
     public Lane[][] getRowLanes() {
         return new Lane[][]{this.getNorthLanes(), this.getEastLanes(), this.getSouthLanes(), this.getWestLanes()};
     }
-
-    public Link[] getRowLink() {
-        return new Link[]{this.getNorthRoad(), this.getEastStreet(), this.getSouthRoad(), this.getWestStreet()};
+    
+    public Link [] getRowLink()
+    {
+        return new Link[]{this.getNorthRoad(),this.getEastStreet(),this.getSouthRoad(),this.getWestStreet()};
     }
 
-    @Override
-    public int getSafetyDistanceByID(int Cur_line, int Cur_Loc) {
-        //TODO
-        return 0;
-    }
+	@Override
+	public int getSafetyDistanceByID(int Cur_line, int Cur_Loc) {
+		//TODO
+		return 0;
+	}
 
-    @Override
-    public Vehicle getNextVehicle(Vehicle vehicle) {
-        //TODO
-        return null;
-    }
+	@Override
+	public Vehicle getNextVehicle(Vehicle vehicle) {
+		//TODO
+		return null;
+	}
 
-    @Override
-    public boolean canChangeLine(Vehicle vehicle) {
-        //TODO
-        return false;
-    }
+	@Override
+	public boolean canChangeLine(Vehicle vehicle) {
+		//TODO
+		return false;
+	}
 
-    @Override
-    public int changeLine(Vehicle vehicle) {
-        //TODO
-        return 0;
-    }
+	@Override
+	public int changeLine(Vehicle vehicle) {
+		//TODO
+		return 0;
+	}
 
-    @Override
-    public boolean changeToNextContainer(Vehicle vehicle) {
-        //TODO
-        return false;
-    }
+	@Override
+	public void changeToNextContainer(Vehicle vehicle) {
+		//TODO
+	}
 
-    @Override
-    public void toGoalLine(Vehicle vehicle) {
-        //TODO
-    }
+	@Override
+	public void toGoalLine(Vehicle vehicle) {
+		//TODO
+	}
 
-    @Override
-    public int getLane_Length() {
-        //TODO
-        return 0;
-    }
+	@Override
+	public int getLane_Length() {
+		//TODO
+		return 0;
+	}
+
+	@Override
+	public boolean addVehicle(Vehicle vehicle) {
+		return false;
+	}
+
+	@Override
+	public void removeVehicle(Vehicle vehicle) {
+
+	}
+
 }

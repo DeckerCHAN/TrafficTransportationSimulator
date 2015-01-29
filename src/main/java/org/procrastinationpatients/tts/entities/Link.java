@@ -1,5 +1,10 @@
 package org.procrastinationpatients.tts.entities;
 
+import org.procrastinationpatients.tts.utils.RandomUtils;
+
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by decker on 15-1-28.
  */
@@ -58,33 +63,9 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 //        }
     }
 
-	@Override
-	public int getSafetyDistanceByID(int whichLine, int index) {
-		if (index < 0 || index >= this.lanes[0].getLength())
-			return -1;
-		if (lanes[whichLine].getVehicles()[index] == null)
-			return 0;
 
-		for (int i = index + 1; i < this.lane_Length; i++) {
-			if (lanes[whichLine].getVehicles()[index] != null) {
-				return i - index ;
-			}
-		}
 
-		return lane_Length - index ;
-	}
 
-	@Override
-	public Vehicle getNextVehicle(Vehicle vehicle) {
-		int v_line = vehicle.getCur_line();
-		int v_location = vehicle.getCur_Loc();
-
-		for (int i = v_location + 1; i < this.lane_Length; i++) {
-			if (lanes[v_line].getVehicles()[i] != null)
-				return lanes[v_line].getVehicles()[i];
-		}
-		return null;
-	}
 
 	@Override
 	public boolean canChangeLine(Vehicle vehicle) {
@@ -132,16 +113,22 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 		int v_location = vehicle.getCur_Loc();
 		int v_speed = vehicle.getCur_Spd();
 
+		this.lanes[v_line].removeVehicle(v_location) ;
 		v_line = change_Line_NUMBER(v_line);
 		vehicle.setCur_Loc(v_location + v_speed);
 		vehicle.setCur_line(v_line);
+		this.lanes[v_line].addVehicle(vehicle);
 
 		return v_line;
 	}
 
 	@Override
-	public boolean changeToNextContainer(Vehicle vehicle) {
-		return false;
+	public void changeToNextContainer(Vehicle vehicle) {
+		this.removeVehicle(vehicle);
+		List<Lane> outputLanes = lanes[vehicle.getCur_line()].getOutputs();
+		Lane outputLane = outputLanes.get(RandomUtils.getStartLine()) ;
+		vehicle.setCur_Loc(vehicle.getCur_Loc()+vehicle.getCur_Spd()-this.getLane_Length());
+		outputLane.addVehicle(vehicle);
 	}
 
 	@Override
@@ -150,9 +137,31 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 		int v_location = vehicle.getCur_Loc();
 
 		if(!hasVehicle(v_line,v_location)){
-			lanes[vehicle.getCur_line()].getVehicles()[v_location] = null ;
-			lanes[v_line].getVehicles()[v_location] = vehicle ;
+			vehicle.setCur_line(v_line);
+			lanes[vehicle.getCur_line()].removeVehicle(v_location) ;
+			lanes[v_line].addVehicle(vehicle) ;
 		}
+	}
+
+	public void removeVehicle(Vehicle vehicle) {
+		int v_line = vehicle.getCur_line();
+		int v_location = vehicle.getCur_Loc();
+
+		if(lanes[v_line].getVehicles()[v_location] != null){
+			this.lanes[v_line].removeVehicle(vehicle) ;
+		}
+	}
+
+	public boolean addVehicle(Vehicle vehicle) {
+		int cur_line = vehicle.getCur_line();
+		for (int j = 0; j < lane_Length; j++) {
+			if (lanes[cur_line].getVehicles()[j] == null) {
+				vehicle.setCur_Loc(j);
+				this.lanes[cur_line].addVehicle(vehicle);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean hasVehicle(int line , int loc){

@@ -1,5 +1,7 @@
 package org.procrastinationpatients.tts.entities;
 
+import org.procrastinationpatients.tts.utils.RandomUtils;
+
 /**
  * Created by decker on 15-1-28.
  */
@@ -13,12 +15,16 @@ public class Vehicle {
 
 	private int goal_line;   //目标线路
 
-	private FunctionalObject on_Link;    //当前所在的Lane
+	private Lane on_Link;    //当前所在的Lane
 
 
 	public Vehicle() {
         super();
     }
+
+	public Vehicle(Lane lane){
+		this.on_Link = lane ;
+	}
 
 
 	//速度变化规则
@@ -26,7 +32,7 @@ public class Vehicle {
 		if (this.Cur_Spd < MAX_Speed) {
 			Cur_Spd++;
 		}
-		int safety_distance = on_Link.getSafetyDistanceByID(Cur_line, Cur_Loc);
+		int safety_distance = on_Link.getSafetyDistanceByID(Cur_Loc);
 		this.Cur_Spd = (safety_distance < this.Cur_Spd) ? (safety_distance) : (this.Cur_Spd);
 		return this.Cur_Spd;
 	}
@@ -34,35 +40,45 @@ public class Vehicle {
 	//终于开始能动了啦
 	public int move_Next_Location() {
 
-		if(!isOnRoad())
-			on_Link.toGoalLine(this);
+		FunctionalObject fo = on_Link.getParent() ;
+		if(fo instanceof Link){
+			if(!isOnRoad())
+				on_Link.getParent().toGoalLine(this);
 
-		if (this.Cur_Spd + this.Cur_Loc > on_Link.getLane_Length()) {
-			on_Link.changeToNextContainer(this);
-			this.updateGoalLine();
-			return 1 ;
+			if (this.Cur_Spd + this.Cur_Loc > on_Link.getLength()) {
+				on_Link.getParent().changeToNextContainer(this);
+				this.updateGoalLine();
+				return 1 ;
+			}
+
+			Vehicle nextVehicle = on_Link.getNextVehicle(this);
+			if(nextVehicle != null)
+				if (this.Cur_Spd > nextVehicle.getCur_Spd())
+					if ( this.Cur_line!=3 && this.Cur_line!=4 && on_Link.getParent().canChangeLine(this)) {
+						on_Link.getParent().changeLine(this);
+						return 2 ;
+					}
+
+			this.Cur_Loc = this.Cur_Loc + this.Cur_Spd;
+
+			return 3;
+		}else if(fo instanceof Cross){
+			this.Cur_Loc = this.Cur_Loc + this.Cur_Spd;
+			return 3 ;
 		}
 
-		Vehicle nextVehicle = on_Link.getNextVehicle(this);
-		if(nextVehicle != null)
-			if (this.Cur_Spd > nextVehicle.getCur_Spd())
-				if (on_Link.canChangeLine(this)) {
-					on_Link.changeLine(this);
-					return 2 ;
-				}
-
-		this.Cur_Loc = this.Cur_Loc + this.Cur_Spd;
-
-		return 3;
+		return 3 ;
 	}
 
 	public void updateGoalLine(){
-		//TODO
+		this.setGoal_line(RandomUtils.getNewLine(this.Cur_line)); ;
 	}
 
 	public boolean isOnRoad(){
-		//TODO
-		return false ;
+		if(this.Cur_line == this.goal_line)
+			return true ;
+		else
+			return false ;
 	}
 
 
