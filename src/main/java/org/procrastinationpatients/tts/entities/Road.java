@@ -67,7 +67,7 @@ public class Road extends Link {
         }
 
         DrawUtils.drawText(gc, new Point2D(a[0].getX() - 40D, a[0].getY()), Color.BLUE, "A" + this.getId());
-        DrawUtils.drawText(gc, new Point2D(b[0].getX() - 40D, b[0].getY()), Color.GREEN, "B" + this.getId());
+        DrawUtils.drawText(gc, new Point2D(b[0].getX() + 100D, b[0].getY()), Color.GREEN, "B" + this.getId());
         return;
     }
 
