@@ -139,12 +139,14 @@ public class EntityLoader {
                         ((Cross) dotA).setSouthRoad(road);
                     } else {
                         ((Margin) dotA).setConnectedLink(road);
+                        ((Margin) dotA).setFirstInputLaneIndex(0);
                     }
 
                     if (dotB instanceof Cross) {
                         ((Cross) dotB).setNorthRoad(road);
                     } else {
                         ((Margin) dotB).setConnectedLink(road);
+                        ((Margin) dotB).setFirstInputLaneIndex(3);
                     }
                 } else {//否则B点更靠北
                     road.setNorthDot(dotB);
@@ -152,14 +154,17 @@ public class EntityLoader {
 
                     if (dotA instanceof Cross) {
                         ((Cross) dotA).setNorthRoad(road);
+
                     } else {
                         ((Margin) dotA).setConnectedLink(road);
+                        ((Margin) dotA).setFirstInputLaneIndex(3);
                     }
 
                     if (dotB instanceof Cross) {
                         ((Cross) dotB).setSouthRoad(road);
                     } else {
                         ((Margin) dotB).setConnectedLink(road);
+                        ((Margin) dotB).setFirstInputLaneIndex(0);
                     }
                 }
                 this.linkCache.put(linkID, road);
@@ -171,14 +176,17 @@ public class EntityLoader {
 
                     if (dotA instanceof Cross) {
                         ((Cross) dotA).setEastStreet(street);
+
                     } else {
                         ((Margin) dotA).setConnectedLink(street);
+                        ((Margin) dotA).setFirstInputLaneIndex(0);
                     }
 
                     if (dotB instanceof Cross) {
                         ((Cross) dotB).setWestStreet(street);
                     } else {
                         ((Margin) dotB).setConnectedLink(street);
+                        ((Margin) dotB).setFirstInputLaneIndex(3);
                     }
 
                 } else {//否则B点更靠西
@@ -189,12 +197,14 @@ public class EntityLoader {
                         ((Cross) dotA).setWestStreet(street);
                     } else {
                         ((Margin) dotA).setConnectedLink(street);
+                        ((Margin) dotA).setFirstInputLaneIndex(3);
                     }
 
                     if (dotB instanceof Cross) {
                         ((Cross) dotB).setEastStreet(street);
                     } else {
                         ((Margin) dotB).setConnectedLink(street);
+                        ((Margin) dotB).setFirstInputLaneIndex(0);
                     }
                 }
                 this.linkCache.put(linkID, street);

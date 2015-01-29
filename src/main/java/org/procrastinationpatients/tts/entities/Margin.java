@@ -12,6 +12,8 @@ public class Margin extends IdentifiableObject implements Visible, Dot {
 
     private Link connectedLink;
 
+    private Integer firstInputLaneIndex =-1;
+
     public Margin(Integer id, Point2D position) {
         super(id);
         this.position = position;
@@ -43,5 +45,13 @@ public class Margin extends IdentifiableObject implements Visible, Dot {
 
     public void setConnectedLink(Link connectedLink) {
         this.connectedLink = connectedLink;
+    }
+
+    public Integer getFirstInputLaneIndex() {
+        return firstInputLaneIndex;
+    }
+
+    public void setFirstInputLaneIndex(Integer firstInputLaneIndex) {
+        this.firstInputLaneIndex = firstInputLaneIndex;
     }
 }
