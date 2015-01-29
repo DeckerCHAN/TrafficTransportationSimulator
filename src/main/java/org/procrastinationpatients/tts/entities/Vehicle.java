@@ -15,12 +15,16 @@ public class Vehicle {
 
 	private int goal_line;   //目标线路
 
-	private Lane on_Link;    //当前所在的FunctionalObject
+	private Lane on_Link;    //当前所在的Lane
 
 
 	public Vehicle() {
         super();
     }
+
+	public Vehicle(Lane lane){
+		this.on_Link = lane ;
+	}
 
 
 	//速度变化规则
@@ -36,26 +40,34 @@ public class Vehicle {
 	//终于开始能动了啦
 	public int move_Next_Location() {
 
-		if(!isOnRoad())
-			on_Link.getParent().toGoalLine(this);
+		FunctionalObject fo = on_Link.getParent() ;
+		if(fo instanceof Link){
+			if(!isOnRoad())
+				on_Link.getParent().toGoalLine(this);
 
-		if (this.Cur_Spd + this.Cur_Loc > on_Link.getLength()) {
-			on_Link.getParent().changeToNextContainer(this);
-			this.updateGoalLine();
-			return 1 ;
+			if (this.Cur_Spd + this.Cur_Loc > on_Link.getLength()) {
+				on_Link.getParent().changeToNextContainer(this);
+				this.updateGoalLine();
+				return 1 ;
+			}
+
+			Vehicle nextVehicle = on_Link.getNextVehicle(this);
+			if(nextVehicle != null)
+				if (this.Cur_Spd > nextVehicle.getCur_Spd())
+					if ( this.Cur_line!=3 && this.Cur_line!=4 && on_Link.getParent().canChangeLine(this)) {
+						on_Link.getParent().changeLine(this);
+						return 2 ;
+					}
+
+			this.Cur_Loc = this.Cur_Loc + this.Cur_Spd;
+
+			return 3;
+		}else if(fo instanceof Cross){
+			this.Cur_Loc = this.Cur_Loc + this.Cur_Spd;
+			return 3 ;
 		}
 
-		Vehicle nextVehicle = on_Link.getNextVehicle(this);
-		if(nextVehicle != null)
-			if (this.Cur_Spd > nextVehicle.getCur_Spd())
-				if ( this.Cur_line!=3 && this.Cur_line!=4 && on_Link.getParent().canChangeLine(this)) {
-					on_Link.getParent().changeLine(this);
-					return 2 ;
-				}
-
-		this.Cur_Loc = this.Cur_Loc + this.Cur_Spd;
-
-		return 3;
+		return 3 ;
 	}
 
 	public void updateGoalLine(){
