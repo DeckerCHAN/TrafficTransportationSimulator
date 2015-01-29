@@ -66,8 +66,8 @@ public class Lane {
 	public void addVehicle(Vehicle vehicle){
 		int Cur_loc = vehicle.getCur_Loc() ;
 		int temp = 0 ;
-		for(int i = 0 ; i >= Cur_loc ; i++){
-			if(vehicles[Cur_loc] == null){
+		for(int i = 0 ; i <= Cur_loc ; i++){
+			if(vehicles[i] == null){
 				temp = i ;
 			}else{
 				break;
@@ -104,7 +104,7 @@ public class Lane {
 			return 0;
 
 		for (int i = index + 1; i < this.Length; i++) {
-			if (vehicles[index] != null) {
+			if (vehicles[i] != null) {
 				return i - index ;
 			}
 		}
@@ -124,10 +124,20 @@ public class Lane {
 
 	public void changeToNextContainer(Vehicle vehicle){
 		this.removeVehicle(vehicle);
-		if(outputs != null){
+		if(outputs.size()!=0 && outputs != null){
+			System.out.print("OutPut Size!!" + outputs.size());
 			Lane outputLane = outputs.get(RandomUtils.getStartLine(outputs.size())) ;
 			vehicle.setCur_Loc(vehicle.getCur_Loc() + vehicle.getCur_Spd() - this.getLength());
+			System.out.println(outputLane.getLength()) ;
+			System.out.println(outputLane.getParent()) ;
 			outputLane.addVehicle(vehicle);
 		}
+	}
+
+	public void updateVehicle(Vehicle vehicle){
+		int Cur_Loc = vehicle.getCur_Loc() ;
+		vehicles[Cur_Loc] = null ;
+		vehicle.setCur_Loc(vehicle.getCur_Loc() + vehicle.getCur_Spd());
+		vehicles[vehicle.getCur_Loc()] = vehicle ;
 	}
 }

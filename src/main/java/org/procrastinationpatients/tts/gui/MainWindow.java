@@ -22,6 +22,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.procrastinationpatients.tts.core.Engine;
 import org.procrastinationpatients.tts.entities.Dot;
+import org.procrastinationpatients.tts.entities.Movement;
+import org.procrastinationpatients.tts.entities.Produce;
 import org.procrastinationpatients.tts.entities.Visible;
 import org.procrastinationpatients.tts.source.EntityLoader;
 import org.procrastinationpatients.tts.source.StaticConfig;
@@ -189,6 +191,9 @@ public class MainWindow extends Application {
             public void handle(MouseEvent mouseEvent) {
                 System.out.println("Start!");
                 //启动动态绘制线程
+				Produce produce = new Produce();
+				new Thread(produce).start();
+				new Thread(new Movement(produce.getAllVehicles())).start();
                 timeline.play();
             }
         };

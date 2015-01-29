@@ -30,10 +30,11 @@ public class Vehicle {
 
 	//速度变化规则
 	public int Speed_From_VDR() {
-		if (this.Cur_Spd < MAX_Speed) {
-			Cur_Spd++;
+		if (this.Cur_Spd < this.MAX_Speed) {
+			this.Cur_Spd++;
 		}
-		int safety_distance = on_Link.getSafetyDistanceByID(Cur_Loc);
+		int safety_distance = on_Link.getSafetyDistanceByID(this.Cur_Loc);
+		System.out.println("safety distance : " + safety_distance);
 		this.Cur_Spd = (safety_distance < this.Cur_Spd) ? (safety_distance) : (this.Cur_Spd);
 		return this.Cur_Spd;
 	}
@@ -44,31 +45,32 @@ public class Vehicle {
 		FunctionalObject fo = on_Link.getParent() ;
 		if(fo instanceof Link){
 			if(!isOnRoad())
-				on_Link.getParent().toGoalLine(this);
+				fo.toGoalLine(this);
 
+			if (this.Cur_Spd + this.Cur_Loc >= on_Link.getLength()) {
+				on_Link.changeToNextContainer(this);
+				return 1 ;
+			}
+
+			Vehicle nextVehicle = on_Link.getNextVehicle(this);
+			if(nextVehicle != null) {
+				if (this.Cur_Spd > nextVehicle.getCur_Spd()) {
+					if (this.Cur_line != 3 && this.Cur_line != 4 && fo.canChangeLine(this)) {
+						fo.changeLine(this);
+						return 2;
+					}
+				}
+			}
+
+			on_Link.updateVehicle(this);
+			return 3;
+		}else if(fo instanceof Cross){
 			if (this.Cur_Spd + this.Cur_Loc > on_Link.getLength()) {
 				on_Link.changeToNextContainer(this);
 				this.updateGoalLine();
 				return 1 ;
 			}
-
-			Vehicle nextVehicle = on_Link.getNextVehicle(this);
-			if(nextVehicle != null)
-				if (this.Cur_Spd > nextVehicle.getCur_Spd())
-					if ( this.Cur_line!=3 && this.Cur_line!=4 && on_Link.getParent().canChangeLine(this)) {
-						on_Link.getParent().changeLine(this);
-						return 2 ;
-					}
-
-			this.Cur_Loc = this.Cur_Loc + this.Cur_Spd;
-
-			return 3;
-		}else if(fo instanceof Cross){
-			if (this.Cur_Spd + this.Cur_Loc > on_Link.getLength()) {
-				on_Link.changeToNextContainer(this);
-				return 1 ;
-			}
-			this.Cur_Loc = this.Cur_Loc + this.Cur_Spd;
+			on_Link.updateVehicle(this);
 			return 3 ;
 		}
 

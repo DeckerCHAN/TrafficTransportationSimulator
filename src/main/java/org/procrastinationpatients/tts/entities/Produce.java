@@ -19,14 +19,12 @@ public class Produce implements Runnable{
 
 	@Override
 	public void run() {
+
 		while (true) {
 			produceVehicles();
-			for (Vehicle vehicle : allVehicles) {
-				vehicle.Speed_From_VDR();
-				vehicle.move_Next_Location();
-			}
+			int time = (int)(Production.getTime_to_Generation()*100) ;
 			try {
-				Thread.sleep(500);
+				Thread.sleep(time);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -37,12 +35,23 @@ public class Produce implements Runnable{
 
 			int start = RandomUtils.getRandomNumber(margins.length);
 			if (margins[start] != null) {
-				Lane lane = margins[start].getConnectedLink().getLanes()[RandomUtils.getRandomNumber(3)] ;
+				int line ;
+				if(margins[start].getFirstInputLaneIndex() == 0){
+					line = RandomUtils.getStartLine() ;
+				}else{
+					line = RandomUtils.getStartLine() + 3 ;
+				}
+				Lane lane = margins[start].getConnectedLink().getLanes()[line] ;
 				Vehicle vehicle = new Vehicle(lane);
 				vehicle.setSpeed(1,5);
+				vehicle.setCur_Loc(0);
+				vehicle.setCur_line(line);
 				lane.addVehicle(vehicle);
 				allVehicles.add(vehicle);
 			}
 		}
+	public LinkedList<Vehicle> getAllVehicles(){
+		return this.allVehicles;
 	}
+}
 
