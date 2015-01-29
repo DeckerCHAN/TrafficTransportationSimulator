@@ -1,6 +1,9 @@
 package org.procrastinationpatients.tts.entities;
 
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import org.procrastinationpatients.tts.utils.DrawUtils;
 
 /**
  * 东西走向
@@ -16,7 +19,38 @@ public class Street extends Link {
 
     @Override
     public void drawStaticGraphic(GraphicsContext gc) {
+        Point2D positionA = this.getA().getPosition();
+        Point2D positionB = this.getB().getPosition();
 
+        Point2D[] a = new Point2D[7];
+        Point2D[] b = new Point2D[7];
+
+        a[0] = new Point2D(positionA.getX() - 60D, positionA.getY() - 30D);
+        a[1] = new Point2D(positionA.getX() - 60D, positionA.getY() - 20D);
+        a[2] = new Point2D(positionA.getX() - 60D, positionA.getY() - 10D);
+        a[3] = new Point2D(positionA.getX() - 60D, positionA.getY() - 0D);
+        a[4] = new Point2D(positionA.getX() - 60D, positionA.getY() + 10D);
+        a[5] = new Point2D(positionA.getX() - 60D, positionA.getY() + 20D);
+        a[6] = new Point2D(positionA.getX() - 60D, positionA.getY() + 30D);
+
+        b[0] = new Point2D(positionB.getX() +60D, positionB.getY() - 30D);
+        b[1] = new Point2D(positionB.getX() + 60D, positionB.getY() - 20D);
+        b[2] = new Point2D(positionB.getX() + 60D, positionB.getY() - 10D);
+        b[3] = new Point2D(positionB.getX() + 60D, positionB.getY() - 0D);
+        b[4] = new Point2D(positionB.getX() + 60D, positionB.getY() + 10D);
+        b[5] = new Point2D(positionB.getX() + 60D, positionB.getY() + 20D);
+        b[6] = new Point2D(positionB.getX() + 60D, positionB.getY() + 30D);
+
+        DrawUtils.drawLine(gc, a[0], a[6], Color.BROWN, 5);
+        DrawUtils.drawLine(gc, b[0], b[6], Color.BROWN, 5);
+
+        for (int i = 0; i < 7; i++) {
+            DrawUtils.drawLine(gc, a[i], b[i], Color.BLACK, 2);
+        }
+
+        DrawUtils.drawText(gc, new Point2D(a[0].getX(), a[0].getY() - 40D), Color.BLUE, "A" + this.getId());
+        DrawUtils.drawText(gc, new Point2D(b[0].getX(), b[0].getY() - 40D), Color.GREEN, "B" + this.getId());
+        return;
     }
 
     @Override
