@@ -107,6 +107,22 @@ public class EntityLoader {
                 dotB = this.crossCache.get(connectionBID);
             }
 
+            //去你麻痹的重
+            Boolean isDup = false;
+            for (Link link : this.linkCache.values()) {
+                if (link.getA().getPosition().equals(dotA.getPosition()) && link.getB().getPosition().equals(dotB.getPosition())) {
+                    isDup = true;
+                    break;
+                }
+                if (link.getA().getPosition().equals(dotB.getPosition()) && link.getB().getPosition().equals(dotA.getPosition())) {
+                    isDup = true;
+                    break;
+                }
+            }
+            if (isDup) {
+                continue;
+            }
+
             //计算两个Cross的X差绝对值
             Double differX = Math.abs(dotA.getPosition().getX() - dotB.getPosition().getX());
             //计算两个Cross的Y差绝对值
