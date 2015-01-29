@@ -17,9 +17,7 @@ public class RandomUtils {
 		return random.nextInt(3) ;
 	}
 
-	public static int getRandomNumber(){
-		return random.nextInt();
-	}
+	public static int getRandomNumber(int number){ return random.nextInt(number); }
 
 	public static int getRandomNumber(int MIN , int MAX){
 		return random.nextInt(MAX-MIN) + MIN ;
