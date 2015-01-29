@@ -37,27 +37,27 @@ public class Road extends Link {
 
     @Override
     public void drawStaticGraphic(GraphicsContext gc) {
-        Point2D positionA = this.getA().getPosition();
-        Point2D positionB = this.getB().getPosition();
+        Point2D northDotPosition = this.getNorthDot().getPosition();
+        Point2D southDotPosition = this.getSouthDot().getPosition();
 
         Point2D[] a = new Point2D[7];
         Point2D[] b = new Point2D[7];
 
-        a[0] = new Point2D(positionA.getX() - 30D, positionA.getY() - 60D);
-        a[1] = new Point2D(positionA.getX() - 20D, positionA.getY() - 60D);
-        a[2] = new Point2D(positionA.getX() - 10D, positionA.getY() - 60D);
-        a[3] = new Point2D(positionA.getX() - 0D, positionA.getY() - 60D);
-        a[4] = new Point2D(positionA.getX() + 10D, positionA.getY() - 60D);
-        a[5] = new Point2D(positionA.getX() + 20D, positionA.getY() - 60D);
-        a[6] = new Point2D(positionA.getX() + 30D, positionA.getY() - 60D);
+        a[0] = new Point2D(northDotPosition.getX() - 30D, northDotPosition.getY() + 60D);
+        a[1] = new Point2D(northDotPosition.getX() - 20D, northDotPosition.getY() + 60D);
+        a[2] = new Point2D(northDotPosition.getX() - 10D, northDotPosition.getY() + 60D);
+        a[3] = new Point2D(northDotPosition.getX() - 0D, northDotPosition.getY() + 60D);
+        a[4] = new Point2D(northDotPosition.getX() + 10D, northDotPosition.getY() + 60D);
+        a[5] = new Point2D(northDotPosition.getX() + 20D, northDotPosition.getY() + 60D);
+        a[6] = new Point2D(northDotPosition.getX() + 30D, northDotPosition.getY() + 60D);
 
-        b[0] = new Point2D(positionB.getX() - 30D, positionB.getY() + 60D);
-        b[1] = new Point2D(positionB.getX() - 20D, positionB.getY() + 60D);
-        b[2] = new Point2D(positionB.getX() - 10D, positionB.getY() + 60D);
-        b[3] = new Point2D(positionB.getX() - 0D, positionB.getY() + 60D);
-        b[4] = new Point2D(positionB.getX() + 10D, positionB.getY() + 60D);
-        b[5] = new Point2D(positionB.getX() + 20D, positionB.getY() + 60D);
-        b[6] = new Point2D(positionB.getX() + 30D, positionB.getY() + 60D);
+        b[0] = new Point2D(southDotPosition.getX() - 30D, southDotPosition.getY() - 60D);
+        b[1] = new Point2D(southDotPosition.getX() - 20D, southDotPosition.getY() - 60D);
+        b[2] = new Point2D(southDotPosition.getX() - 10D, southDotPosition.getY() - 60D);
+        b[3] = new Point2D(southDotPosition.getX() - 0D, southDotPosition.getY() - 60D);
+        b[4] = new Point2D(southDotPosition.getX() + 10D, southDotPosition.getY() - 60D);
+        b[5] = new Point2D(southDotPosition.getX() + 20D, southDotPosition.getY() - 60D);
+        b[6] = new Point2D(southDotPosition.getX() + 30D, southDotPosition.getY() - 60D);
 
         DrawUtils.drawLine(gc, a[0], a[6], Color.BROWN, 5);
         DrawUtils.drawLine(gc, b[0], b[6], Color.BROWN, 5);
@@ -75,11 +75,13 @@ public class Road extends Link {
     public void drawDynamicGraphic(GraphicsContext gc) {
         Point2D positionA = this.getA().getPosition();
         Point2D positionB = this.getB().getPosition();
-        Double distX=positionA.getX() - positionB.getX();
-        Double distY=positionA.getY() - positionB.getY();
-        Line leftLine = new Line(positionA.getX()-30D, positionA.getY() + 60D, positionB.getX()-30D, positionB.getY() - 60D);
-        Double lineLength= Math.sqrt(Math.pow(Math.abs(leftLine.getStartX() - leftLine.getEndX()), 2) + Math.pow(Math.abs(leftLine.getStartY() - leftLine.getEndY()), 2));
-        Double perc=StaticConfig.LANE_POINT_SKIP_DISTANCE/lineLength;
+
+        Point2D leftLineA = new Point2D(positionA.getX() - 30D, positionA.getY() - 60D);
+        Point2D leftLineB = new Point2D(positionB.getX() - 30D, positionB.getY() + 60D);
+
+
+        Double distX = leftLineA.getX() - leftLineB.getX();
+        Double distY = leftLineA.getY() - leftLineB.getY();
         for (int i=0;i<this.getLanes().length;i++)
         {
             Lane lane=this.getLanes()[i];
@@ -87,7 +89,7 @@ public class Road extends Link {
             {
                     if(lane.getVehicles()[j]==null)
                     {
-                        DrawUtils.drawBallAtCoordinate(gc,new Point2D(leftLine.getStartX()+distX*perc*j,leftLine.getStartY()+distY*perc*j),4,Color.YELLOW);
+                        DrawUtils.drawBallAtCoordinate(gc, new Point2D(leftLineA.getX() + distX * ((double) j / (double) lane.getVehicles().length), leftLineA.getY() + distY * ((double) j / (double) lane.getVehicles().length)), 4, Color.YELLOW);
                     }
             }
         }

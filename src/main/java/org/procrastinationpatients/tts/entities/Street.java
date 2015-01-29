@@ -24,27 +24,27 @@ public class Street extends Link {
 
     @Override
     public void drawStaticGraphic(GraphicsContext gc) {
-        Point2D positionA = this.getA().getPosition();
-        Point2D positionB = this.getB().getPosition();
+        Point2D westDotPosition = this.getWestDot().getPosition();
+        Point2D eastDotPosition = this.getEastDot().getPosition();
 
         Point2D[] a = new Point2D[7];
         Point2D[] b = new Point2D[7];
 
-        a[0] = new Point2D(positionA.getX() - 60D, positionA.getY() - 30D);
-        a[1] = new Point2D(positionA.getX() - 60D, positionA.getY() - 20D);
-        a[2] = new Point2D(positionA.getX() - 60D, positionA.getY() - 10D);
-        a[3] = new Point2D(positionA.getX() - 60D, positionA.getY() - 0D);
-        a[4] = new Point2D(positionA.getX() - 60D, positionA.getY() + 10D);
-        a[5] = new Point2D(positionA.getX() - 60D, positionA.getY() + 20D);
-        a[6] = new Point2D(positionA.getX() - 60D, positionA.getY() + 30D);
+        a[0] = new Point2D(westDotPosition.getX() + 60D, westDotPosition.getY() - 30D);
+        a[1] = new Point2D(westDotPosition.getX() + 60D, westDotPosition.getY() - 20D);
+        a[2] = new Point2D(westDotPosition.getX() + 60D, westDotPosition.getY() - 10D);
+        a[3] = new Point2D(westDotPosition.getX() + 60D, westDotPosition.getY() - 0D);
+        a[4] = new Point2D(westDotPosition.getX() + 60D, westDotPosition.getY() + 10D);
+        a[5] = new Point2D(westDotPosition.getX() + 60D, westDotPosition.getY() + 20D);
+        a[6] = new Point2D(westDotPosition.getX() + 60D, westDotPosition.getY() + 30D);
 
-        b[0] = new Point2D(positionB.getX() +60D, positionB.getY() - 30D);
-        b[1] = new Point2D(positionB.getX() + 60D, positionB.getY() - 20D);
-        b[2] = new Point2D(positionB.getX() + 60D, positionB.getY() - 10D);
-        b[3] = new Point2D(positionB.getX() + 60D, positionB.getY() - 0D);
-        b[4] = new Point2D(positionB.getX() + 60D, positionB.getY() + 10D);
-        b[5] = new Point2D(positionB.getX() + 60D, positionB.getY() + 20D);
-        b[6] = new Point2D(positionB.getX() + 60D, positionB.getY() + 30D);
+        b[0] = new Point2D(eastDotPosition.getX() -60D, eastDotPosition.getY() - 30D);
+        b[1] = new Point2D(eastDotPosition.getX() - 60D, eastDotPosition.getY() - 20D);
+        b[2] = new Point2D(eastDotPosition.getX() - 60D, eastDotPosition.getY() - 10D);
+        b[3] = new Point2D(eastDotPosition.getX() - 60D, eastDotPosition.getY() - 0D);
+        b[4] = new Point2D(eastDotPosition.getX() - 60D, eastDotPosition.getY() + 10D);
+        b[5] = new Point2D(eastDotPosition.getX() - 60D, eastDotPosition.getY() + 20D);
+        b[6] = new Point2D(eastDotPosition.getX() - 60D, eastDotPosition.getY() + 30D);
 
         DrawUtils.drawLine(gc, a[0], a[6], Color.BROWN, 5);
         DrawUtils.drawLine(gc, b[0], b[6], Color.BROWN, 5);
