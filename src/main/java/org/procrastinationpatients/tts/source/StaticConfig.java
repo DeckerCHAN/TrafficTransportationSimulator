@@ -10,7 +10,7 @@ public class StaticConfig {
     public static Double PANE_SIZE_WIDTH=1024D;
     public static Double PANE_SIZE_HEIGHT=768D;
 
-    public static Integer TICK_INTERVAL=200;
+    public static Integer TICK_INTERVAL=1000;
 
     public static Double LANE_POINT_SKIP_DISTANCE=10D;
 }
