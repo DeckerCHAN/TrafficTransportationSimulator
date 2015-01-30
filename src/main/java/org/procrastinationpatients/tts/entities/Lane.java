@@ -64,6 +64,7 @@ public class Lane {
 
     public void setLength(Integer length) {
         this.vehicles=new Vehicle[length];
+		this.positions=new Point2D[length];
 		this.Length = length ;
     }
 
@@ -133,10 +134,6 @@ public class Lane {
 			vehicle.setCur_Loc(vehicle.getCur_Loc() + vehicle.getCur_Spd() - this.getLength());
 			outputLane.addVehicle(vehicle);
 		}
-	}
-
-	public Point2D[] getPositions() {
-		return positions;
 	}
 
 	public void setPositions(Point2D[] positions) {
