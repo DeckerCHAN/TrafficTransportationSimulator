@@ -1,5 +1,6 @@
 package org.procrastinationpatients.tts.entities;
 
+import javafx.geometry.Point2D;
 import org.procrastinationpatients.tts.utils.RandomUtils;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
 public class Lane {
 
 	private int Length;
+	private Point2D [] positions;
     private List<Lane> inputs;
     private List<Lane> outputs;
     private Vehicle [] vehicles;
@@ -60,6 +62,7 @@ public class Lane {
 
     public void setLength(Integer length) {
         this.vehicles=new Vehicle[length];
+		this.positions=new Point2D[length];
 		this.Length = length ;
     }
 
@@ -134,10 +137,15 @@ public class Lane {
 		}
 	}
 
-	public void updateVehicle(Vehicle vehicle){
-		int Cur_Loc = vehicle.getCur_Loc() ;
-		vehicles[Cur_Loc] = null ;
+
+	public void updateVehicle(Vehicle vehicle) {
+		int Cur_Loc = vehicle.getCur_Loc();
+		vehicles[Cur_Loc] = null;
 		vehicle.setCur_Loc(vehicle.getCur_Loc() + vehicle.getCur_Spd());
-		vehicles[vehicle.getCur_Loc()] = vehicle ;
+		vehicles[vehicle.getCur_Loc()] = vehicle;
+	}
+	public void setPositions(Point2D[] positions) {
+		this.positions = positions;
+
 	}
 }

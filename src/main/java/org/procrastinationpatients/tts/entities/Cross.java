@@ -3,12 +3,26 @@ package org.procrastinationpatients.tts.entities;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import org.procrastinationpatients.tts.source.StaticConfig;
 import org.procrastinationpatients.tts.utils.DrawUtils;
 
 /**
  * Created by decker on 15-1-28.
  */
 public class Cross extends IdentifiableObject implements Visible, Dot, FunctionalObject {
+
+    private static Double[] laneVisualLength;
+
+    static {
+        laneVisualLength = new Double[7];
+        laneVisualLength[0] = Math.sqrt(Math.pow(35D, 2) + Math.pow(35D, 2));
+        laneVisualLength[1] = Math.sqrt(Math.pow(35D, 2) + Math.pow(45D, 2));
+        laneVisualLength[2] = Math.sqrt(Math.pow(35D, 2) + Math.pow(55D, 2));
+        laneVisualLength[3] = 60D;
+        laneVisualLength[4] = Math.sqrt(Math.pow(65D, 2) + Math.pow(65D, 2));
+        laneVisualLength[5] = Math.sqrt(Math.pow(65D, 2) + Math.pow(75D, 2));
+        laneVisualLength[5] = Math.sqrt(Math.pow(65D, 2) + Math.pow(85D, 2));
+    }
 
     private Point2D position;
     private Lane[] northLanes;
@@ -29,7 +43,7 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
         this.southLanes = new Lane[]{new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this)};
         this.eastLanes = new Lane[]{new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this)};
         this.westLanes = new Lane[]{new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this)};
-
+        this.refreshLaneLength();
 
     }
 
@@ -63,6 +77,18 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
 
     @Override
     public void drawDynamicGraphic(GraphicsContext gc) {
+        for (Lane lane : this.getSouthLanes()) {
+
+        }
+    }
+
+    private void refreshLaneLength() {
+        for (Lane[] lanes : this.getRowLanes()) {
+            for (int i = 0; i < lanes.length; i++) {
+                Integer itemLength = (int) Math.round(laneVisualLength[i] / StaticConfig.LANE_POINT_SKIP_DISTANCE);
+                lanes[i].setLength(itemLength);
+            }
+        }
 
     }
 
