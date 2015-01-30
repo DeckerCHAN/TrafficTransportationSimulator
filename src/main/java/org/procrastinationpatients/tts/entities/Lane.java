@@ -111,7 +111,6 @@ public class Lane {
 				return i - index ;
 			}
 		}
-
 		return this.Length - index ;
 	}
 
@@ -128,15 +127,18 @@ public class Lane {
 	public void changeToNextContainer(Vehicle vehicle){
 		this.removeVehicle(vehicle);
 		if(outputs.size()!=0 && outputs != null){
-			System.out.print("OutPut Size!!" + outputs.size());
+			System.out.println("OutPut Size!!" + outputs.size());
 			Lane outputLane = outputs.get(RandomUtils.getStartLine(outputs.size())) ;
 			vehicle.setCur_Loc(vehicle.getCur_Loc() + vehicle.getCur_Spd() - this.getLength());
+			vehicle.setOn_Link(outputLane);
 			System.out.println(outputLane.getLength()) ;
+			System.out.println(this.getParent()) ;
 			System.out.println(outputLane.getParent()) ;
 			outputLane.addVehicle(vehicle);
+		}else{
+			vehicle.setOn_Link(null);
 		}
 	}
-
 
 	public void updateVehicle(Vehicle vehicle) {
 		int Cur_Loc = vehicle.getCur_Loc();
@@ -144,8 +146,8 @@ public class Lane {
 		vehicle.setCur_Loc(vehicle.getCur_Loc() + vehicle.getCur_Spd());
 		vehicles[vehicle.getCur_Loc()] = vehicle;
 	}
+
 	public void setPositions(Point2D[] positions) {
 		this.positions = positions;
-
 	}
 }

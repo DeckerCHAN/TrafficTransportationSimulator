@@ -21,12 +21,14 @@ public class Produce implements Runnable{
 	public void run() {
 
 		while (true) {
-			produceVehicles();
-			int time = (int)(Production.getTime_to_Generation()*100) ;
-			try {
-				Thread.sleep(time);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			if(Movement.flag){
+				produceVehicles();
+				int time = (int)(Production.getTime_to_Generation()*100) ;
+				try {
+					Thread.sleep(time);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -43,7 +45,7 @@ public class Produce implements Runnable{
 				}
 				Lane lane = margins[start].getConnectedLink().getLanes()[line] ;
 				Vehicle vehicle = new Vehicle(lane);
-				vehicle.setSpeed(1,5);
+				vehicle.setSpeed(1,1);
 				vehicle.setCur_Loc(0);
 				vehicle.setCur_line(line);
 				lane.addVehicle(vehicle);

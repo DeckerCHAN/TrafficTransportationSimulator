@@ -30,7 +30,6 @@ public class TestBorderPane extends Application {
         stage.setScene(new Scene(borderPane));
         stage.show();
 
-
     }
 
     public static void main(String [] args)

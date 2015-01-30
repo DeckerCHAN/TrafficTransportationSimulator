@@ -5,8 +5,8 @@ package org.procrastinationpatients.tts.source;
  * @Author Decker
  */
 public class StaticConfig {
-    public static final Double STAGE_SIZE_WIDTH = 1030D;
-    public static final Double STAGE_SIZE_HEIGHT = 795D;
+    public static final Double STAGE_SIZE_WIDTH = 800D;
+    public static final Double STAGE_SIZE_HEIGHT = 600D;
 
     public static final Integer TICK_INTERVAL = 1000;
 

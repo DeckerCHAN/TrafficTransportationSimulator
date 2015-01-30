@@ -65,7 +65,7 @@ public class Vehicle {
 			on_Link.updateVehicle(this);
 			return 3;
 		}else if(fo instanceof Cross){
-			if (this.Cur_Spd + this.Cur_Loc > on_Link.getLength()) {
+			if (this.Cur_Spd + this.Cur_Loc >= on_Link.getLength()) {
 				on_Link.changeToNextContainer(this);
 				this.updateGoalLine();
 				return 1 ;
@@ -112,4 +112,11 @@ public class Vehicle {
 	public String getColor() { return color; }
 
 	public void setColor(String color) { this.color = color; }
+
+	public void setOn_Link(Lane lane){
+		this.on_Link = lane ;
+	}
+	public Lane getOn_Link(){
+		return this.on_Link ;
+	}
 }

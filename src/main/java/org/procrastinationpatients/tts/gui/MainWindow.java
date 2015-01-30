@@ -194,7 +194,7 @@ public class MainWindow extends Application {
 				Produce produce = new Produce();
 				new Thread(produce).start();
 				new Thread(new Movement(produce.getAllVehicles())).start();
-                timeline.play();
+				timeline.play();
             }
         };
     }
