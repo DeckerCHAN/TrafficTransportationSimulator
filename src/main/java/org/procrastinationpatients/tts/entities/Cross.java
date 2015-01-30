@@ -21,7 +21,7 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
         laneVisualLength[3] = 60D;
         laneVisualLength[4] = Math.sqrt(Math.pow(65D, 2) + Math.pow(65D, 2));
         laneVisualLength[5] = Math.sqrt(Math.pow(65D, 2) + Math.pow(75D, 2));
-        laneVisualLength[5] = Math.sqrt(Math.pow(65D, 2) + Math.pow(85D, 2));
+        laneVisualLength[6] = Math.sqrt(Math.pow(65D, 2) + Math.pow(85D, 2));
     }
 
     private Point2D position;
