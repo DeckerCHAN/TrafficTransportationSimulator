@@ -1,8 +1,10 @@
 package org.procrastinationpatients.tts.entities;
 
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import org.procrastinationpatients.tts.utils.DrawUtils;
 import org.procrastinationpatients.tts.utils.RandomUtils;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -41,7 +43,7 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 
 	public void setA(Dot a) {
         this.a = a;
-        refreshLaneLength();
+        refreshLane();
     }
 
 	public Dot getB() {
@@ -50,10 +52,10 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 
 	public void setB(Dot b) {
         this.b = b;
-        refreshLaneLength();
+        refreshLane();
     }
 
-    protected abstract void refreshLaneLength();
+    protected abstract void refreshLane();
 
 
 
@@ -166,5 +168,23 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 	@Override
 	public int getLane_Length() {
 		return this.lane_Length;
+	}
+
+	@Override
+	public void drawDynamicGraphic(GraphicsContext gc) {
+
+		for (Lane lane : this.getLanes())
+		{
+			for (int i = 0; i < lane.getLength(); i++)
+			{
+				if (lane.getVehicles()[i] == null) {
+					if (lane.getVehiclePositions()[i] == null)
+					{
+						continue;
+					}
+					DrawUtils.drawBallAtCoordinate(gc, lane.getVehiclePositions()[i], 4, Color.RED);
+				}
+			}
+		}
 	}
 }
