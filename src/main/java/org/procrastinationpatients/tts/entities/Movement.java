@@ -11,7 +11,7 @@ import java.util.LinkedList;
  */
 public class Movement implements Runnable {
 
-	public static boolean flag = false ;
+	public static boolean flag = true ;
 	private LinkedList<Vehicle> allVehicles = new LinkedList<>();
 	private LinkedList<Vehicle> cacheVehicle = new LinkedList<>();
 	public Movement(LinkedList<Vehicle> allVehicles){
@@ -21,6 +21,7 @@ public class Movement implements Runnable {
 	@Override
 	public void run() {
 		while(true){
+			System.out.println("=============MoveMent==============") ;
 			flag = false ;
 			Iterator<Vehicle> it = allVehicles.iterator() ;
 			while(it.hasNext()){
@@ -41,7 +42,7 @@ public class Movement implements Runnable {
 			cacheVehicle.clear();
 
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

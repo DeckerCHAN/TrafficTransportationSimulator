@@ -66,8 +66,8 @@ public class Road extends Link {
             DrawUtils.drawLine(gc, a[i], b[i], Color.BLACK, 2);
         }
 
-        DrawUtils.drawText(gc, new Point2D(a[0].getX() - 40D, a[0].getY()), Color.BLUE, "A" + this.getId());
-        DrawUtils.drawText(gc, new Point2D(b[0].getX() + 100D, b[0].getY()), Color.GREEN, "B" + this.getId());
+        DrawUtils.drawText(gc, new Point2D(a[0].getX() - 40D, a[0].getY()), Color.BLUE, "A" + this.getId(),20D);
+        DrawUtils.drawText(gc, new Point2D(b[0].getX() + 100D, b[0].getY()), Color.GREEN, "B" + this.getId(),20D);
         return;
     }
 

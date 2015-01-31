@@ -13,7 +13,7 @@ import java.util.List;
 public class Lane {
 
 	private int Length;
-	private Point2D [] positions;
+	private Point2D [] vehiclePositions;
     private List<Lane> inputs;
     private List<Lane> outputs;
     private Vehicle [] vehicles;
@@ -48,13 +48,13 @@ public class Lane {
         return vehicles;
     }
 
+	public void setVehicles(Vehicle[] vehicles) {
+		this.vehicles = vehicles;
+	}
+
 	public FunctionalObject getParent(){
 		return this.parent ;
 	}
-
-    public void setVehicles(Vehicle[] vehicles) {
-        this.vehicles = vehicles;
-    }
 
     public Integer getLength() {
         return this.Length;
@@ -62,7 +62,7 @@ public class Lane {
 
     public void setLength(Integer length) {
         this.vehicles=new Vehicle[length];
-		this.positions=new Point2D[length];
+		this.vehiclePositions =new Point2D[length];
 		this.Length = length ;
     }
 
@@ -147,7 +147,7 @@ public class Lane {
 		vehicles[vehicle.getCur_Loc()] = vehicle;
 	}
 
-	public void setPositions(Point2D[] positions) {
-		this.positions = positions;
+	public Point2D[] getVehiclePositions() {
+		return vehiclePositions;
 	}
 }

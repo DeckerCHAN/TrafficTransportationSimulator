@@ -19,7 +19,7 @@ public class Produce implements Runnable{
 
 	@Override
 	public void run() {
-
+		System.out.println("=============Produce==============") ;
 		while (true) {
 			if(Movement.flag){
 				produceVehicles();
@@ -45,7 +45,7 @@ public class Produce implements Runnable{
 				}
 				Lane lane = margins[start].getConnectedLink().getLanes()[line] ;
 				Vehicle vehicle = new Vehicle(lane);
-				vehicle.setSpeed(1,1);
+				vehicle.setSpeed(1,5);
 				vehicle.setCur_Loc(0);
 				vehicle.setCur_line(line);
 				lane.addVehicle(vehicle);
