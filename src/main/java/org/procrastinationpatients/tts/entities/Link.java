@@ -177,7 +177,7 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 		{
 			for (int i = 0; i < lane.getLength(); i++)
 			{
-				if (lane.getVehicles()[i] == null) {
+				if (lane.getVehicles()[i] != null) {
 					if (lane.getVehiclePositions()[i] == null)
 					{
 						continue;
