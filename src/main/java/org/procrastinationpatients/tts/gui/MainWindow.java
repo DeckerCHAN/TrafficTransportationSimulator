@@ -216,7 +216,7 @@ public class MainWindow extends Application {
                 Long start = System.currentTimeMillis();
                 drawAllDynamic();
                 Long end = System.currentTimeMillis();
-                System.out.println(String.format("Draw coast %s ms.", end - start));
+                System.out.println(String.format("Draw cost %s ms.", end - start));
 
             }
         };
