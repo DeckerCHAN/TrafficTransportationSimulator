@@ -54,6 +54,9 @@ public class EntityLoader {
             Double crossPositionX = Double.valueOf(element.getElementsByTagName("x").item(0).getTextContent());
             //获取cross中y的坐标
             Double crossPositionY = Double.valueOf(element.getElementsByTagName("y").item(0).getTextContent());
+            //在左边和上边留下各60D的空间
+            crossPositionX += 60D;
+            crossPositionY += 60D;
 
             Cross cross = new Cross(crossID, new Point2D(crossPositionX, crossPositionY));
             this.crossCache.put(crossID, cross);
@@ -71,6 +74,10 @@ public class EntityLoader {
             Double marginPositionX = Double.valueOf(element.getElementsByTagName("x").item(0).getTextContent());
             //获取margin中y的坐标
             Double marginPositionY = Double.valueOf(element.getElementsByTagName("y").item(0).getTextContent());
+
+            //在左边和上边留下各60D的空间
+            marginPositionX += 60D;
+            marginPositionY += 60D;
 
             Margin margin = new Margin(marginID, new Point2D(marginPositionX, marginPositionY));
             this.marginCache.put(marginID, margin);
