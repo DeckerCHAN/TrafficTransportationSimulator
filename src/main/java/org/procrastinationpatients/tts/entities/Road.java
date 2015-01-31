@@ -83,9 +83,6 @@ public class Road extends Link {
         b[5] = new Point2D(southDotPosition.getX() + 20D, southDotPosition.getY() - 60D);
         b[6] = new Point2D(southDotPosition.getX() + 30D, southDotPosition.getY() - 60D);
 
-        DrawUtils.drawLine(gc, a[0], a[6], Color.BROWN, 5);
-        DrawUtils.drawLine(gc, b[0], b[6], Color.BROWN, 5);
-
         for (int i = 0; i < 7; i++) {
             DrawUtils.drawLine(gc, a[i], b[i], Color.BLACK, 2);
         }
