@@ -25,7 +25,6 @@ public class NetUtils {
                 }
                 maxX = dot.getPosition().getX() > maxX ? dot.getPosition().getX() : maxX;
                 maxY = dot.getPosition().getY() > maxY ? dot.getPosition().getY() : maxY;
-            dot.setPosition(new Point2D(dot.getPosition().getX() + 60D, dot.getPosition().getY() + 60D));
         }
         //留出10%的空间
         return new Point2D(maxX * 1.05, maxY * 1.05);
