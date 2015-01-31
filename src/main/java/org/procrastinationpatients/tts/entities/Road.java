@@ -19,19 +19,43 @@ public class Road extends Link {
     }
 
     @Override
-    protected void refreshLaneLength() {
+    protected void refreshLane() {
         if(this.getA()==null||this.getB()==null)
         {
             return;
         }
-        Point2D positionA = this.getA().getPosition();
-        Point2D positionB = this.getB().getPosition();
-        Line centerLine = new Line(positionA.getX(), positionA.getY() + 60, positionB.getX(), positionB.getY() - 60);
+        Point2D northPosition = this.getA().getPosition();
+        Point2D southPosition = this.getB().getPosition();
+        Point2D northCenterPosition = new Point2D(northPosition.getX(), northPosition.getY() + 60D);
+        Point2D southCenterPosition = new Point2D(southPosition.getX(), southPosition.getY() - 60D);
+        Line centerLine = new Line(northPosition.getX(), northPosition.getY() + 60D, southPosition.getX(), southPosition.getY() - 60D);
         Double d = Math.sqrt(Math.pow(Math.abs(centerLine.getStartX() - centerLine.getEndX()), 2) + Math.pow(Math.abs(centerLine.getStartY() - centerLine.getEndY()), 2)) / StaticConfig.LANE_POINT_SKIP_DISTANCE;
         Integer items = (int) Math.round(d);
         for (Lane lane : this.getLanes()) {
             lane.setLength(items);
         }
+        Double diffX = northCenterPosition.getX() - southCenterPosition.getX();
+        Double diffY = Math.abs(northCenterPosition.getY() - southCenterPosition.getY());
+        Double distance = Math.sqrt(Math.pow(diffX, 2) + Math.pow(diffY, 2));
+
+        Double progressX = StaticConfig.LANE_POINT_SKIP_DISTANCE * (diffX / distance);
+        Double progressY = StaticConfig.LANE_POINT_SKIP_DISTANCE * (diffY / distance);
+
+        Point2D lane0StartPoint = new Point2D(northPosition.getX() - 25D, northPosition.getY() + 60D);
+        Point2D lane3EndPoint = new Point2D(southPosition.getX() + 5D, southPosition.getY() - 60D);
+        for (int i = 0; i < 3; i++) {
+            Lane lane = this.getLanes()[i];
+            for (int j = 0; j < lane.getLength(); j++) {
+                lane.getVehiclePositions()[j] = new Point2D(lane0StartPoint.getX() - j * progressX + i * 10D, lane0StartPoint.getY() + j * progressY);
+            }
+        }
+        for (int i = 3; i < 6; i++) {
+            Lane lane = this.getLanes()[i];
+            for (int j = 0; j < lane.getLength(); j++) {
+                         lane.getVehiclePositions()[j] = new Point2D(lane3EndPoint.getX() + j * progressX + (i-3) * 10D, lane3EndPoint.getY() - j * progressY);
+            }
+        }
+
     }
 
 
@@ -71,29 +95,7 @@ public class Road extends Link {
         return;
     }
 
-    @Override
-    public void drawDynamicGraphic(GraphicsContext gc) {
-        Point2D northDotPosition = this.getNorthDot().getPosition();
-        Point2D southDotPosition = this.getSouthDot().getPosition();
 
-        Point2D leftLineA = new Point2D(northDotPosition.getX() - 30D, northDotPosition.getY() + 60D);
-        Point2D leftLineB = new Point2D(southDotPosition.getX() - 30D, southDotPosition.getY() - 60D);
-
-
-        Double distX = leftLineA.getX() - leftLineB.getX();
-        Double distY = leftLineA.getY() - leftLineB.getY();
-        for (int i=0;i<this.getLanes().length;i++)
-        {
-            Lane lane=this.getLanes()[i];
-            for(int j=0;j<lane.getVehicles().length;j++)
-            {
-                    if(lane.getVehicles()[j]!=null)
-                    {
-                        DrawUtils.drawBallAtCoordinate(gc, new Point2D(leftLineA.getX() + 5D + (10D * i) - distX * ((double) j / (double) lane.getVehicles().length), leftLineA.getY() +  - distY * ((double) j / (double) lane.getVehicles().length)), 4, Color.RED);
-                    }
-            }
-        }
-    }
 
     public Dot getNorthDot() {
         return getA();
