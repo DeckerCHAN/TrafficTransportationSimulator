@@ -57,10 +57,6 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 
     protected abstract void refreshLane();
 
-
-
-
-
 	@Override
 	public boolean canChangeLine(Vehicle vehicle) {
 		int v_line = vehicle.getCur_line();
@@ -127,12 +123,13 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 
 	@Override
 	public void toGoalLine(Vehicle vehicle) {
-		int v_line = vehicle.getGoal_line();
+		int v_line = vehicle.getCur_line();
+		int v_goal_line = vehicle.getGoal_line() ;
 		int v_location = vehicle.getCur_Loc();
 
-		if(!hasVehicle(v_line,v_location)){
+		if(!hasVehicle(v_goal_line,v_location)){
 			vehicle.setCur_line(v_line);
-			lanes[vehicle.getCur_line()].removeVehicle(v_location) ;
+			lanes[v_line].removeVehicle(v_location) ;
 			lanes[v_line].addVehicle(vehicle) ;
 		}
 	}

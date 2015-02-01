@@ -21,8 +21,6 @@ public class Lane {
 	private LinkedList<Vehicle> allVehicles ;
     private FunctionalObject parent;
 
-
-
     public Lane(FunctionalObject parent) {
         this.inputs = new ArrayList<>();
         this.outputs = new ArrayList<>();
@@ -71,8 +69,8 @@ public class Lane {
 	public void addVehicle(Vehicle vehicle){
 		int Cur_loc = vehicle.getCur_Loc() ;
 		int temp = 0 ;
-		for(int i = 0 ; i >= Cur_loc ; i++){
-			if(vehicles[Cur_loc] == null){
+		for(int i = 0 ; i <= Cur_loc ; i++){
+			if(vehicles[i] == null){
 				temp = i ;
 			}else{
 				break;
@@ -109,11 +107,10 @@ public class Lane {
 			return 0;
 
 		for (int i = index + 1; i < this.Length; i++) {
-			if (vehicles[index] != null) {
+			if (vehicles[i] != null) {
 				return i - index ;
 			}
 		}
-
 		return this.Length - index ;
 	}
 
@@ -129,11 +126,25 @@ public class Lane {
 
 	public void changeToNextContainer(Vehicle vehicle){
 		this.removeVehicle(vehicle);
-		if(outputs != null){
+		if(outputs.size()!=0 && outputs != null){
+			System.out.println("OutPut Size!!" + outputs.size());
 			Lane outputLane = outputs.get(RandomUtils.getStartLine(outputs.size())) ;
 			vehicle.setCur_Loc(vehicle.getCur_Loc() + vehicle.getCur_Spd() - this.getLength());
+			vehicle.setOn_Link(outputLane);
+			System.out.println(outputLane.getLength()) ;
+			System.out.println(this.getParent()) ;
+			System.out.println(outputLane.getParent()) ;
 			outputLane.addVehicle(vehicle);
+		}else{
+			vehicle.setOn_Link(null);
 		}
+	}
+
+	public void updateVehicle(Vehicle vehicle) {
+		int Cur_Loc = vehicle.getCur_Loc();
+		vehicles[Cur_Loc] = null;
+		vehicle.setCur_Loc(vehicle.getCur_Loc() + vehicle.getCur_Spd());
+		vehicles[vehicle.getCur_Loc()] = vehicle;
 	}
 
 	public Point2D[] getVehiclePositions() {

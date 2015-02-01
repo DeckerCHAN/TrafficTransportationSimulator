@@ -5,12 +5,14 @@ package org.procrastinationpatients.tts.source;
  * @Author Decker
  */
 public class StaticConfig {
+
     public static final Boolean DEBUG_MODE = false;
 
-    public static final Double STAGE_SIZE_WIDTH = 1030D;
-    public static final Double STAGE_SIZE_HEIGHT = 795D;
+    public static final Double STAGE_SIZE_WIDTH = 1024D;
+    public static final Double STAGE_SIZE_HEIGHT = 768D;
 
-    public static final Integer TICK_INTERVAL = 1000;
 
-    public static final Double LANE_POINT_SKIP_DISTANCE = 10D;
+    public static final Integer TICK_INTERVAL = 100;
+
+    public static final Double LANE_POINT_SKIP_DISTANCE = 1D;
 }

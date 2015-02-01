@@ -8,6 +8,7 @@ import org.procrastinationpatients.tts.utils.RandomUtils;
 public class Vehicle {
 
 	private int id ; 		  // ID
+	private String color ;    //颜色
 	private int Cur_Spd;      //当前速度
 	private int Cur_Loc;      //当前位置
 	private int Cur_line;     //当前线路
@@ -17,22 +18,23 @@ public class Vehicle {
 
 	private Lane on_Link;    //当前所在的Lane
 
-
-	public Vehicle() {
-        super();
-    }
-
 	public Vehicle(Lane lane){
 		this.on_Link = lane ;
 	}
 
 
+	public void setSpeed(int Cur_Sped , int Gol_Sped){
+		this.Cur_Spd = Cur_Sped ;
+		this.MAX_Speed = Gol_Sped ;
+	}
+
 	//速度变化规则
 	public int Speed_From_VDR() {
-		if (this.Cur_Spd < MAX_Speed) {
-			Cur_Spd++;
+		if (this.Cur_Spd < this.MAX_Speed) {
+			this.Cur_Spd++;
 		}
-		int safety_distance = on_Link.getSafetyDistanceByID(Cur_Loc);
+		int safety_distance = on_Link.getSafetyDistanceByID(this.Cur_Loc);
+		System.out.println("safety distance : " + safety_distance);
 		this.Cur_Spd = (safety_distance < this.Cur_Spd) ? (safety_distance) : (this.Cur_Spd);
 		return this.Cur_Spd;
 	}
@@ -43,31 +45,32 @@ public class Vehicle {
 		FunctionalObject fo = on_Link.getParent() ;
 		if(fo instanceof Link){
 			if(!isOnRoad())
-				on_Link.getParent().toGoalLine(this);
+				fo.toGoalLine(this);
 
-			if (this.Cur_Spd + this.Cur_Loc > on_Link.getLength()) {
+			if (this.Cur_Spd + this.Cur_Loc >= on_Link.getLength()) {
 				on_Link.changeToNextContainer(this);
-				this.updateGoalLine();
 				return 1 ;
 			}
 
 			Vehicle nextVehicle = on_Link.getNextVehicle(this);
-			if(nextVehicle != null)
-				if (this.Cur_Spd > nextVehicle.getCur_Spd())
-					if ( this.Cur_line!=3 && this.Cur_line!=4 && on_Link.getParent().canChangeLine(this)) {
-						on_Link.getParent().changeLine(this);
-						return 2 ;
+			if(nextVehicle != null) {
+				if (this.Cur_Spd > nextVehicle.getCur_Spd()) {
+					if (this.Cur_line != 3 && this.Cur_line != 4 && fo.canChangeLine(this)) {
+						fo.changeLine(this);
+						return 2;
 					}
+				}
+			}
 
-			this.Cur_Loc = this.Cur_Loc + this.Cur_Spd;
-
+			on_Link.updateVehicle(this);
 			return 3;
 		}else if(fo instanceof Cross){
-			if (this.Cur_Spd + this.Cur_Loc > on_Link.getLength()) {
+			if (this.Cur_Spd + this.Cur_Loc >= on_Link.getLength()) {
 				on_Link.changeToNextContainer(this);
+				this.updateGoalLine();
 				return 1 ;
 			}
-			this.Cur_Loc = this.Cur_Loc + this.Cur_Spd;
+			on_Link.updateVehicle(this);
 			return 3 ;
 		}
 
@@ -105,4 +108,15 @@ public class Vehicle {
 	public int getGoal_line() { return goal_line; }
 
 	public void setGoal_line(int goal_line) { this.goal_line = goal_line; }
+
+	public String getColor() { return color; }
+
+	public void setColor(String color) { this.color = color; }
+
+	public void setOn_Link(Lane lane){
+		this.on_Link = lane ;
+	}
+	public Lane getOn_Link(){
+		return this.on_Link ;
+	}
 }
