@@ -12,13 +12,10 @@ public class Produce implements Runnable{
 
 	private Margin[] margins ;
 	private LinkedList<Vehicle> allVehicles = new LinkedList();
-	private Boolean isPaused;
-	private Boolean isStopped;
+
 
 	public Produce(){
 		this.margins = Engine.getInstance().getMargins() ;
-		this.isPaused = false;
-		this.isStopped=false;
 	}
 
 	@Override
@@ -29,7 +26,7 @@ public class Produce implements Runnable{
 			while (true) {
 				if (getIsStopped()) {
 					return;
-				} else if (this.isPaused) {
+				} else if (this.getIsPaused()) {
 					Thread.sleep(1);
 					continue;
 				}
@@ -71,19 +68,11 @@ public class Produce implements Runnable{
 	}
 
 	public Boolean getIsPaused() {
-		return isPaused;
-	}
-
-	public void setIsPaused(Boolean isPaused) {
-		this.isPaused = isPaused;
+		return Engine.getInstance().getIsPaused();
 	}
 
 	public Boolean getIsStopped() {
-		return isStopped;
-	}
-
-	public void setIsStopped(Boolean isStopped) {
-		this.isStopped = isStopped;
+		return Engine.getInstance().getIsStopped();
 	}
 }
 

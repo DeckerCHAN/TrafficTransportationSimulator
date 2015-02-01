@@ -1,5 +1,7 @@
 package org.procrastinationpatients.tts.entities;
 
+import org.procrastinationpatients.tts.core.Engine;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -11,8 +13,6 @@ public class Movement implements Runnable {
 	public static boolean flag = true ;
 	private LinkedList<Vehicle> allVehicles = new LinkedList<>();
 	private LinkedList<Vehicle> cacheVehicle = new LinkedList<>();
-	private Boolean isPaused;
-	private Boolean isStopped;
 	public Movement(LinkedList<Vehicle> allVehicles){
 		this.allVehicles = allVehicles;
 	}
@@ -21,7 +21,7 @@ public class Movement implements Runnable {
 	public void run() {
 		try {
 		while(true){
-			if (this.getIsStopped()) {
+			if (getIsStopped()) {
 				return;
 			} else if (getIsPaused()) {
 				Thread.sleep(1);
@@ -56,18 +56,10 @@ public class Movement implements Runnable {
 	}
 
 	public Boolean getIsPaused() {
-		return isPaused;
-	}
-
-	public void setIsPaused(Boolean isPaused) {
-		this.isPaused = isPaused;
+		return Engine.getInstance().getIsPaused();
 	}
 
 	public Boolean getIsStopped() {
-		return isStopped;
-	}
-
-	public void setIsStopped(Boolean isStopped) {
-		this.isStopped = isStopped;
+		return Engine.getInstance().getIsStopped();
 	}
 }

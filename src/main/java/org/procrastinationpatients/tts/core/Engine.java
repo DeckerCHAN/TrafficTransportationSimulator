@@ -23,6 +23,25 @@ public class Engine {
      * 单例对象实例
      */
     private static Engine instance;
+    /**
+     * 窗口的类引用，用于初始化窗口
+     */
+    private Class<MainWindow> mainWindowClass;
+    private Cross[] crosses;
+    private Link[] links;
+    private Margin[] margins;
+    private Processor processor;
+    private volatile Boolean isStopped;
+    private volatile Boolean isPaused;
+
+    /**
+     * 私有构造函数
+     */
+    private Engine() {
+        this.mainWindowClass = MainWindow.class;
+        this.isPaused = false;
+        this.isStopped = false;
+    }
 
     /**
      * 获取单例
@@ -33,27 +52,9 @@ public class Engine {
         return instance;
     }
 
-
     static {
         //初始化单例
         instance = new Engine();
-    }
-
-    /**
-     * 窗口的类引用，用于初始化窗口
-     */
-    private Class<MainWindow> mainWindowClass;
-    private Cross[] crosses;
-    private Link[] links;
-    private Margin[] margins;
-    private Processor processor;
-
-    /**
-     * 私有构造函数
-     */
-    private Engine() {
-        this.mainWindowClass = MainWindow.class;
-        this.processor=new Processor();
     }
 
     /**
@@ -70,7 +71,7 @@ public class Engine {
      */
     public void stop() {
         //TODO:停止所有运算，释放所有资源
-        this.processor.stop();
+        this.setIsStopped(true);
         System.out.println("Stopped all!");
     }
 
@@ -78,12 +79,12 @@ public class Engine {
      * 暂停Engine
      */
     public void pause(){
-        this.processor.pause();
+        this.setIsPaused(true);
     }
 
     public void resume()
     {
-        this.processor.resume();
+        this.setIsPaused(false);
     }
 
 
@@ -126,5 +127,25 @@ public class Engine {
 
     public Processor getProcessor() {
         return processor;
+    }
+
+    public void setProcessor(Processor processor) {
+        this.processor = processor;
+    }
+
+    public Boolean getIsStopped() {
+        return isStopped;
+    }
+
+    public void setIsStopped(Boolean isStopped) {
+        this.isStopped = isStopped;
+    }
+
+    public Boolean getIsPaused() {
+        return isPaused;
+    }
+
+    public void setIsPaused(Boolean isPaused) {
+        this.isPaused = isPaused;
     }
 }

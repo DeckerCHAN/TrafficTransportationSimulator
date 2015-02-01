@@ -21,6 +21,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.procrastinationpatients.tts.core.Engine;
+import org.procrastinationpatients.tts.core.Processor;
 import org.procrastinationpatients.tts.entities.Dot;
 import org.procrastinationpatients.tts.entities.Visible;
 import org.procrastinationpatients.tts.source.EntityLoader;
@@ -50,6 +51,7 @@ public class MainWindow extends Application {
     private Button loadBtn;
     private Button startBtn;
     private Button pauseBtn;
+    private Button resumeBtn;
 
 
     private Timeline timeline;
@@ -80,6 +82,12 @@ public class MainWindow extends Application {
         this.pauseBtn.setLayoutX(this.startBtn.getLayoutX() + this.startBtn.getWidth() + 100);
         this.pauseBtn.setLayoutY(50);
         this.pauseBtn.setOnMouseClicked(this.getPauseButtonEventHandler());
+        //初始化恢复按钮，并设置相关参数
+        this.resumeBtn = new Button("Resume");
+        this.resumeBtn.setPrefSize(100, 20);
+        this.resumeBtn.setLayoutX(this.pauseBtn.getLayoutX() + this.pauseBtn.getWidth() + 100);
+        this.resumeBtn.setLayoutY(50);
+        this.resumeBtn.setOnMouseClicked(this.getResumeButtonEventHandler());
 
         this.buttonsContainer = new HBox();
         buttonsContainer.setPadding(new Insets(15, 12, 15, 12));
@@ -92,7 +100,7 @@ public class MainWindow extends Application {
         //建立显示的层级嵌套结构
         this.root.setCenter(this.scrollPane);
         this.root.setTop(this.buttonsContainer);
-        this.buttonsContainer.getChildren().addAll(this.loadBtn, this.startBtn, this.pauseBtn);
+        this.buttonsContainer.getChildren().addAll(this.loadBtn, this.startBtn, this.pauseBtn,this.resumeBtn);
 
         this.scrollPane.setContent(this.scrollInnerPane);
         this.scrollInnerPane.getChildren().addAll(this.backgroundCanvas, this.dynamicCanvas);
@@ -190,6 +198,7 @@ public class MainWindow extends Application {
             public void handle(MouseEvent mouseEvent) {
                 System.out.println("Start!");
                 //启动动态绘制线程
+                Engine.getInstance().setProcessor(new Processor());
                 Engine.getInstance().getProcessor().start();
 				timeline.play();
             }
@@ -205,9 +214,22 @@ public class MainWindow extends Application {
         return new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                timeline.stop();
                 Engine.getInstance().pause();
-                System.out.println("Stop!");
+                System.out.println("Pause!");
+            }
+        };
+    }
+
+    /**
+     * Resume键按下后的响应事件
+     *
+     * @return 响应事件
+     */
+    private EventHandler<MouseEvent> getResumeButtonEventHandler() {
+        return new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                Engine.getInstance().resume();
             }
         };
     }

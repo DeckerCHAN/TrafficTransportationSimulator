@@ -18,7 +18,6 @@ public class Processor {
         this.produceThread = new Thread(produce);
         this.movement = new Movement(produce.getAllVehicles());
         this.moveThread = new Thread(new Movement(produce.getAllVehicles()));
-
     }
 
     public void start() {
@@ -26,22 +25,19 @@ public class Processor {
         this.moveThread.start();
     }
 
-
+    @Deprecated
     public void pause() {
-        this.produce.setIsPaused(true);
-        this.movement.setIsPaused(true);
+        Engine.getInstance().setIsPaused(true);
     }
 
+    @Deprecated
     public void resume() {
-        this.produce.setIsPaused(false);
-        this.movement.setIsPaused(false);
+        Engine.getInstance().setIsPaused(false);
     }
 
-
+    @Deprecated
     public void stop() {
-        this.produce.setIsStopped(true);
-        this.movement.setIsStopped(true);
-        return;
+        Engine.getInstance().setIsStopped(true);
     }
 
 
