@@ -19,7 +19,7 @@ public class Lane {
     private List<Lane> inputs;
     private List<Lane> outputs;
     private Vehicle [] vehicles;
-	private TrafficLight[] trafficlights;
+
 
 	private LinkedList<Vehicle> allVehicles ;
     private FunctionalObject parent;
@@ -28,30 +28,14 @@ public class Lane {
 		this.inputs = new ArrayList<>();
 		this.outputs = new ArrayList<>();
 		this.allVehicles = new LinkedList<>();
-		this.trafficlights = new TrafficLight[2];
 		this.parent = parent;
 		this.line = line;
     }
 
-	public TrafficLight[] getTrafficlights(){return this.trafficlights;}
 
-	public void setTrafficlights(){
-		if(inputs.size() == 0) {
-			trafficlights[0] = new TrafficLight(false);
-		}
-		else {
-			trafficlights[0] = new TrafficLight(true);
-			trafficlights[0].setLight(0);
-			trafficlights[0].setPosition(0);
-		}
-		if(outputs.size() == 0) {
-			trafficlights[1] = new TrafficLight(false);
-		}
-		else {
-			trafficlights[1] = new TrafficLight(true);
-			trafficlights[1].setLight(0);
-			trafficlights[0].setPosition(this.Length);
-		}
+
+	public LinkedList<Vehicle> getAllVehicles() {
+		return allVehicles;
 	}
 
 	public int getLine(){return this.line;}
@@ -108,6 +92,17 @@ public class Lane {
 		allVehicles.add(vehicle);
 	}
 
+	public void addChangeLineVehicle(Vehicle vehicle){
+		for(int i = vehicle.getCur_Loc() ; i >= 0 ; i--){
+			if(vehicles[i] == null)
+			{
+				vehicles[i] = vehicle;
+				allVehicles.add(vehicle);
+				break;
+			}
+		}
+	}
+
 	public boolean removeVehicle(Vehicle vehicle){
 		if(vehicle == null)
 			return false;
@@ -129,17 +124,13 @@ public class Lane {
 	}
 
 	public int getSafetyDistanceByID(int index) {
-		if (index < 0 || index >= this.Length)
-			return -1;
-		if (vehicles[index] == null)
-			return 0;
-
 		for (int i = index + 1; i < this.Length; i++) {
 			if (vehicles[i] != null) {
-				return i - index ;
+				System.out.println("++++++++++++++++++" + (i-index)) ;
+				return i - index - 8 ;
 			}
 		}
-		return this.Length - index ;
+		return this.Length ;
 	}
 
 	public Vehicle getNextVehicle(Vehicle vehicle) {
@@ -170,7 +161,7 @@ public class Lane {
 	public void updateVehicle(Vehicle vehicle) {
 		int Cur_Loc = vehicle.getCur_Loc();
 		vehicles[Cur_Loc] = null;
-		vehicle.setCur_Loc(vehicle.getCur_Loc() + vehicle.getCur_Spd());
+		vehicle.setCur_Loc(Cur_Loc + vehicle.getCur_Spd());
 		vehicles[vehicle.getCur_Loc()] = vehicle;
 	}
 

@@ -18,6 +18,7 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
     private Dot b;
 	private int lane_Length;
     private Lane [] lanes;
+	private TrafficLight[] trafficlights;
 
     public Link(Integer id) {
         super(id);
@@ -25,7 +26,29 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 		for (int i = 0; i < 6; i++) {
 			lanes[i] = new Lane(this,i);
 		}
+		this.trafficlights = new TrafficLight[2];
     }
+
+	public TrafficLight[] getTrafficlights(){return this.trafficlights;}
+
+//	public void setTrafficlights(){
+//		if(inputs.size() == 0) {
+//			trafficlights[0] = new TrafficLight(false);
+//		}
+//		else {
+//			trafficlights[0] = new TrafficLight(true);
+//			trafficlights[0].setLight(0);
+//			trafficlights[0].setPosition(0);
+//		}
+//		if(outputs.size() == 0) {
+//			trafficlights[1] = new TrafficLight(false);
+//		}
+//		else {
+//			trafficlights[1] = new TrafficLight(true);
+//			trafficlights[1].setLight(0);
+//			trafficlights[0].setPosition(this.Length);
+//		}
+//	}
 
     public Lane[] getLanes() {
         return lanes;
@@ -64,12 +87,12 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 		int v_line = vehicle.getCur_line();
 		int v_location = vehicle.getCur_Loc();
 		int v_speed = vehicle.getCur_Spd();
-		boolean flag = true;
+		boolean flag = false;
 
 		v_line = change_Line_NUMBER(v_line);
-		for (int i = v_location + 1; i <= v_location + v_speed; i++) {
-			if (lanes[v_line].getVehicles()[i] != null) {
-				flag = false;
+		for (int i = v_location ; i <= v_location + v_speed; i++) {
+			if (lanes[v_line].getVehicles()[i] == null) {
+				flag = true;
 				break;
 			}
 		}
@@ -78,23 +101,23 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 
 	public int change_Line_NUMBER(int v_line) {
 		switch (v_line) {
+			case 0:
+				v_line = 1;
+				break;
 			case 1:
 				v_line = 2;
 				break;
 			case 2:
-				v_line = 3;
+				v_line = 2;
 				break;
 			case 3:
 				v_line = 3;
 				break;
 			case 4:
-				v_line = 4;
+				v_line = 3;
 				break;
 			case 5:
 				v_line = 4;
-				break;
-			case 6:
-				v_line = 5;
 		}
 		return v_line;
 	}
@@ -103,13 +126,13 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 	public int changeLine(Vehicle vehicle) {
 		int v_line = vehicle.getCur_line();
 		int v_location = vehicle.getCur_Loc();
-		int v_speed = vehicle.getCur_Spd();
 
-		this.lanes[v_line].removeVehicle(v_location) ;
+		this.lanes[v_line].removeVehicle(vehicle) ;
 		v_line = change_Line_NUMBER(v_line);
-		vehicle.setCur_Loc(v_location + v_speed);
+		vehicle.setCur_Loc(v_location);
 		vehicle.setCur_line(v_line);
-		this.lanes[v_line].addVehicle(vehicle);
+		vehicle.setOn_Link(this.lanes[v_line]);
+		this.lanes[v_line].addChangeLineVehicle(vehicle);
 
 		return v_line;
 	}
@@ -130,9 +153,10 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 		int v_location = vehicle.getCur_Loc();
 
 		if(!hasVehicle(v_goal_line,v_location)){
-			vehicle.setCur_line(v_line);
-			lanes[v_line].removeVehicle(v_location) ;
-			lanes[v_line].addVehicle(vehicle) ;
+			lanes[v_line].removeVehicle(vehicle) ;
+			vehicle.setCur_line(v_goal_line);
+			vehicle.setOn_Link(lanes[v_goal_line]);
+			lanes[v_goal_line].addChangeLineVehicle(vehicle) ;
 		}
 	}
 
@@ -182,7 +206,7 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 						continue;
 					}
 					if (StaticConfig.DEBUG_MODE) {
-						DrawUtils.drawText(gc, lane.getVehiclePositions()[i].getX(), lane.getVehiclePositions()[i].getY() - 11D, Color.RED, String.format("(%s,%s)", (int) lane.getVehiclePositions()[i].getX(), (int) lane.getVehiclePositions()[i].getY()), 10D);
+						DrawUtils.drawText(gc, lane.getVehiclePositions()[i].getX(), lane.getVehiclePositions()[i].getY() - 11D, Color.RED, String.format("(%s,%s)",  lane.getVehicles()[i].getId(), (int) lane.getVehiclePositions()[i].getY()), 10D);
 					}
 					DrawUtils.drawBallAtCoordinate(gc, lane.getVehiclePositions()[i], 4, Color.RED);
 					pointCount++;

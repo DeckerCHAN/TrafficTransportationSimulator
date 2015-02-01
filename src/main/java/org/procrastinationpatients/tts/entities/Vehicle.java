@@ -44,6 +44,8 @@ public class Vehicle {
 		int safety_distance = on_Link.getSafetyDistanceByID(this.Cur_Loc);
 		System.out.println("safety distance : " + safety_distance);
 		this.Cur_Spd = (safety_distance < this.Cur_Spd) ? (safety_distance) : (this.Cur_Spd);
+		if(this.Cur_Spd < 0)
+			this.Cur_Spd = 0 ;
 		return this.Cur_Spd;
 	}
 
@@ -52,24 +54,21 @@ public class Vehicle {
 
 		FunctionalObject fo = on_Link.getParent() ;
 		if(fo instanceof Link){
-			if(!isOnRoad())
-				fo.toGoalLine(this);
+			this.checkRoad();
 
 			if (this.Cur_Spd + this.Cur_Loc >= on_Link.getLength()) {
 				on_Link.changeToNextContainer(this);
 				return 1 ;
 			}
-
 			Vehicle nextVehicle = on_Link.getNextVehicle(this);
 			if(nextVehicle != null) {
 				if (this.Cur_Spd > nextVehicle.getCur_Spd()) {
-					if (this.Cur_line != 3 && this.Cur_line != 4 && fo.canChangeLine(this)) {
-						fo.changeLine(this);
-						return 2;
+					if (this.Cur_line != 2 && this.Cur_line != 3 && fo.canChangeLine(this)) {
+//						fo.changeLine(this);
+//						return 2;
 					}
 				}
 			}
-
 			on_Link.updateVehicle(this);
 			return 3;
 		}else if(fo instanceof Cross){
@@ -96,6 +95,10 @@ public class Vehicle {
 			return false ;
 	}
 
+	public void checkRoad(){
+		if(!isOnRoad())
+			on_Link.getParent().toGoalLine(this);
+	}
 
 	public int getId() { return id; }
 

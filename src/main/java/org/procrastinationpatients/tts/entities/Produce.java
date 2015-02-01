@@ -31,12 +31,12 @@ public class Produce implements Runnable{
 					Thread.sleep(1);
 					continue;
 				}
-				if (Movement.flag) {
+				if (Movement.flag && allVehicles.size() < 300) {
 					Movement.flag = false;
 					produceVehicles();
 					int time = (int) (Production.getTime_to_Generation() * 100);
 					Movement.flag = true ;
-					Thread.sleep(time);
+					Thread.sleep(time + 200);
 				}
 			}
 
