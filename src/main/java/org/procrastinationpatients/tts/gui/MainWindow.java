@@ -216,6 +216,7 @@ public class MainWindow extends Application {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 Engine.getInstance().pause();
+				timeline.stop();
                 System.out.println("Pause!");
             }
         };
@@ -231,6 +232,7 @@ public class MainWindow extends Application {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 Engine.getInstance().resume();
+				timeline.play();
             }
         };
     }

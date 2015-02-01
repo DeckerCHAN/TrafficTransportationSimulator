@@ -1,5 +1,6 @@
 package org.procrastinationpatients.tts.entities;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.TransducedAccessor_field_Boolean;
 import javafx.geometry.Point2D;
 import org.procrastinationpatients.tts.utils.RandomUtils;
 
@@ -10,24 +11,50 @@ import java.util.List;
 /**
  * Created by decker on 15-1-28.
  */
-public class Lane extends IdentifiableObject {
+public class Lane {
 
+	private int line;
 	private int Length;
 	private Point2D [] vehiclePositions;
     private List<Lane> inputs;
     private List<Lane> outputs;
     private Vehicle [] vehicles;
+	private TrafficLight[] trafficlights;
 
 	private LinkedList<Vehicle> allVehicles ;
     private FunctionalObject parent;
 
-	public Lane(String id, FunctionalObject parent) {
-		super(id);
+    public Lane(FunctionalObject parent,int line) {
 		this.inputs = new ArrayList<>();
 		this.outputs = new ArrayList<>();
 		this.allVehicles = new LinkedList<>();
+		this.trafficlights = new TrafficLight[2];
 		this.parent = parent;
+		this.line = line;
     }
+
+	public TrafficLight[] getTrafficlights(){return this.trafficlights;}
+
+	public void setTrafficlights(){
+		if(inputs.size() == 0) {
+			trafficlights[0] = new TrafficLight(false);
+		}
+		else {
+			trafficlights[0] = new TrafficLight(true);
+			trafficlights[0].setLight(0);
+			trafficlights[0].setPosition(0);
+		}
+		if(outputs.size() == 0) {
+			trafficlights[1] = new TrafficLight(false);
+		}
+		else {
+			trafficlights[1] = new TrafficLight(true);
+			trafficlights[1].setLight(0);
+			trafficlights[0].setPosition(this.Length);
+		}
+	}
+
+	public int getLine(){return this.line;}
 
     public List<Lane> getInputs() {
         return inputs;
@@ -128,11 +155,10 @@ public class Lane extends IdentifiableObject {
 	public void changeToNextContainer(Vehicle vehicle){
 		this.removeVehicle(vehicle);
 		if(outputs.size()!=0 && outputs != null){
-			System.out.println("OutPut Size!!" + outputs.size());
 			Lane outputLane = outputs.get(RandomUtils.getStartLine(outputs.size())) ;
 			vehicle.setCur_Loc(vehicle.getCur_Loc() + vehicle.getCur_Spd() - this.getLength());
 			vehicle.setOn_Link(outputLane);
-			System.out.println(outputLane.getLength()) ;
+			vehicle.setCur_line(outputLane.getLine());
 			System.out.println(this.getParent()) ;
 			System.out.println(outputLane.getParent()) ;
 			outputLane.addVehicle(vehicle);

@@ -27,9 +27,7 @@ public class RandomUtils {
 		return random.nextInt(i) ;
 	}
 
-	public static int getStartSpd(){
-		return random.nextInt(5) ;
-	}
+	public static int getRandomSped(){ return random.nextInt(6) + 2 ;}
 
 	public static int getNewLine(int index){
 		if( index - 2 <= 0 )
