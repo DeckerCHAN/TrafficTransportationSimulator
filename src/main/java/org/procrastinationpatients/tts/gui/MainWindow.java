@@ -139,8 +139,9 @@ public class MainWindow extends Application {
 
     private void drawAllDynamic() {
         GraphicsContext gc = dynamicCanvas.getGraphicsContext2D();
-        //DONE:将大小修改为最高点和最宽点
-        gc.clearRect(0, 0, this.canvasMaxSizePoint.getX(), this.canvasMaxSizePoint.getY());
+        if (!StaticConfig.DRAW_PATH) {
+            gc.clearRect(0, 0, dynamicCanvas.getWidth(), dynamicCanvas.getHeight());
+        }
         for (Visible visualEntity : Engine.getInstance().getVisualEntities()) {
             visualEntity.drawDynamicGraphic(gc);
         }

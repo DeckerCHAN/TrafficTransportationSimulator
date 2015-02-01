@@ -10,7 +10,7 @@ import java.util.LinkedList;
  */
 public class Movement implements Runnable {
 
-	public static boolean flag = true ;
+	public volatile static boolean flag = true ;
 	private LinkedList<Vehicle> allVehicles = new LinkedList<>();
 	private LinkedList<Vehicle> cacheVehicle = new LinkedList<>();
 	public Movement(LinkedList<Vehicle> allVehicles){
