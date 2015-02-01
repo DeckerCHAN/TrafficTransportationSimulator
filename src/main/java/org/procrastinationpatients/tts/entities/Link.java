@@ -171,6 +171,7 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 
 	@Override
 	public void drawDynamicGraphic(GraphicsContext gc) {
+		//统计车的数量
 		Integer pointCount = 0;
 		for (Lane lane : this.getLanes())
 		{
@@ -189,6 +190,7 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 				}
 			}
 		}
+		//在Debug模式下输出车的数量
 		if (StaticConfig.DEBUG_MODE) {
 			DrawUtils.drawText(gc, new Point2D(
 							(this.getA().getPosition().getX() + this.getB().getPosition().getX()) / 2,
