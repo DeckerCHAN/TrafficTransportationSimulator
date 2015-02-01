@@ -31,9 +31,9 @@ public class Vehicle {
 		this.id_margin = id_margin;
 	}
 
-	public void setSpeed(int Cur_Sped , int Gol_Sped){
+	public void setSpeed(int Cur_Sped , int MAX_Speed){
 		this.Cur_Spd = Cur_Sped ;
-		this.MAX_Speed = Gol_Sped ;
+		this.MAX_Speed = MAX_Speed ;
 	}
 
 	//速度变化规则

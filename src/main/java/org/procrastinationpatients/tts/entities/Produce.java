@@ -31,7 +31,6 @@ public class Produce implements Runnable{
 					Thread.sleep(1);
 					continue;
 				}
-
 				if (Movement.flag && allVehicles.size()<5) {
 					produceVehicles();
 					int time = (int) (Production.getTime_to_Generation() * 100);
@@ -62,6 +61,7 @@ public class Produce implements Runnable{
 				vehicle.setSpeed(1,5);
 				vehicle.setCur_Loc(0);
 				vehicle.setCur_line(line);
+				vehicle.setGoal_line(line);
 				vehicle.setId_margin(start);
 				lane.addVehicle(vehicle);
 				allVehicles.add(vehicle);

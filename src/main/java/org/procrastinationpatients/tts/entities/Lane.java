@@ -12,6 +12,7 @@ import java.util.List;
  */
 public class Lane {
 
+	private int line;
 	private int Length;
 	private Point2D [] vehiclePositions;
     private List<Lane> inputs;
@@ -21,12 +22,15 @@ public class Lane {
 	private LinkedList<Vehicle> allVehicles ;
     private FunctionalObject parent;
 
-    public Lane(FunctionalObject parent) {
+    public Lane(FunctionalObject parent,int line) {
         this.inputs = new ArrayList<>();
         this.outputs = new ArrayList<>();
 		this.allVehicles = new LinkedList<>();
 		this.parent = parent;
+		this.line = line;
     }
+
+	public int getLine(){return this.line;}
 
     public List<Lane> getInputs() {
         return inputs;
@@ -127,11 +131,10 @@ public class Lane {
 	public void changeToNextContainer(Vehicle vehicle){
 		this.removeVehicle(vehicle);
 		if(outputs.size()!=0 && outputs != null){
-			System.out.println("OutPut Size!!" + outputs.size());
 			Lane outputLane = outputs.get(RandomUtils.getStartLine(outputs.size())) ;
 			vehicle.setCur_Loc(vehicle.getCur_Loc() + vehicle.getCur_Spd() - this.getLength());
 			vehicle.setOn_Link(outputLane);
-			System.out.println(outputLane.getLength()) ;
+			vehicle.setCur_line(outputLane.getLine());
 			System.out.println(this.getParent()) ;
 			System.out.println(outputLane.getParent()) ;
 			outputLane.addVehicle(vehicle);

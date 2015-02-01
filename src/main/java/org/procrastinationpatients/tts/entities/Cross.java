@@ -61,10 +61,10 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
     public Cross(Integer id, Point2D position) {
         super(id);
         this.position = position;
-        this.northLanes = new Lane[]{new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this)};
-        this.southLanes = new Lane[]{new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this)};
-        this.eastLanes = new Lane[]{new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this)};
-        this.westLanes = new Lane[]{new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this), new Lane(this)};
+        this.northLanes = new Lane[]{new Lane(this,0), new Lane(this,1), new Lane(this,2), new Lane(this,3), new Lane(this,4), new Lane(this,5), new Lane(this,6)};
+        this.southLanes = new Lane[]{new Lane(this,0), new Lane(this,1), new Lane(this,2), new Lane(this,3), new Lane(this,4), new Lane(this,5), new Lane(this,6)};
+        this.eastLanes = new Lane[]{new Lane(this,0), new Lane(this,1), new Lane(this,2), new Lane(this,3), new Lane(this,4), new Lane(this,5), new Lane(this,6)};
+        this.westLanes = new Lane[]{new Lane(this,0), new Lane(this,1), new Lane(this,2), new Lane(this,3), new Lane(this,4), new Lane(this,5), new Lane(this,6)};
         this.refreshLaneLength();
 
     }
