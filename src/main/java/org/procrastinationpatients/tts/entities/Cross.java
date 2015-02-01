@@ -18,10 +18,16 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
     private Lane[] southLanes;
     private Lane[] eastLanes;
     private Lane[] westLanes;
+
     private Road northRoad;
     private Road southRoad;
     private Street eastStreet;
     private Street westStreet;
+
+    private TrafficLight[] northTrafficLights;
+    private TrafficLight[] southTrafficLights;
+    private TrafficLight[] eastTrafficLights;
+    private TrafficLight[] westTrafficLights;
 
     static {
         laneVisualLength = new Double[7];
@@ -65,6 +71,16 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
         this.southLanes = new Lane[]{new Lane(this,0), new Lane(this,1), new Lane(this,2), new Lane(this,3), new Lane(this,4), new Lane(this,5), new Lane(this,6)};
         this.eastLanes = new Lane[]{new Lane(this,0), new Lane(this,1), new Lane(this,2), new Lane(this,3), new Lane(this,4), new Lane(this,5), new Lane(this,6)};
         this.westLanes = new Lane[]{new Lane(this,0), new Lane(this,1), new Lane(this,2), new Lane(this,3), new Lane(this,4), new Lane(this,5), new Lane(this,6)};
+
+        this.northTrafficLights = new TrafficLight[]{new TrafficLight(), new TrafficLight(), new TrafficLight(), new TrafficLight(), new TrafficLight(), new TrafficLight()};
+        this.westTrafficLights = new TrafficLight[]{new TrafficLight(), new TrafficLight(), new TrafficLight(), new TrafficLight(), new TrafficLight(), new TrafficLight()};
+        this.eastTrafficLights = new TrafficLight[6];
+        this.southTrafficLights = new TrafficLight[6];
+        for (int i = 0; i < 6; i++) {
+            this.eastTrafficLights[i] = this.westTrafficLights[5 - i];
+            this.southTrafficLights[i] = this.northTrafficLights[5 - i];
+        }
+
         this.refreshLaneLength();
 
     }
@@ -119,6 +135,35 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
         }
         if (StaticConfig.DEBUG_MODE) {
             DrawUtils.drawText(gc, this.getPosition(), Color.RED, String.format("Drew:%s", pointCount), 11D);
+        }
+
+        for (int i = 0; i < 6; i++) {
+
+
+            DrawUtils.drawLine(gc,
+                    new Point2D(this.getPosition().getX() - 26D + 10D * i, this.getPosition().getY() - 60D),
+                    new Point2D(this.getPosition().getX() - 26D + 10D * i + 2D, this.getPosition().getY() - 60D),
+                    this.getNorthTrafficLights()[i].isRedLight() ? Color.RED : Color.GREEN,
+                    8);
+
+            DrawUtils.drawLine(gc,
+                    new Point2D(this.getPosition().getX() - 26D + 10D * i, this.getPosition().getY() + 60D),
+                    new Point2D(this.getPosition().getX() - 26D + 10D * i + 2D, this.getPosition().getY() + 60D),
+                    this.getSouthTrafficLights()[i].isRedLight() ? Color.RED : Color.GREEN,
+                    8);
+
+            DrawUtils.drawLine(gc,
+                    new Point2D(this.getPosition().getX() - 60D, this.getPosition().getY() + 26D - 10D * i),
+                    new Point2D(this.getPosition().getX() - 60D, this.getPosition().getY() + 26D - 10D * i - 2D),
+                    this.getWestTrafficLights()[i].isRedLight() ? Color.RED : Color.GREEN,
+                    8);
+
+            DrawUtils.drawLine(gc,
+                    new Point2D(this.getPosition().getX() + 60D, this.getPosition().getY() + 26D - 10D * i),
+                    new Point2D(this.getPosition().getX() + 60D, this.getPosition().getY() + 26D - 10D * i - 2D),
+                    this.getEastTrafficLights()[i].isRedLight() ? Color.RED : Color.GREEN,
+                    8);
+
 
         }
     }
@@ -320,4 +365,35 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
 		//TODO
 	}
 
+    public TrafficLight[] getNorthTrafficLights() {
+        return northTrafficLights;
+    }
+
+    public void setNorthTrafficLights(TrafficLight[] northTrafficLights) {
+        this.northTrafficLights = northTrafficLights;
+    }
+
+    public TrafficLight[] getSouthTrafficLights() {
+        return southTrafficLights;
+    }
+
+    public void setSouthTrafficLights(TrafficLight[] southTrafficLights) {
+        this.southTrafficLights = southTrafficLights;
+    }
+
+    public TrafficLight[] getEastTrafficLights() {
+        return eastTrafficLights;
+    }
+
+    public void setEastTrafficLights(TrafficLight[] eastTrafficLights) {
+        this.eastTrafficLights = eastTrafficLights;
+    }
+
+    public TrafficLight[] getWestTrafficLights() {
+        return westTrafficLights;
+    }
+
+    public void setWestTrafficLights(TrafficLight[] westTrafficLights) {
+        this.westTrafficLights = westTrafficLights;
+    }
 }

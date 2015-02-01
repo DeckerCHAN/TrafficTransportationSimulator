@@ -1,6 +1,5 @@
 package org.procrastinationpatients.tts.entities;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.TransducedAccessor_field_Boolean;
 import javafx.geometry.Point2D;
 import org.procrastinationpatients.tts.utils.RandomUtils;
 
@@ -19,7 +18,6 @@ public class Lane {
     private List<Lane> inputs;
     private List<Lane> outputs;
     private Vehicle [] vehicles;
-	private TrafficLight[] trafficlights;
 
 	private LinkedList<Vehicle> allVehicles ;
     private FunctionalObject parent;
@@ -28,31 +26,10 @@ public class Lane {
 		this.inputs = new ArrayList<>();
 		this.outputs = new ArrayList<>();
 		this.allVehicles = new LinkedList<>();
-		this.trafficlights = new TrafficLight[2];
 		this.parent = parent;
 		this.line = line;
     }
 
-	public TrafficLight[] getTrafficlights(){return this.trafficlights;}
-
-	public void setTrafficlights(){
-		if(inputs.size() == 0) {
-			trafficlights[0] = new TrafficLight(false);
-		}
-		else {
-			trafficlights[0] = new TrafficLight(true);
-			trafficlights[0].setLight(0);
-			trafficlights[0].setPosition(0);
-		}
-		if(outputs.size() == 0) {
-			trafficlights[1] = new TrafficLight(false);
-		}
-		else {
-			trafficlights[1] = new TrafficLight(true);
-			trafficlights[1].setLight(0);
-			trafficlights[0].setPosition(this.Length);
-		}
-	}
 
 	public int getLine(){return this.line;}
 

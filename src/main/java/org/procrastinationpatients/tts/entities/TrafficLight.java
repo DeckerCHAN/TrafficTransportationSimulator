@@ -4,12 +4,11 @@ package org.procrastinationpatients.tts.entities;
  * Created by jeffrey on 2015/2/1.
  */
 public class TrafficLight {
-	private boolean hasLight;
 	private int Light;   //0为红灯,1为绿灯
 	private int position;
 
-	public TrafficLight(boolean hasLight){
-		this.hasLight = hasLight ;
+	public TrafficLight() {
+		this.setLight(1);
 	}
 
 	public int getLight() {
@@ -28,11 +27,7 @@ public class TrafficLight {
 		this.position = position;
 	}
 
-	public boolean isHasLight() {
-		return hasLight;
-	}
-
-	public void setHasLight(boolean hasLight) {
-		this.hasLight = hasLight;
+	public boolean isRedLight() {
+		return Light == 0;
 	}
 }
