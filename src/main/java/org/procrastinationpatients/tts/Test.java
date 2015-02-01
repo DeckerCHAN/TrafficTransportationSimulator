@@ -9,7 +9,7 @@ public class Test {
     public static void main(String[] args) {
         try {
             Engine engine = Engine.getInstance();
-            engine.run();
+            engine.launch();
         } catch (Exception e) {
             e.printStackTrace();
         }

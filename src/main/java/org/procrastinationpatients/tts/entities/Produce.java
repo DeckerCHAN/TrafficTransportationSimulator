@@ -12,25 +12,39 @@ public class Produce implements Runnable{
 
 	private Margin[] margins ;
 	private LinkedList<Vehicle> allVehicles = new LinkedList();
+	private Boolean isPaused;
+	private Boolean isStopped;
 
 	public Produce(){
 		this.margins = Engine.getInstance().getMargins() ;
+		this.isPaused = false;
+		this.isStopped=false;
 	}
 
 	@Override
 	public void run() {
-		System.out.println("=============Produce==============") ;
-		while (true) {
-			if(Movement.flag){
-				produceVehicles();
-				int time = (int)(Production.getTime_to_Generation()*100) ;
-				try {
+		try {
+
+			System.out.println("=============Produce==============");
+			while (true) {
+				if (getIsStopped()) {
+					return;
+				} else if (this.isPaused) {
+					Thread.sleep(1);
+					continue;
+				}
+
+				if (Movement.flag) {
+					produceVehicles();
+					int time = (int) (Production.getTime_to_Generation() * 100);
 					Thread.sleep(time);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
 				}
 			}
+
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
+
 	}
 
 		public void produceVehicles(){
@@ -54,6 +68,22 @@ public class Produce implements Runnable{
 		}
 	public LinkedList<Vehicle> getAllVehicles(){
 		return this.allVehicles;
+	}
+
+	public Boolean getIsPaused() {
+		return isPaused;
+	}
+
+	public void setIsPaused(Boolean isPaused) {
+		this.isPaused = isPaused;
+	}
+
+	public Boolean getIsStopped() {
+		return isStopped;
+	}
+
+	public void setIsStopped(Boolean isStopped) {
+		this.isStopped = isStopped;
 	}
 }
 

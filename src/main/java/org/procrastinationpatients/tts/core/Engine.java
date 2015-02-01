@@ -46,18 +46,20 @@ public class Engine {
     private Cross[] crosses;
     private Link[] links;
     private Margin[] margins;
+    private Processor processor;
 
     /**
      * 私有构造函数
      */
     private Engine() {
         this.mainWindowClass = MainWindow.class;
+        this.processor=new Processor();
     }
 
     /**
      * 启动Engine
      */
-    public void run() {
+    public void launch() {
 
         Application.launch(this.mainWindowClass);
         this.stop();
@@ -68,7 +70,20 @@ public class Engine {
      */
     public void stop() {
         //TODO:停止所有运算，释放所有资源
-        System.out.println("Stop all!");
+        this.processor.stop();
+        System.out.println("Stopped all!");
+    }
+
+    /**
+     * 暂停Engine
+     */
+    public void pause(){
+        this.processor.pause();
+    }
+
+    public void resume()
+    {
+        this.processor.resume();
     }
 
 
@@ -107,5 +122,9 @@ public class Engine {
 
     public void setMargins(Margin[] margins) {
         this.margins = margins;
+    }
+
+    public Processor getProcessor() {
+        return processor;
     }
 }

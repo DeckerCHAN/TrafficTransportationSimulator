@@ -191,9 +191,7 @@ public class MainWindow extends Application {
             public void handle(MouseEvent mouseEvent) {
                 System.out.println("Start!");
                 //启动动态绘制线程
-				Produce produce = new Produce();
-				new Thread(produce).start();
-				new Thread(new Movement(produce.getAllVehicles())).start();
+                Engine.getInstance().getProcessor().start();
 				timeline.play();
             }
         };
@@ -209,6 +207,7 @@ public class MainWindow extends Application {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 timeline.stop();
+                Engine.getInstance().pause();
                 System.out.println("Stop!");
             }
         };

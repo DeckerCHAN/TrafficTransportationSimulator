@@ -1,8 +1,5 @@
 package org.procrastinationpatients.tts.entities;
 
-import org.procrastinationpatients.tts.core.Engine;
-import org.procrastinationpatients.tts.utils.RandomUtils;
-
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -14,13 +11,22 @@ public class Movement implements Runnable {
 	public static boolean flag = true ;
 	private LinkedList<Vehicle> allVehicles = new LinkedList<>();
 	private LinkedList<Vehicle> cacheVehicle = new LinkedList<>();
+	private Boolean isPaused;
+	private Boolean isStopped;
 	public Movement(LinkedList<Vehicle> allVehicles){
 		this.allVehicles = allVehicles;
 	}
 
 	@Override
 	public void run() {
+		try {
 		while(true){
+			if (this.getIsStopped()) {
+				return;
+			} else if (getIsPaused()) {
+				Thread.sleep(1);
+				continue;
+			}
 			System.out.println("=============MoveMent==============") ;
 			flag = false ;
 			Iterator<Vehicle> it = allVehicles.iterator() ;
@@ -40,12 +46,28 @@ public class Movement implements Runnable {
 				allVehicles.remove(vehicle) ;
 			}
 			cacheVehicle.clear();
+			Thread.sleep(100);
 
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+
 		}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public Boolean getIsPaused() {
+		return isPaused;
+	}
+
+	public void setIsPaused(Boolean isPaused) {
+		this.isPaused = isPaused;
+	}
+
+	public Boolean getIsStopped() {
+		return isStopped;
+	}
+
+	public void setIsStopped(Boolean isStopped) {
+		this.isStopped = isStopped;
 	}
 }
