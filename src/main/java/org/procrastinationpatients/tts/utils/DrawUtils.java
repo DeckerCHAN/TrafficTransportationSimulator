@@ -62,4 +62,9 @@ public class DrawUtils {
         drawText(gc, point.getX(), point.getY(), color, text,fontSize);
     }
 
+    public static void drawBarrier(GraphicsContext gc, Point2D point, Integer size, Color color) {
+        gc.setFill(color);
+        gc.fillRect(point.getX() - (size / 2), point.getY() - (size / 2), size, size);
+    }
+
 }
