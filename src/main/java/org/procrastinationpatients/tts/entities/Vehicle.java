@@ -13,6 +13,7 @@ public class Vehicle {
 	private int Cur_Loc;      //当前位置
 	private int Cur_line;     //当前线路
 	private int MAX_Speed;    //最大速度
+	private int id_margin;
 
 	private int goal_line;   //目标线路
 
@@ -22,6 +23,13 @@ public class Vehicle {
 		this.on_Link = lane ;
 	}
 
+	public int getId_margin() {
+		return id_margin;
+	}
+
+	public void setId_margin(int id_margin) {
+		this.id_margin = id_margin;
+	}
 
 	public void setSpeed(int Cur_Sped , int Gol_Sped){
 		this.Cur_Spd = Cur_Sped ;

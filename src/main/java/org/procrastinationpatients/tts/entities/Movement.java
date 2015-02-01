@@ -37,16 +37,17 @@ public class Movement implements Runnable {
 					continue;
 				}
 				vehicle.Speed_From_VDR();
-				System.out.println(vehicle.getCur_line() + "、" + vehicle.getCur_Loc() + "、" +vehicle.getCur_Spd()) ;
-				System.out.println(vehicle.move_Next_Location());
-				System.out.println(vehicle.getCur_line() + "、" + vehicle.getCur_Loc() + "、" +vehicle.getCur_Spd()) ;
+				System.out.println(vehicle.getId() + "-->" + vehicle.getCur_line() + "、" + vehicle.getCur_Loc() + "、" +vehicle.getCur_Spd()) ;
+				vehicle.move_Next_Location();
+				System.out.println("MarginID:" + vehicle.getId_margin());
+				System.out.println(vehicle.getId() + "-->" + vehicle.getCur_line() + "、" + vehicle.getCur_Loc() + "、" +vehicle.getCur_Spd()) ;
 			}
 			flag = true ;
 			for(Vehicle vehicle : cacheVehicle){
 				allVehicles.remove(vehicle) ;
 			}
 			cacheVehicle.clear();
-			Thread.sleep(100);
+			Thread.sleep(200);
 
 
 		}

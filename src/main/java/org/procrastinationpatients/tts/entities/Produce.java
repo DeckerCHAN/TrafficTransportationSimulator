@@ -11,6 +11,7 @@ import java.util.LinkedList;
 public class Produce implements Runnable{
 
 	private Margin[] margins ;
+	private int i = 0 ;
 	private LinkedList<Vehicle> allVehicles = new LinkedList();
 
 
@@ -31,7 +32,7 @@ public class Produce implements Runnable{
 					continue;
 				}
 
-				if (Movement.flag) {
+				if (Movement.flag && allVehicles.size()<5) {
 					produceVehicles();
 					int time = (int) (Production.getTime_to_Generation() * 100);
 					Thread.sleep(time);
@@ -46,7 +47,8 @@ public class Produce implements Runnable{
 
 		public void produceVehicles(){
 
-			int start = RandomUtils.getRandomNumber(margins.length);
+//			int start = RandomUtils.getRandomNumber(margins.length);
+			int start = 13 ;
 			if (margins[start] != null) {
 				int line ;
 				if(margins[start].getFirstInputLaneIndex() == 0){
@@ -56,11 +58,14 @@ public class Produce implements Runnable{
 				}
 				Lane lane = margins[start].getConnectedLink().getLanes()[line] ;
 				Vehicle vehicle = new Vehicle(lane);
+				vehicle.setId(i);
 				vehicle.setSpeed(1,5);
 				vehicle.setCur_Loc(0);
 				vehicle.setCur_line(line);
+				vehicle.setId_margin(start);
 				lane.addVehicle(vehicle);
 				allVehicles.add(vehicle);
+				i++;
 			}
 		}
 	public LinkedList<Vehicle> getAllVehicles(){
