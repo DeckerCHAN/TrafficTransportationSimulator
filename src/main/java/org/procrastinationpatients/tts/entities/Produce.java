@@ -31,9 +31,11 @@ public class Produce implements Runnable{
 					Thread.sleep(1);
 					continue;
 				}
-				if (Movement.flag && allVehicles.size()<5) {
+				if (Movement.flag) {
+					Movement.flag = false;
 					produceVehicles();
 					int time = (int) (Production.getTime_to_Generation() * 100);
+					Movement.flag = true ;
 					Thread.sleep(time);
 				}
 			}
@@ -46,8 +48,8 @@ public class Produce implements Runnable{
 
 		public void produceVehicles(){
 
-//			int start = RandomUtils.getRandomNumber(margins.length);
-			int start = 13 ;
+			int start = RandomUtils.getRandomNumber(margins.length);
+//			int start = 13 ;
 			if (margins[start] != null) {
 				int line ;
 				if(margins[start].getFirstInputLaneIndex() == 0){
