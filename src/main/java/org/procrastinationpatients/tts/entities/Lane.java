@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by decker on 15-1-28.
  */
-public class Lane {
+public class Lane extends IdentifiableObject {
 
 	private int Length;
 	private Point2D [] vehiclePositions;
@@ -21,9 +21,10 @@ public class Lane {
 	private LinkedList<Vehicle> allVehicles ;
     private FunctionalObject parent;
 
-    public Lane(FunctionalObject parent) {
-        this.inputs = new ArrayList<>();
-        this.outputs = new ArrayList<>();
+	public Lane(String id, FunctionalObject parent) {
+		super(id);
+		this.inputs = new ArrayList<>();
+		this.outputs = new ArrayList<>();
 		this.allVehicles = new LinkedList<>();
 		this.parent = parent;
     }

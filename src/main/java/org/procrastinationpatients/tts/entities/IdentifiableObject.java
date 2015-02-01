@@ -11,7 +11,7 @@ public abstract class IdentifiableObject extends Object {
     }
 
     public IdentifiableObject(Integer id) {
-        this.id = String.valueOf(id);
+        this(String.valueOf(id));
     }
 
     public String getId() {

@@ -21,7 +21,7 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
         super(id);
         this.lanes=new Lane[6];
 		for (int i = 0; i < 6; i++) {
-			lanes[i] = new Lane(this);
+			lanes[i] = new Lane(String.valueOf(i), this);
 		}
     }
 
