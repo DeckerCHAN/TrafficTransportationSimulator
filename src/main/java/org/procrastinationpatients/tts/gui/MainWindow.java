@@ -22,8 +22,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.procrastinationpatients.tts.core.Engine;
 import org.procrastinationpatients.tts.entities.Dot;
-import org.procrastinationpatients.tts.entities.Movement;
-import org.procrastinationpatients.tts.entities.Produce;
 import org.procrastinationpatients.tts.entities.Visible;
 import org.procrastinationpatients.tts.source.EntityLoader;
 import org.procrastinationpatients.tts.source.StaticConfig;
@@ -48,10 +46,11 @@ public class MainWindow extends Application {
     private Canvas backgroundCanvas;
     private Canvas dynamicCanvas;
 
-    private HBox buttonsCantainer;
+    private HBox buttonsContainer;
     private Button loadBtn;
     private Button startBtn;
     private Button pauseBtn;
+
 
     private Timeline timeline;
     private Boolean isTickPaused;
@@ -82,9 +81,9 @@ public class MainWindow extends Application {
         this.pauseBtn.setLayoutY(50);
         this.pauseBtn.setOnMouseClicked(this.getPauseButtonEventHandler());
 
-        this.buttonsCantainer = new HBox();
-        buttonsCantainer.setPadding(new Insets(15, 12, 15, 12));
-        buttonsCantainer.setSpacing(10);
+        this.buttonsContainer = new HBox();
+        buttonsContainer.setPadding(new Insets(15, 12, 15, 12));
+        buttonsContainer.setSpacing(10);
         this.scrollPane = new ScrollPane();
         this.scrollInnerPane = new StackPane();
         this.root = new BorderPane();
@@ -92,8 +91,8 @@ public class MainWindow extends Application {
 
         //建立显示的层级嵌套结构
         this.root.setCenter(this.scrollPane);
-        this.root.setTop(this.buttonsCantainer);
-        this.buttonsCantainer.getChildren().addAll(this.loadBtn, this.startBtn, this.pauseBtn);
+        this.root.setTop(this.buttonsContainer);
+        this.buttonsContainer.getChildren().addAll(this.loadBtn, this.startBtn, this.pauseBtn);
 
         this.scrollPane.setContent(this.scrollInnerPane);
         this.scrollInnerPane.getChildren().addAll(this.backgroundCanvas, this.dynamicCanvas);
