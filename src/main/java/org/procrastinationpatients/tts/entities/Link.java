@@ -1,7 +1,9 @@
 package org.procrastinationpatients.tts.entities;
 
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import org.procrastinationpatients.tts.source.StaticConfig;
 import org.procrastinationpatients.tts.utils.DrawUtils;
 import org.procrastinationpatients.tts.utils.RandomUtils;
 
@@ -169,7 +171,7 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 
 	@Override
 	public void drawDynamicGraphic(GraphicsContext gc) {
-
+		Integer pointCount = 0;
 		for (Lane lane : this.getLanes())
 		{
 			for (int i = 0; i < lane.getLength(); i++)
@@ -179,9 +181,20 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 					{
 						continue;
 					}
+					if (StaticConfig.DEBUG_MODE) {
+						DrawUtils.drawText(gc, lane.getVehiclePositions()[i].getX(), lane.getVehiclePositions()[i].getY() - 11D, Color.RED, String.format("(%s,%s)", (int) lane.getVehiclePositions()[i].getX(), (int) lane.getVehiclePositions()[i].getY()), 10D);
+					}
 					DrawUtils.drawBallAtCoordinate(gc, lane.getVehiclePositions()[i], 4, Color.RED);
+					pointCount++;
 				}
 			}
+		}
+		if (StaticConfig.DEBUG_MODE) {
+			DrawUtils.drawText(gc, new Point2D(
+							(this.getA().getPosition().getX() + this.getB().getPosition().getX()) / 2,
+							(this.getA().getPosition().getY() + this.getB().getPosition().getY()) / 2
+					), Color.GREEN, String.format("Drew:%s", pointCount), 11D
+			);
 		}
 	}
 }
