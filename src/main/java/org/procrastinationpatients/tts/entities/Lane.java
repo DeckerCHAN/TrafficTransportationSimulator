@@ -1,6 +1,5 @@
 package org.procrastinationpatients.tts.entities;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.TransducedAccessor_field_Boolean;
 import javafx.geometry.Point2D;
 import org.procrastinationpatients.tts.utils.RandomUtils;
 
@@ -20,7 +19,6 @@ public class Lane {
     private List<Lane> outputs;
     private Vehicle [] vehicles;
 
-
 	private LinkedList<Vehicle> allVehicles ;
     private FunctionalObject parent;
 
@@ -31,8 +29,6 @@ public class Lane {
 		this.parent = parent;
 		this.line = line;
     }
-
-
 
 	public LinkedList<Vehicle> getAllVehicles() {
 		return allVehicles;

@@ -60,15 +60,19 @@ public class Vehicle {
 				on_Link.changeToNextContainer(this);
 				return 1 ;
 			}
-			Vehicle nextVehicle = on_Link.getNextVehicle(this);
-			if(nextVehicle != null) {
-				if (this.Cur_Spd > nextVehicle.getCur_Spd()) {
-					if (this.Cur_line != 2 && this.Cur_line != 3 && fo.canChangeLine(this)) {
+//			Vehicle nextVehicle = on_Link.getNextVehicle(this);
+//			if(nextVehicle != null) {
+//				if (this.Cur_Spd > nextVehicle.getCur_Spd()) {
+//					if (this.Cur_line != 2 && this.Cur_line != 3 && fo.canChangeLine(this)) {
 //						fo.changeLine(this);
 //						return 2;
-					}
-				}
+//					}
+//				}
+//			}
+			if(this.Cur_Spd == 0){
+				fo.changeLine(this) ;
 			}
+
 			on_Link.updateVehicle(this);
 			return 3;
 		}else if(fo instanceof Cross){
