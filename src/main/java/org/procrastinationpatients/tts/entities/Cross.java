@@ -99,7 +99,7 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
 
     @Override
     public void drawDynamicGraphic(GraphicsContext gc) {
-        int x = 0;
+        int pointCount = 0;
         for (Lane[] lanes : this.getRowLanes()) {
             for (Lane lane : lanes) {
                 for (int i = 0; i < lane.getLength(); i++) {
@@ -108,10 +108,18 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
 
                             continue;
                         }
+                        if (StaticConfig.DEBUG_MODE) {
+                            DrawUtils.drawText(gc, lane.getVehiclePositions()[i].getX(), lane.getVehiclePositions()[i].getY() - 11D, Color.RED, String.format("(%s,%s)", (int) lane.getVehiclePositions()[i].getX(), (int) lane.getVehiclePositions()[i].getY()), 10D);
+                        }
                         DrawUtils.drawBallAtCoordinate(gc, lane.getVehiclePositions()[i].getX(), lane.getVehiclePositions()[i].getY(), 4, Color.RED);
+                        pointCount++;
                     }
                 }
             }
+        }
+        if (StaticConfig.DEBUG_MODE) {
+            DrawUtils.drawText(gc, this.getPosition(), Color.RED, String.format("Drew:%s", pointCount), 11D);
+
         }
     }
 
