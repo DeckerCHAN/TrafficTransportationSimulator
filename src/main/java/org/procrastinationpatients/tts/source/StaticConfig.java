@@ -6,7 +6,7 @@ package org.procrastinationpatients.tts.source;
  */
 public class StaticConfig {
 
-    public static final Boolean DEBUG_MODE = false;
+    public static final Boolean DEBUG_MODE = true;
 
     public static final Double STAGE_SIZE_WIDTH = 1024D;
     public static final Double STAGE_SIZE_HEIGHT = 768D;

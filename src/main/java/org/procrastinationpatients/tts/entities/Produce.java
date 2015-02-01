@@ -60,7 +60,7 @@ public class Produce implements Runnable{
 				Lane lane = margins[start].getConnectedLink().getLanes()[line] ;
 				Vehicle vehicle = new Vehicle(lane);
 				vehicle.setId(i);
-				vehicle.setSpeed(1,5);
+				vehicle.setSpeed(1,RandomUtils.getRandomSped());
 				vehicle.setCur_Loc(0);
 				vehicle.setCur_line(line);
 				vehicle.setGoal_line(line);
