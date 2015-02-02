@@ -57,23 +57,6 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 
     protected abstract void refreshLane();
 
-	@Override
-	public boolean canChangeLine(Vehicle vehicle) {
-		int v_line = vehicle.getCur_line();
-		int v_location = vehicle.getCur_Loc();
-		int v_speed = vehicle.getCur_Spd();
-		boolean flag = false;
-
-		v_line = change_Line_NUMBER(v_line);
-		for (int i = v_location ; i <= v_location + v_speed; i++) {
-			if (lanes[v_line].getVehicles()[i] == null) {
-				flag = true;
-				break;
-			}
-		}
-		return flag;
-	}
-
 	public int change_Line_NUMBER(int v_line) {
 		switch (v_line) {
 			case 0:
@@ -101,15 +84,16 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 	public int changeLine(Vehicle vehicle) {
 		int v_line = vehicle.getCur_line();
 		int v_location = vehicle.getCur_Loc();
-
-		this.lanes[v_line].removeVehicle(vehicle) ;
-		v_line = change_Line_NUMBER(v_line);
-		vehicle.setCur_Loc(v_location);
-		vehicle.setCur_line(v_line);
-		vehicle.setOn_Link(this.lanes[v_line]);
-		this.lanes[v_line].addChangeLineVehicle(vehicle);
-
-		return v_line;
+		int new_line = change_Line_NUMBER(v_line);
+		if(this.lanes[new_line].getVehicles()[v_location] == null){
+			this.lanes[v_line].removeVehicle(vehicle) ;
+			vehicle.setCur_Loc(v_location);
+			vehicle.setCur_line(new_line);
+			vehicle.setOn_Link(this.lanes[new_line]);
+			this.lanes[new_line].addChangeLineVehicle(vehicle);
+			return v_line;
+		}
+		return 0;
 	}
 
 	@Override
@@ -185,6 +169,7 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 						DrawUtils.drawText(gc, lane.getVehiclePositions()[i].getX(), lane.getVehiclePositions()[i].getY() - 11D, Color.RED, String.format("%s(%s,%s)", lane.getVehicles()[i].getId(), (int) lane.getVehiclePositions()[i].getX(), (int) lane.getVehiclePositions()[i].getY()), 10D);
 					}
 					DrawUtils.drawBallAtCoordinate(gc, lane.getVehiclePositions()[i], 4, Color.RED);
+//					System.out.println("Drawing:::+++++++" + lane.getVehicles()[i].getId() + "-->"+ lane.getVehicles()[i].getCur_Loc());
 					pointCount++;
 				}
 			}

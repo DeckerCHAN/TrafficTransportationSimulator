@@ -11,22 +11,14 @@ public class Vehicle {
 	private int Cur_Loc;      //当前位置
 	private int Cur_line;     //当前线路
 	private int MAX_Speed;    //最大速度
-	private int id_margin;
 
+	private boolean isStop;
 	private int goal_line;   //目标线路
 
 	private Lane on_Link;    //当前所在的Lane
 
 	public Vehicle(Lane lane){
 		this.on_Link = lane ;
-	}
-
-	public int getId_margin() {
-		return id_margin;
-	}
-
-	public void setId_margin(int id_margin) {
-		this.id_margin = id_margin;
 	}
 
 	public void setSpeed(int Cur_Sped , int MAX_Speed){
@@ -59,7 +51,7 @@ public class Vehicle {
 			Vehicle nextVehicle = on_Link.getNextVehicle(this);
 			if(nextVehicle != null) {
 				if (this.Cur_Spd > nextVehicle.getCur_Spd()) {
-					if (this.Cur_line != 2 && this.Cur_line != 3 && fo.canChangeLine(this)) {
+					if (this.Cur_line != 2 && this.Cur_line != 3) {
 						fo.changeLine(this);
 						return 2;
 					}
@@ -130,5 +122,13 @@ public class Vehicle {
 	}
 	public Lane getOn_Link(){
 		return this.on_Link ;
+	}
+
+	public boolean isStop() {
+		return isStop;
+	}
+
+	public void setStop(boolean isStop) {
+		this.isStop = isStop;
 	}
 }

@@ -42,10 +42,6 @@ public class Lane {
 		return trafficLight;
 	}
 
-	public void setTrafficLight(TrafficLight trafficLight) {
-		this.trafficLight = trafficLight;
-	}
-
 	public LinkedList<Vehicle> getAllVehicles() {
 		return allVehicles;
 	}
@@ -135,6 +131,15 @@ public class Lane {
 		return true ;
 	}
 
+	public void addBarrier(Barrier barrier){
+		int start = barrier.getStart() ;
+		int end = barrier.getStart() + barrier.getLength() -1 ;
+		Vehicle[] vehicles1 = barrier.getVehicles();
+		for(int i = start, k=0 ; i <= end ; i++,k++){
+			vehicles[i] = vehicles1[k];
+		}
+	}
+
 	public int getSafetyDistanceByID(int index) {
 		for (int i = index + 1; i < this.Length; i++) {
 			if (vehicles[i] != null) {
@@ -167,8 +172,8 @@ public class Lane {
 			vehicle.setCur_Loc(vehicle.getCur_Loc() + vehicle.getCur_Spd() - this.getLength());
 			vehicle.setOn_Link(outputLane);
 			vehicle.setCur_line(outputLane.getLine());
-			System.out.println(this.getParent()) ;
-			System.out.println(outputLane.getParent()) ;
+//			System.out.println(this.getParent()) ;
+//			System.out.println(outputLane.getParent()) ;
 			outputLane.addVehicle(vehicle);
 		}else{
 			vehicle.setOn_Link(null);

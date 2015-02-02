@@ -1,22 +1,48 @@
 package org.procrastinationpatients.tts.entities;
 
 
+
 public class Barrier {
 
-	int activityZoneLength ;
-	int transitionZoneLength ;
+	private int start ;
+	private int length ;
+	private Vehicle[] vehicles;
 
-	int workZoneStart ;
-	int activityZoneStart ;
-
-	public Barrier(int activityZoneLength, int transitionZoneLength, int workZoneStart , int activityZoneStart){
-		this.activityZoneLength = activityZoneLength;
-		this.transitionZoneLength = transitionZoneLength ;
-		this.workZoneStart = workZoneStart ;
-		this.activityZoneStart = activityZoneStart ;
+	public Barrier(int start, int length){
+		this.start = start ;
+		this.length = length ;
+		this.vehicles = new Vehicle[length];
 	}
 
-	public void setActivityZoneLength(int activityZoneLength){ this.activityZoneLength = activityZoneLength ;}
-	public void setTransitionZoneLength(int transitionZoneLength){ this.transitionZoneLength = transitionZoneLength ;}
+	public void createBarrier(Lane lane){
+		for(int i = 0 ; i < vehicles.length ; i++){
+			vehicles[i] = new Vehicle(lane);
+			vehicles[i].setStop(true);
+		}
+		lane.addBarrier(this);
+	}
 
+	public int getStart() {
+		return start;
+	}
+
+	public void setStart(int start) {
+		this.start = start;
+	}
+
+	public int getLength() {
+		return length;
+	}
+
+	public void setLength(int length) {
+		this.length = length;
+	}
+
+	public Vehicle[] getVehicles() {
+		return vehicles;
+	}
+
+	public void setVehicles(Vehicle[] vehicles) {
+		this.vehicles = vehicles;
+	}
 }

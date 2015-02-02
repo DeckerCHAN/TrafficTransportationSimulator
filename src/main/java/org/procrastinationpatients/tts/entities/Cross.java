@@ -339,12 +339,6 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
         return new Link[]{this.getNorthRoad(),this.getEastStreet(),this.getSouthRoad(),this.getWestStreet()};
     }
 
-
-	@Override
-	public boolean canChangeLine(Vehicle vehicle) {
-		return false;
-	}
-
 	@Override
 	public int changeLine(Vehicle vehicle) {
 		return 0;
@@ -366,7 +360,7 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
 
 	@Override
 	public void changeToNextContainer(Vehicle vehicle) {
-		//TODO
+
 	}
 
     public TrafficLight[] getNorthTrafficLights() {
