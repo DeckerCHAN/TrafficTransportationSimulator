@@ -2,6 +2,7 @@ package org.procrastinationpatients.tts.entities;
 
 import org.procrastinationpatients.tts.core.Engine;
 import org.procrastinationpatients.tts.utils.RandomUtils;
+import org.procrastinationpatients.tts.utils.VehicleList;
 
 import java.util.LinkedList;
 
@@ -10,8 +11,7 @@ public class Produce implements Runnable{
 
 	private Margin[] margins ;
 	private int i = 0 ;
-	private LinkedList<Vehicle> allVehicles = new LinkedList();
-
+	private VehicleList allVehicle = new VehicleList();
 
 	public Produce(){
 		this.margins = Engine.getInstance().getMargins() ;
@@ -28,7 +28,7 @@ public class Produce implements Runnable{
 					Thread.sleep(1);
 					continue;
 				}
-				if (Movement.flag && allVehicles.size() < 300) {
+				if (Movement.flag && allVehicle.getCount() < 300) {
 					Movement.flag = false;
 					produceVehicles();
 					int time = (int) (Production.getTime_to_Generation() * 100);
@@ -45,8 +45,8 @@ public class Produce implements Runnable{
 
 		public void produceVehicles(){
 
-			int start = RandomUtils.getRandomNumber(margins.length);
-//			int start = 11 ;
+//			int start = RandomUtils.getRandomNumber(margins.length);
+			int start = 11 ;
 			if (margins[start] != null) {
 				int line ;
 				if(margins[start].getFirstInputLaneIndex() == 0){
@@ -63,12 +63,12 @@ public class Produce implements Runnable{
 				vehicle.setGoal_line(line);
 				vehicle.setId_margin(start);
 				lane.addVehicle(vehicle);
-				allVehicles.add(vehicle);
+				allVehicle.add(vehicle);
 				i++;
 			}
 		}
-	public LinkedList<Vehicle> getAllVehicles(){
-		return this.allVehicles;
+	public VehicleList getAllVehicle(){
+		return this.allVehicle;
 	}
 
 	public Boolean getIsPaused() {
@@ -78,5 +78,6 @@ public class Produce implements Runnable{
 	public Boolean getIsStopped() {
 		return Engine.getInstance().getIsStopped();
 	}
+
 }
 

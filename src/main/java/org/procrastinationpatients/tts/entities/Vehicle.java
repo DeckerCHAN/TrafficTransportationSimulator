@@ -51,7 +51,6 @@ public class Vehicle {
 
 		FunctionalObject fo = on_Link.getParent() ;
 		if(fo instanceof Link){
-			this.checkRoad();
 
 			if (this.Cur_Spd + this.Cur_Loc >= on_Link.getLength()) {
 				on_Link.changeToNextContainer(this);
@@ -76,6 +75,7 @@ public class Vehicle {
 			if (this.Cur_Spd + this.Cur_Loc >= on_Link.getLength()) {
 				on_Link.changeToNextContainer(this);
 				this.updateGoalLine();
+				this.checkRoad();
 				return 1 ;
 			}
 			on_Link.updateVehicle(this);

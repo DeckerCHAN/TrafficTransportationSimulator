@@ -17,8 +17,8 @@ public class Processor {
     public Processor() {
         this.produce = new Produce();
         this.produceThread = new Thread(produce);
-        this.movement = new Movement(produce.getAllVehicles());
-        this.moveThread = new Thread(new Movement(produce.getAllVehicles()));
+        this.movement = new Movement(produce.getAllVehicle());
+        this.moveThread = new Thread(this.movement);
 		this.trafficLight = new Thread(new Runnable() {
 			@Override
 			public void run() {
