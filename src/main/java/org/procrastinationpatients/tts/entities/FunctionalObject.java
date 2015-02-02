@@ -1,8 +1,6 @@
 package org.procrastinationpatients.tts.entities;
 
-/**
- * Created by jeffrey on 2015/1/29.
- */
+
 public interface FunctionalObject {
 
 	public abstract boolean canChangeLine(Vehicle vehicle);

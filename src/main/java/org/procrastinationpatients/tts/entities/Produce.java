@@ -5,9 +5,7 @@ import org.procrastinationpatients.tts.utils.RandomUtils;
 
 import java.util.LinkedList;
 
-/**
- * Created by jeffrey on 2015/1/29.
- */
+
 public class Produce implements Runnable{
 
 	private Margin[] margins ;
@@ -23,7 +21,6 @@ public class Produce implements Runnable{
 	public void run() {
 		try {
 
-			System.out.println("=============Produce==============");
 			while (true) {
 				if (getIsStopped()) {
 					return;
@@ -48,8 +45,8 @@ public class Produce implements Runnable{
 
 		public void produceVehicles(){
 
-			int start = RandomUtils.getRandomNumber(margins.length);
-//			int start = 13 ;
+//			int start = RandomUtils.getRandomNumber(margins.length);
+			int start = 13 ;
 			if (margins[start] != null) {
 				int line ;
 				if(margins[start].getFirstInputLaneIndex() == 0){

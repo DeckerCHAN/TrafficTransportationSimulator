@@ -3,9 +3,7 @@ package org.procrastinationpatients.tts.utils;
 import javafx.geometry.Point2D;
 import org.procrastinationpatients.tts.entities.Dot;
 
-/**
- * @Author Decker
- */
+
 public class NetUtils {
     /**
      * 计算网络中最大X与最大Y

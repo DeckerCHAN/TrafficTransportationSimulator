@@ -33,9 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-/**
- * @Author Decker
- */
+
 public class MainWindow extends Application {
 
     private Point2D canvasMaxSizePoint;
@@ -241,10 +239,10 @@ public class MainWindow extends Application {
         return new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                Long start = System.currentTimeMillis();
+//                Long start = System.currentTimeMillis();
                 drawAllDynamic();
-                Long end = System.currentTimeMillis();
-                System.out.println(String.format("Draw cost %s ms.", end - start));
+//                Long end = System.currentTimeMillis();
+//                System.out.println(String.format("Draw cost %s ms.", end - start));
 
             }
         };

@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by decker on 15-1-28.
- */
+
 public class Lane {
 
 	private int line;
@@ -18,6 +16,7 @@ public class Lane {
     private List<Lane> inputs;
     private List<Lane> outputs;
     private Vehicle [] vehicles;
+	private TrafficLight trafficLight;
 
 	private LinkedList<Vehicle> allVehicles ;
     private FunctionalObject parent;
@@ -29,6 +28,23 @@ public class Lane {
 		this.parent = parent;
 		this.line = line;
     }
+
+	public Lane(FunctionalObject parent,int line,TrafficLight trafficLight) {
+		this.inputs = new ArrayList<>();
+		this.outputs = new ArrayList<>();
+		this.allVehicles = new LinkedList<>();
+		this.parent = parent;
+		this.line = line;
+		this.trafficLight = trafficLight;
+	}
+
+	public TrafficLight getTrafficLight() {
+		return trafficLight;
+	}
+
+	public void setTrafficLight(TrafficLight trafficLight) {
+		this.trafficLight = trafficLight;
+	}
 
 	public LinkedList<Vehicle> getAllVehicles() {
 		return allVehicles;
@@ -120,9 +136,14 @@ public class Lane {
 	}
 
 	public int getSafetyDistanceByID(int index) {
+//		if(this.outputs.size() != 0 && this.outputs.get(0).getTrafficLight() != null) {
+//			if (this.outputs.get(0).getTrafficLight().isRedLight()) {
+//				System.out.println(this.getLine() +"++++++++++++++=" + index) ;
+//				return this.Length - index - 5;
+//			}
+//		}
 		for (int i = index + 1; i < this.Length; i++) {
 			if (vehicles[i] != null) {
-				System.out.println("++++++++++++++++++" + (i-index)) ;
 				return i - index - 8 ;
 			}
 		}

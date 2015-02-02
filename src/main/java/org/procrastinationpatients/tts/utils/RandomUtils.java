@@ -2,9 +2,7 @@ package org.procrastinationpatients.tts.utils;
 
 import java.util.Random;
 
-/**
- * @Author Decker & his father -- Jeffrey
- */
+
 public class RandomUtils {
 
 	private static Random random ;

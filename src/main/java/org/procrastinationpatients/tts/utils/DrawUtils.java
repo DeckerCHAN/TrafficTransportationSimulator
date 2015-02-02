@@ -8,9 +8,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
-/**
- * @Author Decker
- */
+
 public class DrawUtils {
     public static void drawBallAtCoordinate(GraphicsContext gc, Point2D point, Integer size, Color color) {
         drawBallAtCoordinate(gc, point.getX(), point.getY(), size, color);

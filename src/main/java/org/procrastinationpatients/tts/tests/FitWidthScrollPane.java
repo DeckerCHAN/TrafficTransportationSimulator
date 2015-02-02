@@ -9,9 +9,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
-/**
- * Created by decker on 15-1-27.
- */
+
 public class FitWidthScrollPane extends Application {
     @Override
     public void start(Stage stage) {

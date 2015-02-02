@@ -2,9 +2,7 @@ package org.procrastinationpatients.tts.entities;
 
 import org.procrastinationpatients.tts.utils.RandomUtils;
 
-/**
- * Created by decker on 15-1-28.
- */
+
 public class Vehicle {
 
 	private int id ; 		  // ID
@@ -42,7 +40,6 @@ public class Vehicle {
 			this.Cur_Spd++;
 		}
 		int safety_distance = on_Link.getSafetyDistanceByID(this.Cur_Loc);
-		System.out.println("safety distance : " + safety_distance);
 		this.Cur_Spd = (safety_distance < this.Cur_Spd) ? (safety_distance) : (this.Cur_Spd);
 		if(this.Cur_Spd < 0)
 			this.Cur_Spd = 0 ;

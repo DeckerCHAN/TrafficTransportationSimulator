@@ -2,9 +2,7 @@ package org.procrastinationpatients.tts.entities;
 
 import org.procrastinationpatients.tts.utils.RandomUtils;
 
-/**
- * Created by jeffrey on 2015/1/29.
- */
+
 public class Production {
 
 	private static double Time_to_Generation;

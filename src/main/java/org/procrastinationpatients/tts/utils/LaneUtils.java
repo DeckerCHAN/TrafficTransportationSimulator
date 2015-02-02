@@ -2,9 +2,7 @@ package org.procrastinationpatients.tts.utils;
 
 import org.procrastinationpatients.tts.entities.Lane;
 
-/**
- * Created by decker on 15-1-29.
- */
+
 public class LaneUtils {
     public static void connectLane(Lane... laneSequence) {
 

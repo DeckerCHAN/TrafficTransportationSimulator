@@ -9,9 +9,7 @@ import org.procrastinationpatients.tts.utils.RandomUtils;
 
 import java.util.List;
 
-/**
- * Created by decker on 15-1-28.
- */
+
 public abstract class Link extends IdentifiableObject implements Visible, FunctionalObject {
 
     private Dot a;

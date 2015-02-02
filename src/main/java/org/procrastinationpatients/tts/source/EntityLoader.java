@@ -17,9 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-/**
- * @Author Decker
- */
+
 public class EntityLoader {
     private Node root;
     private Document doc;

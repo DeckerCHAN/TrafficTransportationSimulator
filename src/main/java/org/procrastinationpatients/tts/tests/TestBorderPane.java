@@ -9,9 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-/**
- * Created by decker on 15-1-27.
- */
+
 public class TestBorderPane extends Application {
     @Override
     public void start(Stage stage) throws Exception {

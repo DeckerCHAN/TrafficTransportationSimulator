@@ -3,9 +3,7 @@ package org.procrastinationpatients.tts.entities;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 
-/**
- * Created by decker on 15-1-28.
- */
+
 public class Margin extends IdentifiableObject implements Visible, Dot {
 
     private Point2D position;

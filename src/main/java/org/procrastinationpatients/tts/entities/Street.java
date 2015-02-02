@@ -7,10 +7,7 @@ import javafx.scene.shape.Line;
 import org.procrastinationpatients.tts.source.StaticConfig;
 import org.procrastinationpatients.tts.utils.DrawUtils;
 
-/**
- * 东西走向
- * Created by decker on 15-1-28.
- */
+
 public class Street extends Link {
 
 
