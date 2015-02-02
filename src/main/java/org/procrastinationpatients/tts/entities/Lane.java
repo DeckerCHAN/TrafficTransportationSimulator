@@ -10,43 +10,43 @@ import java.util.List;
 
 public class Lane {
 
-	private int line;
-	private int Length;
-	private Point2D [] vehiclePositions;
+    private int line;
+    private int Length;
+    private Point2D[] vehiclePositions;
     private List<Lane> inputs;
     private List<Lane> outputs;
-    private Vehicle [] vehicles;
-	private TrafficLight trafficLight;
+    private Vehicle[] vehicles;
+    private TrafficLight trafficLight;
+    private ArrayList<Barrier> barriers;
 
-	private LinkedList<Vehicle> allVehicles ;
+    private LinkedList<Vehicle> allVehicles;
     private FunctionalObject parent;
 
-    public Lane(FunctionalObject parent,int line) {
-		this.inputs = new ArrayList<>();
-		this.outputs = new ArrayList<>();
-		this.allVehicles = new LinkedList<>();
-		this.parent = parent;
-		this.line = line;
+    public Lane(FunctionalObject parent, int line) {
+        this.inputs = new ArrayList<>();
+        this.outputs = new ArrayList<>();
+        this.allVehicles = new LinkedList<>();
+        this.parent = parent;
+        this.line = line;
+        this.barriers=new ArrayList<>();
     }
 
-	public Lane(FunctionalObject parent,int line,TrafficLight trafficLight) {
-		this.inputs = new ArrayList<>();
-		this.outputs = new ArrayList<>();
-		this.allVehicles = new LinkedList<>();
-		this.parent = parent;
-		this.line = line;
-		this.trafficLight = trafficLight;
-	}
+    public Lane(FunctionalObject parent, int line, TrafficLight trafficLight) {
+        this(parent, line);
+        this.trafficLight = trafficLight;
+    }
 
-	public TrafficLight getTrafficLight() {
-		return trafficLight;
-	}
+    public TrafficLight getTrafficLight() {
+        return trafficLight;
+    }
 
-	public LinkedList<Vehicle> getAllVehicles() {
-		return allVehicles;
-	}
+    public LinkedList<Vehicle> getAllVehicles() {
+        return allVehicles;
+    }
 
-	public int getLine(){return this.line;}
+    public int getLine() {
+        return this.line;
+    }
 
     public List<Lane> getInputs() {
         return inputs;
@@ -68,127 +68,127 @@ public class Lane {
         return vehicles;
     }
 
-	public void setVehicles(Vehicle[] vehicles) {
-		this.vehicles = vehicles;
-	}
+    public void setVehicles(Vehicle[] vehicles) {
+        this.vehicles = vehicles;
+    }
 
-	public FunctionalObject getParent(){
-		return this.parent ;
-	}
+    public FunctionalObject getParent() {
+        return this.parent;
+    }
 
     public Integer getLength() {
         return this.Length;
     }
 
     public void setLength(Integer length) {
-        this.vehicles=new Vehicle[length];
-		this.vehiclePositions =new Point2D[length];
-		this.Length = length ;
+        this.vehicles = new Vehicle[length];
+        this.vehiclePositions = new Point2D[length];
+        this.Length = length;
     }
 
-	public void addVehicle(Vehicle vehicle){
-		int Cur_loc = vehicle.getCur_Loc() ;
-		int temp = 0 ;
-		for(int i = 0 ; i <= Cur_loc ; i++){
-			if(vehicles[i] == null){
-				temp = i ;
-			}else{
-				break;
-			}
-		}
-		vehicles[temp] = vehicle ;
-		allVehicles.add(vehicle);
-	}
+    public void addVehicle(Vehicle vehicle) {
+        int Cur_loc = vehicle.getCur_Loc();
+        int temp = 0;
+        for (int i = 0; i <= Cur_loc; i++) {
+            if (vehicles[i] == null) {
+                temp = i;
+            } else {
+                break;
+            }
+        }
+        vehicles[temp] = vehicle;
+        allVehicles.add(vehicle);
+    }
 
-	public void addChangeLineVehicle(Vehicle vehicle){
-		for(int i = vehicle.getCur_Loc() ; i >= 0 ; i--){
-			if(vehicles[i] == null)
-			{
-				vehicles[i] = vehicle;
-				allVehicles.add(vehicle);
-				break;
-			}
-		}
-	}
+    public void addChangeLineVehicle(Vehicle vehicle) {
+        for (int i = vehicle.getCur_Loc(); i >= 0; i--) {
+            if (vehicles[i] == null) {
+                vehicles[i] = vehicle;
+                allVehicles.add(vehicle);
+                break;
+            }
+        }
+    }
 
-	public boolean removeVehicle(Vehicle vehicle){
-		if(vehicle == null)
-			return false;
-		int v_location = vehicle.getCur_Loc();
-		if(vehicles[v_location] != null){
-			vehicles[v_location] = null ;
-			allVehicles.remove(vehicle);
-			return true ;
-		}
-		return false ;
-	}
+    public boolean removeVehicle(Vehicle vehicle) {
+        if (vehicle == null)
+            return false;
+        int v_location = vehicle.getCur_Loc();
+        if (vehicles[v_location] != null) {
+            vehicles[v_location] = null;
+            allVehicles.remove(vehicle);
+            return true;
+        }
+        return false;
+    }
 
-	public boolean removeVehicle(int location){
-		if(vehicles[location] == null)
-			return false ;
-		vehicles[location] = null ;
-		allVehicles.remove(vehicles) ;
-		return true ;
-	}
+    public boolean removeVehicle(int location) {
+        if (vehicles[location] == null)
+            return false;
+        vehicles[location] = null;
+        allVehicles.remove(vehicles);
+        return true;
+    }
 
-	public void addBarrier(Barrier barrier){
-		int start = barrier.getStart() ;
-		int end = barrier.getStart() + barrier.getLength() -1 ;
-		Vehicle[] vehicles1 = barrier.getVehicles();
-		for(int i = start, k=0 ; i <= end ; i++,k++){
-			vehicles[i] = vehicles1[k];
-		}
-	}
+    public void addBarrier(Barrier barrier) {
+        this.barriers.add(barrier);
+        int start = barrier.getStart();
+        int end = barrier.getStart() + barrier.getLength() - 1;
+        Vehicle[] vehicles1 = barrier.getVehicles();
+        for (int i = start, k = 0; i <= end; i++, k++) {
+            vehicles[i] = vehicles1[k];
+        }
+    }
 
-	public int getSafetyDistanceByID(int index) {
-		for (int i = index + 1; i < this.Length; i++) {
-			if (vehicles[i] != null) {
-				return i - index - 5 ;
-			}
-		}
+    public int getSafetyDistanceByID(int index) {
+        for (int i = index + 1; i < this.Length; i++) {
+            if (vehicles[i] != null) {
+                return i - index - 5;
+            }
+        }
 
-		if(this.outputs.size() != 0 && this.outputs.get(0).getTrafficLight() != null) {
-			if (this.outputs.get(0).getTrafficLight().isRedLight()) {
-				return this.Length - index - 5;
-			}
-		}
-		return this.Length ;
-	}
+        if (this.outputs.size() != 0 && this.outputs.get(0).getTrafficLight() != null) {
+            if (this.outputs.get(0).getTrafficLight().isRedLight()) {
+                return this.Length - index - 5;
+            }
+        }
+        return this.Length;
+    }
 
-	public Vehicle getNextVehicle(Vehicle vehicle) {
-		int v_location = vehicle.getCur_Loc();
+    public Vehicle getNextVehicle(Vehicle vehicle) {
+        int v_location = vehicle.getCur_Loc();
 
-		for (int i = v_location + 1; i < this.Length; i++) {
-			if (vehicles[i] != null)
-				return vehicles[i];
-		}
-		return null;
-	}
+        for (int i = v_location + 1; i < this.Length; i++) {
+            if (vehicles[i] != null)
+                return vehicles[i];
+        }
+        return null;
+    }
 
-	public void changeToNextContainer(Vehicle vehicle){
-		this.removeVehicle(vehicle);
-		if(outputs.size()!=0 && outputs != null){
-			Lane outputLane = outputs.get(RandomUtils.getStartLine(outputs.size())) ;
-			vehicle.setCur_Loc(vehicle.getCur_Loc() + vehicle.getCur_Spd() - this.getLength());
-			vehicle.setOn_Link(outputLane);
-			vehicle.setCur_line(outputLane.getLine());
+    public void changeToNextContainer(Vehicle vehicle) {
+        this.removeVehicle(vehicle);
+        if (outputs.size() != 0 && outputs != null) {
+            Lane outputLane = outputs.get(RandomUtils.getStartLine(outputs.size()));
+            vehicle.setCur_Loc(vehicle.getCur_Loc() + vehicle.getCur_Spd() - this.getLength());
+            vehicle.setOn_Link(outputLane);
+            vehicle.setCur_line(outputLane.getLine());
 //			System.out.println(this.getParent()) ;
 //			System.out.println(outputLane.getParent()) ;
-			outputLane.addVehicle(vehicle);
-		}else{
-			vehicle.setOn_Link(null);
-		}
-	}
+            outputLane.addVehicle(vehicle);
+        } else {
+            vehicle.setOn_Link(null);
+        }
+    }
 
-	public void updateVehicle(Vehicle vehicle) {
-		int Cur_Loc = vehicle.getCur_Loc();
-		int new_loc = Cur_Loc + vehicle.getCur_Spd();
-		vehicles[Cur_Loc] = null;
-		vehicle.setCur_Loc(new_loc);
-		vehicles[new_loc] = vehicle;
-	}
+    public void updateVehicle(Vehicle vehicle) {
+        int Cur_Loc = vehicle.getCur_Loc();
+        int new_loc = Cur_Loc + vehicle.getCur_Spd();
+        vehicles[Cur_Loc] = null;
+        vehicle.setCur_Loc(new_loc);
+        vehicles[new_loc] = vehicle;
+    }
 
-	public Point2D[] getVehiclePositions() {
-		return vehiclePositions;
-	}
+    public Point2D[] getVehiclePositions() {
+        return vehiclePositions;
+    }
 }
