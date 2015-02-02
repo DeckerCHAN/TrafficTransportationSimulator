@@ -16,7 +16,6 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
     private Dot b;
 	private int lane_Length;
     private Lane [] lanes;
-	private TrafficLight[] trafficlights;
 
     public Link(Integer id) {
         super(id);
@@ -24,29 +23,7 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 		for (int i = 0; i < 6; i++) {
 			lanes[i] = new Lane(this,i);
 		}
-		this.trafficlights = new TrafficLight[2];
     }
-
-	public TrafficLight[] getTrafficlights(){return this.trafficlights;}
-
-//	public void setTrafficlights(){
-//		if(inputs.size() == 0) {
-//			trafficlights[0] = new TrafficLight(false);
-//		}
-//		else {
-//			trafficlights[0] = new TrafficLight(true);
-//			trafficlights[0].setLight(0);
-//			trafficlights[0].setPosition(0);
-//		}
-//		if(outputs.size() == 0) {
-//			trafficlights[1] = new TrafficLight(false);
-//		}
-//		else {
-//			trafficlights[1] = new TrafficLight(true);
-//			trafficlights[1].setLight(0);
-//			trafficlights[0].setPosition(this.Length);
-//		}
-//	}
 
     public Lane[] getLanes() {
         return lanes;
