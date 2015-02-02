@@ -12,50 +12,50 @@ import java.util.List;
 
 public abstract class Link extends IdentifiableObject implements Visible, FunctionalObject {
 
-    private Dot a;
-    private Dot b;
+	private Dot a;
+	private Dot b;
 	private int lane_Length;
-    private Lane [] lanes;
+	private Lane[] lanes;
 
-    public Link(Integer id) {
-        super(id);
-        this.lanes=new Lane[6];
+	public Link(Integer id) {
+		super(id);
+		this.lanes = new Lane[6];
 		for (int i = 0; i < 6; i++) {
 			lanes[i] = new Lane(this,i);
 		}
-    }
+	}
 
-    public Lane[] getLanes() {
-        return lanes;
-    }
+	public Lane[] getLanes() {
+		return lanes;
+	}
 
-    public void setLanes(Lane[] lanes) {
-        this.lanes = lanes;
+	public void setLanes(Lane[] lanes) {
+		this.lanes = lanes;
 		if(lanes.length > 0)
 			this.lane_Length = lanes[0].getLength() ;
 		else
 			this.lane_Length = 0 ;
-    }
+	}
 
-    public Dot getA() {
-        return a;
-    }
+	public Dot getA() {
+		return a;
+	}
 
 	public void setA(Dot a) {
-        this.a = a;
-        refreshLane();
-    }
+		this.a = a;
+		refreshLane();
+	}
 
 	public Dot getB() {
-        return b;
-    }
+		return b;
+	}
 
 	public void setB(Dot b) {
-        this.b = b;
-        refreshLane();
-    }
+		this.b = b;
+		refreshLane();
+	}
 
-    protected abstract void refreshLane();
+	protected abstract void refreshLane();
 
 	public int change_Line_NUMBER(int v_line) {
 		switch (v_line) {
@@ -111,7 +111,7 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 		int v_goal_line = vehicle.getGoal_line() ;
 		int v_location = vehicle.getCur_Loc();
 
-		if(!hasVehicle(v_goal_line,v_location)){
+		if (!hasVehicle(v_goal_line, v_location)) {
 			lanes[v_line].removeVehicle(vehicle) ;
 			vehicle.setCur_line(v_goal_line);
 			vehicle.setOn_Link(lanes[v_goal_line]);
@@ -160,6 +160,13 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 		{
 			for (int i = 0; i < lane.getLength(); i++)
 			{
+				for (Barrier barrier : lane.getBarriers()) {
+					if (i > barrier.getStart() && i < barrier.getEnd()) {
+						DrawUtils.drawBarrier(gc, lane.getVehiclePositions()[i], 8, Color.BLACK);
+					}
+
+				}
+
 				if (lane.getVehicles()[i] != null) {
 					if (lane.getVehiclePositions()[i] == null)
 					{

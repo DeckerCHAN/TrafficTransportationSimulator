@@ -131,7 +131,7 @@ public class Lane {
     }
 
     public void addBarrier(Barrier barrier) {
-        this.barriers.add(barrier);
+        this.getBarriers().add(barrier);
         int start = barrier.getStart();
         int end = barrier.getStart() + barrier.getLength() - 1;
         Vehicle[] vehicles1 = barrier.getVehicles();
@@ -190,5 +190,9 @@ public class Lane {
 
     public Point2D[] getVehiclePositions() {
         return vehiclePositions;
+    }
+
+    public ArrayList<Barrier> getBarriers() {
+        return barriers;
     }
 }
