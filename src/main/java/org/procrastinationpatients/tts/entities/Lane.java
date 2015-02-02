@@ -136,15 +136,15 @@ public class Lane {
 	}
 
 	public int getSafetyDistanceByID(int index) {
-//		if(this.outputs.size() != 0 && this.outputs.get(0).getTrafficLight() != null) {
-//			if (this.outputs.get(0).getTrafficLight().isRedLight()) {
-//				System.out.println(this.getLine() +"++++++++++++++=" + index) ;
-//				return this.Length - index - 5;
-//			}
-//		}
 		for (int i = index + 1; i < this.Length; i++) {
 			if (vehicles[i] != null) {
-				return i - index - 8 ;
+				return i - index - 5 ;
+			}
+		}
+
+		if(this.outputs.size() != 0 && this.outputs.get(0).getTrafficLight() != null) {
+			if (this.outputs.get(0).getTrafficLight().isRedLight()) {
+				return this.Length - index - 5;
 			}
 		}
 		return this.Length ;
@@ -177,9 +177,10 @@ public class Lane {
 
 	public void updateVehicle(Vehicle vehicle) {
 		int Cur_Loc = vehicle.getCur_Loc();
+		int new_loc = Cur_Loc + vehicle.getCur_Spd();
 		vehicles[Cur_Loc] = null;
-		vehicle.setCur_Loc(Cur_Loc + vehicle.getCur_Spd());
-		vehicles[vehicle.getCur_Loc()] = vehicle;
+		vehicle.setCur_Loc(new_loc);
+		vehicles[new_loc] = vehicle;
 	}
 
 	public Point2D[] getVehiclePositions() {

@@ -212,6 +212,7 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 				}
 			}
 		}
+
 		//在Debug模式下输出车的数量
 		if (StaticConfig.DEBUG_MODE) {
 			DrawUtils.drawText(gc, new Point2D(

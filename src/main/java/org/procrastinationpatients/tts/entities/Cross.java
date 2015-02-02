@@ -21,10 +21,10 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
     private Street eastStreet;
     private Street westStreet;
 
-    private TrafficLight[] northTrafficLights;
-    private TrafficLight[] southTrafficLights;
-    private TrafficLight[] eastTrafficLights;
-    private TrafficLight[] westTrafficLights;
+    private static TrafficLight[] northTrafficLights;
+    private static TrafficLight[] southTrafficLights;
+    private static TrafficLight[] eastTrafficLights;
+    private static TrafficLight[] westTrafficLights;
 
     static {
         laneVisualLength = new Double[7];
@@ -59,29 +59,36 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
 
         progressA[6] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (65D / laneVisualLength[6]);
         progressB[6] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (85D / laneVisualLength[6]);
+
+		northTrafficLights = new TrafficLight[]{new TrafficLight(1,true), new TrafficLight(1,false), new TrafficLight(1,false), new TrafficLight(1,true), new TrafficLight(1,true), new TrafficLight(1,true)};
+		westTrafficLights = new TrafficLight[]{new TrafficLight(1,true), new TrafficLight(0,false), new TrafficLight(0,false), new TrafficLight(1,true), new TrafficLight(1,true), new TrafficLight(1,true)};
+		eastTrafficLights = new TrafficLight[6];
+		southTrafficLights = new TrafficLight[6];
+		for (int i = 0; i < 6; i++) {
+			eastTrafficLights[i] = westTrafficLights[5 - i];
+			southTrafficLights[i] = northTrafficLights[5 - i];
+		}
     }
 
     public Cross(Integer id, Point2D position) {
         super(id);
         this.position = position;
 
-		this.northTrafficLights = new TrafficLight[]{new TrafficLight(1,true), new TrafficLight(), new TrafficLight(), new TrafficLight(), new TrafficLight(), new TrafficLight()};
-		this.westTrafficLights = new TrafficLight[]{new TrafficLight(1,true), new TrafficLight(0,false), new TrafficLight(0,false), new TrafficLight(), new TrafficLight(), new TrafficLight()};
-		this.eastTrafficLights = new TrafficLight[6];
-		this.southTrafficLights = new TrafficLight[6];
-		for (int i = 0; i < 6; i++) {
-			this.eastTrafficLights[i] = this.westTrafficLights[5 - i];
-			this.southTrafficLights[i] = this.northTrafficLights[5 - i];
-		}
-
-        this.northLanes = new Lane[]{new Lane(this,0,northTrafficLights[0]), new Lane(this,1,northTrafficLights[1]), new Lane(this,2,northTrafficLights[2]), new Lane(this,3), new Lane(this,4), new Lane(this,5), new Lane(this,6)};
-        this.southLanes = new Lane[]{new Lane(this,0), new Lane(this,1), new Lane(this,2), new Lane(this,3), new Lane(this,4,southTrafficLights[3]), new Lane(this,5,southTrafficLights[4]), new Lane(this,6,southTrafficLights[5])};
-        this.eastLanes = new Lane[]{new Lane(this,0), new Lane(this,1), new Lane(this,2), new Lane(this,3), new Lane(this,4,eastTrafficLights[3]), new Lane(this,5,eastTrafficLights[4]), new Lane(this,6,eastTrafficLights[5])};
-        this.westLanes = new Lane[]{new Lane(this,0,westTrafficLights[0]), new Lane(this,1,westTrafficLights[1]), new Lane(this,2,westTrafficLights[2]), new Lane(this,3), new Lane(this,4), new Lane(this,5), new Lane(this,6)};
+        this.northLanes = new Lane[]{new Lane(this,0,northTrafficLights[0]), new Lane(this,1,northTrafficLights[0]), new Lane(this,2,northTrafficLights[0]), new Lane(this,3,northTrafficLights[1]), new Lane(this,4,northTrafficLights[2]), new Lane(this,5,northTrafficLights[2]), new Lane(this,6,northTrafficLights[2])};
+        this.southLanes = new Lane[]{new Lane(this,0,southTrafficLights[5]), new Lane(this,1,southTrafficLights[5]), new Lane(this,2,southTrafficLights[5]), new Lane(this,3,southTrafficLights[4]), new Lane(this,4,southTrafficLights[3]), new Lane(this,5,southTrafficLights[3]), new Lane(this,6,southTrafficLights[3])};
+        this.eastLanes = new Lane[]{new Lane(this,0,eastTrafficLights[5]), new Lane(this,1,eastTrafficLights[5]), new Lane(this,2,eastTrafficLights[5]), new Lane(this,3,eastTrafficLights[4]), new Lane(this,4,eastTrafficLights[3]), new Lane(this,5,eastTrafficLights[3]), new Lane(this,6,eastTrafficLights[3])};
+        this.westLanes = new Lane[]{new Lane(this,0,westTrafficLights[0]), new Lane(this,1,westTrafficLights[0]), new Lane(this,2,westTrafficLights[1]), new Lane(this,3,westTrafficLights[1]), new Lane(this,4,westTrafficLights[2]), new Lane(this,5,westTrafficLights[2]), new Lane(this,6,westTrafficLights[2])};
 
         this.refreshLaneLength();
 
     }
+
+	public static void changeTrafficLight(){
+		for(int i = 0 ; i < northTrafficLights.length ; i++){
+			northTrafficLights[i].changeLight();
+			westTrafficLights[i].changeLight();
+		}
+	}
 
     @Override
     public Point2D getPosition() {

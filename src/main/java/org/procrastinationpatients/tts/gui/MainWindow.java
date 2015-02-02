@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.procrastinationpatients.tts.core.Engine;
 import org.procrastinationpatients.tts.core.Processor;
+import org.procrastinationpatients.tts.entities.Cross;
 import org.procrastinationpatients.tts.entities.Dot;
 import org.procrastinationpatients.tts.entities.Visible;
 import org.procrastinationpatients.tts.source.EntityLoader;

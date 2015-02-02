@@ -45,8 +45,8 @@ public class Produce implements Runnable{
 
 		public void produceVehicles(){
 
-//			int start = RandomUtils.getRandomNumber(margins.length);
-			int start = 13 ;
+			int start = RandomUtils.getRandomNumber(margins.length);
+//			int start = 11 ;
 			if (margins[start] != null) {
 				int line ;
 				if(margins[start].getFirstInputLaneIndex() == 0){

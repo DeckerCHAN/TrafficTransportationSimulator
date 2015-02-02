@@ -1,6 +1,9 @@
 package org.procrastinationpatients.tts.entities;
 
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class TrafficLight {
 	private int Light;   //0为红灯,1为绿灯
 	private boolean isRightLight;
@@ -14,15 +17,21 @@ public class TrafficLight {
 		this.isRightLight = isRightLight;
 	}
 
-	public int getLight() {
-		return Light;
-	}
-
 	public void setLight(int light) {
 		Light = light;
 	}
 
 	public boolean isRedLight() {
 		return Light == 0;
+	}
+
+	public void changeLight(){
+		if(!this.isRightLight){
+			if(this.Light == 0){
+				this.Light = 1 ;
+			}else{
+				this.Light = 0;
+			}
+		}
 	}
 }

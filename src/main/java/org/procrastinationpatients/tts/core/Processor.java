@@ -1,5 +1,6 @@
 package org.procrastinationpatients.tts.core;
 
+import org.procrastinationpatients.tts.entities.Cross;
 import org.procrastinationpatients.tts.entities.Movement;
 import org.procrastinationpatients.tts.entities.Produce;
 
@@ -11,18 +12,32 @@ public class Processor {
     Movement movement;
     Thread produceThread;
     Thread moveThread;
-
+	Thread trafficLight;
 
     public Processor() {
         this.produce = new Produce();
         this.produceThread = new Thread(produce);
         this.movement = new Movement(produce.getAllVehicles());
         this.moveThread = new Thread(new Movement(produce.getAllVehicles()));
+		this.trafficLight = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while(true){
+					Cross.changeTrafficLight();
+					try {
+						Thread.sleep(5000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
     }
 
     public void start() {
         this.produceThread.start();
         this.moveThread.start();
+		this.trafficLight.start();
     }
 
     @Deprecated
