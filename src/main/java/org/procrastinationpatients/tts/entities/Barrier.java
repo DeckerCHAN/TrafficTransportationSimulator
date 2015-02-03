@@ -30,6 +30,10 @@ public class Barrier {
 		this.start = start;
 	}
 
+	public int getEnd() {
+		return start + length;
+	}
+
 	public int getLength() {
 		return length;
 	}

@@ -22,7 +22,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.procrastinationpatients.tts.core.Engine;
 import org.procrastinationpatients.tts.core.Processor;
-import org.procrastinationpatients.tts.entities.Cross;
 import org.procrastinationpatients.tts.entities.Dot;
 import org.procrastinationpatients.tts.entities.Visible;
 import org.procrastinationpatients.tts.source.EntityLoader;
@@ -32,7 +31,6 @@ import org.procrastinationpatients.tts.utils.NetUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 
 
 public class MainWindow extends Application {
@@ -99,7 +97,7 @@ public class MainWindow extends Application {
         //建立显示的层级嵌套结构
         this.root.setCenter(this.scrollPane);
         this.root.setTop(this.buttonsContainer);
-        this.buttonsContainer.getChildren().addAll(this.loadBtn, this.startBtn, this.pauseBtn,this.resumeBtn);
+        this.buttonsContainer.getChildren().addAll(this.loadBtn, this.startBtn, this.pauseBtn, this.resumeBtn);
 
         this.scrollPane.setContent(this.scrollInnerPane);
         this.scrollInnerPane.getChildren().addAll(this.backgroundCanvas, this.dynamicCanvas);
@@ -161,7 +159,9 @@ public class MainWindow extends Application {
                     FileChooser fileChooser = new FileChooser();
                     fileChooser.setTitle("Open XML File");
                     File xml = fileChooser.showOpenDialog(mainStage);
-                    if(xml==null){return;}
+                    if (xml == null) {
+                        return;
+                    }
                     //通过文件初始化Containers
                     EntityLoader containersLoader = new EntityLoader();
                     containersLoader.LoadFromFile(xml);
@@ -200,7 +200,7 @@ public class MainWindow extends Application {
                 //启动动态绘制线程
                 Engine.getInstance().setProcessor(new Processor());
                 Engine.getInstance().getProcessor().start();
-				timeline.play();
+                timeline.play();
             }
         };
     }
@@ -215,7 +215,7 @@ public class MainWindow extends Application {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 Engine.getInstance().pause();
-				timeline.stop();
+                timeline.stop();
                 System.out.println("Pause!");
             }
         };
@@ -231,7 +231,7 @@ public class MainWindow extends Application {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 Engine.getInstance().resume();
-				timeline.play();
+                timeline.play();
             }
         };
     }
@@ -240,10 +240,13 @@ public class MainWindow extends Application {
         return new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-//                Long start = System.currentTimeMillis();
+                Long start = System.currentTimeMillis();
                 drawAllDynamic();
-//                Long end = System.currentTimeMillis();
-//                System.out.println(String.format("Draw cost %s ms.", end - start));
+                Long end = System.currentTimeMillis();
+                if (StaticConfig.DEBUG_MODE || StaticConfig.OUTPUT_DRAW_TIME) {
+                    System.out.println(String.format("Draw cost %s ms.", end - start));
+                }
+
 
             }
         };
