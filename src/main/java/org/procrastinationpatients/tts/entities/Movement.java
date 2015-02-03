@@ -23,7 +23,7 @@ public class Movement implements Runnable {
 				}
 				if (flag) {
 					flag = false;
-					for (int i = 0; i <= vehicles.getMaxIndex(); i++) {
+					for (int i = 0; i < 300; i++) {
 						Vehicle vehicle = vehicles.getVehicles()[i];
 						if (vehicle != null) {
 							if (vehicle.getOn_Link() == null) {

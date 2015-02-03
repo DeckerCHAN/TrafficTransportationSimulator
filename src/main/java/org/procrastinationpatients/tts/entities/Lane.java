@@ -143,13 +143,17 @@ public class Lane {
     public int getSafetyDistanceByID(int index) {
         for (int i = index + 1; i < this.Length; i++) {
             if (vehicles[i] != null) {
-                return i - index - 5;
+				if(i - index - 5 == 0){
+					System.out.println("++++++++++ByID: 车距:" + i + "、" + index);
+					return i - index - 5;
+				}
+
             }
         }
 
         if (this.outputs.size() != 0 && this.outputs.get(0).getTrafficLight() != null) {
             if (this.outputs.get(0).getTrafficLight().isRedLight()) {
-                return this.Length - index - 5;
+				return this.Length - index - 5;
             }
         }
         return this.Length;
@@ -166,16 +170,45 @@ public class Lane {
     }
 
     public void changeToNextContainer(Vehicle vehicle) {
-        this.removeVehicle(vehicle);
-        if (outputs.size() != 0 && outputs != null) {
-            Lane outputLane = outputs.get(RandomUtils.getStartLine(outputs.size()));
-            vehicle.setCur_Loc(vehicle.getCur_Loc() + vehicle.getCur_Spd() - this.getLength());
-            vehicle.setOn_Link(outputLane);
-            vehicle.setCur_line(outputLane.getLine());
-//			System.out.println(this.getParent()) ;
-//			System.out.println(outputLane.getParent()) ;
+		if (outputs.size() != 0 && outputs != null) {
+			for(int k = vehicle.getCur_Loc()+1 ; k < this.Length ; k++){
+				if(vehicles[k] != null){
+					vehicles[vehicle.getCur_Loc()] = null;
+					vehicle.setCur_Loc(k-1);
+					vehicles[k-1] = vehicle;
+					return;
+				}
+			}
+			Lane outputLane = outputs.get(RandomUtils.getStartLine(outputs.size()));
+			for(int j = 0 ; j <= (vehicle.getCur_Loc()+vehicle.getCur_Spd() - this.Length) ; j++){
+				if(outputLane.getVehicles()[j] != null){
+					if(j == 0){
+						for(int i = vehicle.getCur_Loc() + 1 ; i < this.Length ; i++){
+							if(vehicles[i] != null){
+								vehicles[vehicle.getCur_Loc()] = null;
+								vehicle.setCur_Loc(i-1);
+								vehicles[i-1] = vehicle;
+								return;
+							}
+						}
+					}else{
+						this.removeVehicle(vehicle);
+						vehicle.setCur_Loc(j-1);
+						vehicle.setOn_Link(outputLane);
+						vehicle.setCur_line(outputLane.getLine());
+						outputLane.addVehicle(vehicle);
+						return;
+					}
+				}
+			}
+			this.removeVehicle(vehicle);
+			vehicle.setCur_Loc(vehicle.getCur_Loc()+vehicle.getCur_Spd() - this.Length);
+			vehicle.setOn_Link(outputLane);
+			vehicle.setCur_line(outputLane.getLine());
 			outputLane.addVehicle(vehicle);
+			return;
 		}else{
+			this.removeVehicle(vehicle);
 			vehicle.setOn_Link(null);
 		}
 	}
@@ -188,6 +221,7 @@ public class Lane {
 				vehicles[Cur_Loc] = null;
 				vehicle.setCur_Loc(i-1);
 				vehicles[i-1] = vehicle;
+				return;
 			}
 		}
 		vehicles[Cur_Loc] = null;

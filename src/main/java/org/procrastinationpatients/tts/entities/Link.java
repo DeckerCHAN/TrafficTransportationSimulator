@@ -91,7 +91,7 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 			vehicle.setCur_line(new_line);
 			vehicle.setOn_Link(this.lanes[new_line]);
 			this.lanes[new_line].addChangeLineVehicle(vehicle);
-			return v_line;
+			return new_line;
 		}
 		return 0;
 	}
