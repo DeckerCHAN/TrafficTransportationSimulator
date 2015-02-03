@@ -33,8 +33,9 @@ public class Vehicle {
 		}
 		int safety_distance = on_Link.getSafetyDistanceByID(this.Cur_Loc);
 		this.Cur_Spd = (safety_distance < this.Cur_Spd) ? (safety_distance) : (this.Cur_Spd);
-		if(this.Cur_Spd < 0)
+		if(this.Cur_Spd < 0){
 			this.Cur_Spd = 0 ;
+		}
 		return this.Cur_Spd;
 	}
 

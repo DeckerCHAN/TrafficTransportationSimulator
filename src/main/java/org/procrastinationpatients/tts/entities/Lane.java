@@ -183,6 +183,13 @@ public class Lane {
 	public void updateVehicle(Vehicle vehicle) {
 		int Cur_Loc = vehicle.getCur_Loc();
 		int new_loc = Cur_Loc + vehicle.getCur_Spd();
+		for(int i = Cur_Loc+1; i <= new_loc ; i++){
+			if( vehicles[i] != null){
+				vehicles[Cur_Loc] = null;
+				vehicle.setCur_Loc(i-1);
+				vehicles[i-1] = vehicle;
+			}
+		}
 		vehicles[Cur_Loc] = null;
 		vehicle.setCur_Loc(new_loc);
 		vehicles[new_loc] = vehicle;
