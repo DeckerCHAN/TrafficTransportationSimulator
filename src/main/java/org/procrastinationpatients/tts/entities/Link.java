@@ -6,7 +6,9 @@ import javafx.scene.paint.Color;
 import org.procrastinationpatients.tts.source.StaticConfig;
 import org.procrastinationpatients.tts.utils.DrawUtils;
 import org.procrastinationpatients.tts.utils.RandomUtils;
+import sun.text.normalizer.VersionInfo;
 
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -159,5 +161,9 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 					), Color.GREEN, String.format("Drew:%s", pointCount), 11D
 			);
 		}
+	}
+
+	public LinkedList<Vehicle> vehiclesData(int i){
+		return lanes[i].getAllVehicles();
 	}
 }
