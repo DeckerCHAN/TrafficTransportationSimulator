@@ -43,29 +43,40 @@ public class Produce implements Runnable{
 
 	}
 
-		public void produceVehicles(){
+	public void produceVehicles(){
 
-			int start = RandomUtils.getRandomNumber(margins.length);
-//			int start = 11 ;
-			if (margins[start] != null) {
-				int line ;
-				if(margins[start].getFirstInputLaneIndex() == 0){
-					line = RandomUtils.getStartLine() ;
-				}else{
-					line = RandomUtils.getStartLine() + 3 ;
-				}
-				Lane lane = margins[start].getConnectedLink().getLanes()[line] ;
-				Vehicle vehicle = new Vehicle(lane);
-				vehicle.setId(i);
-				vehicle.setSpeed(1,RandomUtils.getRandomSped());
-				vehicle.setCur_Loc(0);
-				vehicle.setCur_line(line);
-				vehicle.setGoal_line(line);
-				lane.addVehicle(vehicle);
-				allVehicle.add(vehicle);
-				i++;
+		int start = RandomUtils.getRandomNumber(margins.length);
+//		int start = 11 ;
+		if (margins[start] != null) {
+			int line ;
+			if(margins[start].getFirstInputLaneIndex() == 0){
+				line = RandomUtils.getStartLine() ;
+			}else{
+				line = RandomUtils.getStartLine() + 3 ;
 			}
+			Lane lane = margins[start].getConnectedLink().getLanes()[line] ;
+			Vehicle vehicle = new Vehicle(lane);
+			vehicle.setId(i);
+			vehicle.setSpeed(1,RandomUtils.getRandomSped());
+			vehicle.setCur_Loc(0);
+			vehicle.setCur_line(line);
+			vehicle.setGoal_line(line);
+			lane.addVehicle(vehicle);
+			allVehicle.add(vehicle);
+			i++;
 		}
+	}
+
+	public void produceVehicles(Vehicle vehiclesss){
+		Vehicle vehicle = new Vehicle(null);
+		vehicle.setId(i);
+		vehicle.setSpeed(1,RandomUtils.getRandomSped());
+		vehicle.setCur_Loc(0);
+		vehicle.findPath(margins,i);
+		allVehicle.add(vehicle);
+		i++;
+	}
+
 	public VehicleList getAllVehicle(){
 		return this.allVehicle;
 	}

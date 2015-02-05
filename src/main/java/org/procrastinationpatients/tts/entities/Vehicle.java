@@ -2,9 +2,7 @@ package org.procrastinationpatients.tts.entities;
 
 import org.procrastinationpatients.tts.utils.RandomUtils;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 
 public class Vehicle {
@@ -65,7 +63,6 @@ public class Vehicle {
 			if(nextVehicle != null) {
 				if (this.Cur_line != 2 && this.Cur_line != 3) {
 					if (this.Cur_Spd > nextVehicle.getCur_Spd()) {
-						System.out.println("````````````````````````");
 						fo.changeLine(this);
 					}
 				}
@@ -141,6 +138,7 @@ public class Vehicle {
 		this.isStop = isStop;
 	}
 
+
 	public void findPath(Margin[] margins,int i){
 		int length = margins.length;
 		int index = i % length ;
@@ -153,7 +151,13 @@ public class Vehicle {
 		finalCross = output.getConnectedLink().getLanes()[0].getParent();
 
 		DFS(Arrays.asList(input.getConnectedLink().getLanes()));
+		Collections.reverse(path);
 
+		this.Cur_line = path.get(0);
+		this.goal_line = path.get(0);
+		Lane lane = input.getConnectedLink().getLanes()[path.get(0)];
+		this.on_Link = lane;
+		lane.addVehicle(this);
 	}
 
 	//深度优先搜索
@@ -163,7 +167,16 @@ public class Vehicle {
 		}
 
 		if(outputs.get(0).getParent() == finalCross){
-			path.add(0);
+
+			if(outputs.get(0).getOutputs().get(0).getOutputs().size() == 0){
+				path.add(0);
+			}
+			if(outputs.get(1).getOutputs().get(0).getOutputs().size() == 0){
+				path.add(1);
+			}
+			if(outputs.get(2).getOutputs().get(0).getOutputs().size() == 0){
+				path.add(2);
+			}
 			return 1;
 		}
 
