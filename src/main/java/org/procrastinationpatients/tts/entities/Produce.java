@@ -54,12 +54,12 @@ public class Produce implements Runnable{
 				}else{
 					line = RandomUtils.getStartLine() + 3 ;
 				}
-				Lane lane = margins[start].getConnectedLink().getLanes()[2] ;
+				Lane lane = margins[start].getConnectedLink().getLanes()[line] ;
 				Vehicle vehicle = new Vehicle(lane);
 				vehicle.setId(i);
 				vehicle.setSpeed(1,RandomUtils.getRandomSped());
 				vehicle.setCur_Loc(0);
-				vehicle.setCur_line(2);
+				vehicle.setCur_line(line);
 				vehicle.setGoal_line(line);
 				lane.addVehicle(vehicle);
 				allVehicle.add(vehicle);
