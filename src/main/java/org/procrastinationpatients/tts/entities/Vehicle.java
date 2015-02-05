@@ -13,6 +13,8 @@ public class Vehicle {
 	private int Cur_Loc;      //当前位置
 	private int Cur_line;     //当前线路
 	private int MAX_Speed;    //最大速度
+	private double start_TIME;
+	private double end_TIME;
 
 	private boolean isStop;
 	private int goal_line;   //目标线路
@@ -138,6 +140,21 @@ public class Vehicle {
 		this.isStop = isStop;
 	}
 
+	public double getStart_TIME() {
+		return start_TIME;
+	}
+
+	public void setStart_TIME(double start_TIME) {
+		this.start_TIME = start_TIME;
+	}
+
+	public double getEnd_TIME() {
+		return end_TIME;
+	}
+
+	public void setEnd_TIME(double end_TIME) {
+		this.end_TIME = end_TIME;
+	}
 
 	public void findPath(Margin[] margins,int i){
 		int length = margins.length;

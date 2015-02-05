@@ -210,6 +210,7 @@ public class Lane {
 		}else{
 			this.removeVehicle(vehicle);
 			vehicle.setOn_Link(null);
+			vehicle.setEnd_TIME(System.currentTimeMillis());
 		}
 	}
 

@@ -73,6 +73,7 @@ public class Produce implements Runnable{
 		vehicle.setSpeed(1,RandomUtils.getRandomSped());
 		vehicle.setCur_Loc(0);
 		vehicle.findPath(margins,i);
+		vehicle.setStart_TIME(System.currentTimeMillis());
 		allVehicle.add(vehicle);
 		i++;
 	}

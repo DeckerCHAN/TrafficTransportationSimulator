@@ -11,6 +11,7 @@ public class Movement implements Runnable {
 
 	public volatile static boolean flag = true ;
 	private VehicleList vehicles;
+	private LinkedList<Vehicle> showVehicles;
 	public Movement(VehicleList vehicles){ this.vehicles = vehicles;}
 
 	@Override
@@ -27,6 +28,7 @@ public class Movement implements Runnable {
 						Vehicle vehicle = vehicles.getVehicles()[i];
 						if (vehicle != null) {
 							if (vehicle.getOn_Link() == null) {
+								showVehicles.add(vehicle);
 								vehicles.remove(i);
 							}else{
 								vehicle.Speed_From_VDR();
