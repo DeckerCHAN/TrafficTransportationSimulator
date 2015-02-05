@@ -340,28 +340,13 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
     }
 
 	@Override
+	public void toGoalLine(Vehicle vehicle) {}
+
+	@Override
 	public int changeLine(Vehicle vehicle) {
 		return 0;
 	}
 
-	@Override
-	public void toGoalLine(Vehicle vehicle) {}
-
-	@Override
-	public int getLane_Length() {return 0;}
-
-	@Override
-	public boolean addVehicle(Vehicle vehicle) {
-		return false;
-	}
-
-	@Override
-	public void removeVehicle(Vehicle vehicle) {}
-
-	@Override
-	public void changeToNextContainer(Vehicle vehicle) {
-
-	}
 
     public TrafficLight[] getNorthTrafficLights() {
         return northTrafficLights;

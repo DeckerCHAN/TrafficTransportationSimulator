@@ -29,6 +29,10 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 		return lanes;
 	}
 
+	public int getLane_Length(){
+		return this.lane_Length;
+	}
+
 	public void setLanes(Lane[] lanes) {
 		this.lanes = lanes;
 		if(lanes.length > 0)
@@ -97,15 +101,6 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 	}
 
 	@Override
-	public void changeToNextContainer(Vehicle vehicle) {
-		this.removeVehicle(vehicle);
-		List<Lane> outputLanes = lanes[vehicle.getCur_line()].getOutputs();
-		Lane outputLane = outputLanes.get(RandomUtils.getStartLine()) ;
-		vehicle.setCur_Loc(vehicle.getCur_Loc()+vehicle.getCur_Spd()-this.getLane_Length());
-		outputLane.addVehicle(vehicle);
-	}
-
-	@Override
 	public void toGoalLine(Vehicle vehicle) {
 		int v_line = vehicle.getCur_line();
 		int v_goal_line = vehicle.getGoal_line() ;
@@ -119,37 +114,11 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 		}
 	}
 
-	public void removeVehicle(Vehicle vehicle) {
-		int v_line = vehicle.getCur_line();
-		int v_location = vehicle.getCur_Loc();
-
-		if(lanes[v_line].getVehicles()[v_location] != null){
-			this.lanes[v_line].removeVehicle(vehicle) ;
-		}
-	}
-
-	public boolean addVehicle(Vehicle vehicle) {
-		int cur_line = vehicle.getCur_line();
-		for (int j = 0; j < lane_Length; j++) {
-			if (lanes[cur_line].getVehicles()[j] == null) {
-				vehicle.setCur_Loc(j);
-				this.lanes[cur_line].addVehicle(vehicle);
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public boolean hasVehicle(int line , int loc){
 		if(this.lanes[line].getVehicles()[loc] != null)
 			return true ;
 		else
 			return false ;
-	}
-
-	@Override
-	public int getLane_Length() {
-		return this.lane_Length;
 	}
 
 	@Override
