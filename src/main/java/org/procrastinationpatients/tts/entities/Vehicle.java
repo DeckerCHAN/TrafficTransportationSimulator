@@ -2,6 +2,10 @@ package org.procrastinationpatients.tts.entities;
 
 import org.procrastinationpatients.tts.utils.RandomUtils;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 
 public class Vehicle {
 
@@ -17,8 +21,14 @@ public class Vehicle {
 
 	private Lane on_Link;    //当前所在的Lane
 
+	private List<Integer> path;
+	private List<FunctionalObject> visited;
+	private FunctionalObject finalCross;
+
 	public Vehicle(Lane lane){
 		this.on_Link = lane ;
+		this.visited = new LinkedList<>();
+		this.path = new LinkedList<>();
 	}
 
 	public void setSpeed(int Cur_Sped , int MAX_Speed){
@@ -129,5 +139,54 @@ public class Vehicle {
 
 	public void setStop(boolean isStop) {
 		this.isStop = isStop;
+	}
+
+	public void findPath(Margin[] margins,int i){
+		int length = margins.length;
+		int index = i % length ;
+		int mapIndex = length-index;
+		if(mapIndex == index){
+			mapIndex++;
+		}
+		Margin input = margins[index] ;
+		Margin output = margins[mapIndex];
+		finalCross = output.getConnectedLink().getLanes()[0].getParent();
+
+		DFS(Arrays.asList(input.getConnectedLink().getLanes()));
+
+	}
+
+	//深度优先搜索
+	public int DFS(List<Lane> outputs){
+		if(outputs.size() == 0 ){
+			return 0;
+		}
+
+		if(outputs.get(0).getParent() == finalCross){
+			path.add(0);
+			return 1;
+		}
+
+		for(int i = 0 ; i < this.visited.size() ;i++){
+			if(outputs.get(0).getParent() == visited.get(i)){
+				return 0;
+			}
+		}
+
+		visited.add(outputs.get(0).getParent());
+
+		if(DFS(outputs.get(0).getOutputs().get(0).getOutputs()) == 1){
+			path.add(0);
+			return 1;
+		}
+		if(DFS(outputs.get(1).getOutputs().get(0).getOutputs()) == 1){
+			path.add(1);
+			return 1;
+		}
+		if(DFS(outputs.get(2).getOutputs().get(0).getOutputs()) == 1){
+			path.add(2);
+			return 1;
+		}
+		return 0;
 	}
 }
