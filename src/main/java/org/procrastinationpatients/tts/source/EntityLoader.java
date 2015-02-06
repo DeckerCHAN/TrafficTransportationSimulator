@@ -25,6 +25,7 @@ public class EntityLoader {
     private HashMap<Integer, Cross> crossCache;
     private HashMap<Integer, Margin> marginCache;
     private HashMap<Integer, Link> linkCache;
+    private HashMap<Integer, Barrier> barrierCache;
 
     public EntityLoader(File xmlFile) throws IOException {
         this.xmlFile = xmlFile;
@@ -34,6 +35,7 @@ public class EntityLoader {
         this.linkCache = new HashMap<>();
         this.marginCache = new HashMap<>();
         this.crossCache = new HashMap<>();
+        this.barrierCache = new HashMap<>();
 
     }
 
@@ -186,6 +188,11 @@ public class EntityLoader {
         }
     }
 
+    private void loadBarriers() {
+        NodeList cross = ((Element) root).getElementsByTagName("Barrier");
+
+    }
+
     public void LoadFromFile() throws ParserConfigurationException, IOException, SAXException {
 
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -215,5 +222,9 @@ public class EntityLoader {
 
     public Link[] getLinks() {
         return this.linkCache.values().toArray(new Link[]{});
+    }
+
+    public Barrier[] getBarriers() {
+        return this.barrierCache.values().toArray(new Barrier[]{});
     }
 }
