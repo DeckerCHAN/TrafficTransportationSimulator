@@ -116,6 +116,11 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
         Point2D h = new Point2D(this.getPosition().getX() - 60D, this.getPosition().getY() - 30D);
 
         DrawUtils.drawPolygon(gc, Color.AQUA, 3, a, b, c, d, e, f, g, h);
+
+        if (StaticConfig.DEBUG_MODE) {
+            DrawUtils.drawText(gc, this.getPosition().getX(), this.getPosition().getY() - 15D, Color.GREEN, "C:" + this.getId(), 15D);
+
+        }
     }
 
     @Override
