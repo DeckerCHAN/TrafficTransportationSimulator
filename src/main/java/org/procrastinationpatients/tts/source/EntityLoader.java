@@ -101,10 +101,10 @@ public class EntityLoader {
             Integer linkID = Integer.valueOf(element.getElementsByTagName("ObjectID").item(0).getTextContent());
             Character type = Character.valueOf(element.getElementsByTagName("Type").item(0).getTextContent().charAt(0));
             Dot dotA, dotB;
-            Character tagA = ((Element) element.getElementsByTagName("ConnectA").item(0)).getElementsByTagName("Type").item(0).getTextContent().charAt(0);
-            Integer idA = Integer.valueOf(((Element) element.getElementsByTagName("ConnectA").item(0)).getElementsByTagName("Type").item(0).getTextContent());
-            Character tagB = ((Element) element.getElementsByTagName("ConnectB").item(0)).getElementsByTagName("Type").item(0).getTextContent().charAt(0);
-            Integer idB = Integer.valueOf(((Element) element.getElementsByTagName("ConnectB").item(0)).getElementsByTagName("Type").item(0).getTextContent());
+            Character tagA = ((Element) element.getElementsByTagName("ConnectA").item(0)).getElementsByTagName("Type").item(0).getTextContent().toUpperCase().charAt(0);
+            Integer idA = Integer.valueOf(((Element) element.getElementsByTagName("ConnectA").item(0)).getElementsByTagName("ObjectID").item(0).getTextContent());
+            Character tagB = ((Element) element.getElementsByTagName("ConnectB").item(0)).getElementsByTagName("Type").item(0).getTextContent().toUpperCase().charAt(0);
+            Integer idB = Integer.valueOf(((Element) element.getElementsByTagName("ConnectB").item(0)).getElementsByTagName("ObjectID").item(0).getTextContent());
             dotA = tagA == 'M' ? this.marginCache.get(idA) : this.crossCache.get(idA);
             dotB = tagB == 'M' ? this.marginCache.get(idB) : this.crossCache.get(idB);
 
