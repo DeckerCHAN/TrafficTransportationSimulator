@@ -67,7 +67,7 @@ public class Produce implements Runnable{
 		}
 	}
 
-	public void produceVehicles(Vehicle vehiclesss){
+	public void produceVehicless(){
 		Vehicle vehicle = new Vehicle(null);
 		vehicle.setId(i);
 		vehicle.setSpeed(1,RandomUtils.getRandomSped());

@@ -159,15 +159,18 @@ public class Vehicle {
 	public void findPath(Margin[] margins,int i){
 		int length = margins.length;
 		int index = i % length ;
-		int mapIndex = length-index;
+		int mapIndex = length-index-1;
 		if(mapIndex == index){
 			mapIndex++;
 		}
 		Margin input = margins[index] ;
 		Margin output = margins[mapIndex];
-		finalCross = output.getConnectedLink().getLanes()[0].getParent();
+		if(output.getConnectedLink().getLanes()[0].getOutputs().size() == 0)
+			finalCross = output.getConnectedLink().getLanes()[5].getOutputs().get(0).getParent();
+		else
+			finalCross = output.getConnectedLink().getLanes()[0].getOutputs().get(0).getParent();
 
-		DFS(Arrays.asList(input.getConnectedLink().getLanes()));
+		DFS(transferToLaneArrays(input.getConnectedLink().getLanes()[0]));
 		Collections.reverse(path);
 
 		this.Cur_line = path.get(0);
@@ -178,45 +181,58 @@ public class Vehicle {
 	}
 
 	//深度优先搜索
-	public int DFS(List<Lane> outputs){
-		if(outputs.size() == 0 ){
+	public int DFS(Lane[] outputs){
+		if(outputs[0].getOutputs().size() ==0){
 			return 0;
 		}
 
-		if(outputs.get(0).getParent() == finalCross){
+		if(outputs[0].getOutputs().get(0).getParent() == finalCross){
 
-			if(outputs.get(0).getOutputs().get(0).getOutputs().size() == 0){
+			if(outputs[0].getOutputs().get(0).getOutputs().get(0).getOutputs().size() == 0){
 				path.add(0);
 			}
-			if(outputs.get(1).getOutputs().get(0).getOutputs().size() == 0){
+			if(outputs[1].getOutputs().get(0).getOutputs().get(0).getOutputs().size() == 0){
 				path.add(1);
 			}
-			if(outputs.get(2).getOutputs().get(0).getOutputs().size() == 0){
+			if(outputs[2].getOutputs().get(0).getOutputs().get(0).getOutputs().size() == 0){
 				path.add(2);
 			}
 			return 1;
 		}
 
 		for(int i = 0 ; i < this.visited.size() ;i++){
-			if(outputs.get(0).getParent() == visited.get(i)){
+			if(outputs[0].getOutputs().get(0).getParent() == visited.get(i)){
 				return 0;
 			}
 		}
+		visited.add(outputs[0].getOutputs().get(0).getParent());
 
-		visited.add(outputs.get(0).getParent());
-
-		if(DFS(outputs.get(0).getOutputs().get(0).getOutputs()) == 1){
+		if(DFS(transferToLaneArrays(outputs[0].getOutputs().get(0).getOutputs().get(0))) == 1){
 			path.add(0);
 			return 1;
 		}
-		if(DFS(outputs.get(1).getOutputs().get(0).getOutputs()) == 1){
+		if(DFS(transferToLaneArrays(outputs[1].getOutputs().get(0).getOutputs().get(0))) == 1){
 			path.add(1);
 			return 1;
 		}
-		if(DFS(outputs.get(2).getOutputs().get(0).getOutputs()) == 1){
+		if(DFS(transferToLaneArrays(outputs[2].getOutputs().get(0).getOutputs().get(0))) == 1){
 			path.add(2);
 			return 1;
 		}
 		return 0;
+	}
+
+	public Lane[] transferToLaneArrays(Lane lane){
+		if(lane.getParent() instanceof  Link){
+			Link link = (Link) lane.getParent();
+			Lane[] lanes = link.getLanes();
+			if(lane.getLine() - 3 < 0)
+			{
+				return new Lane[]{lanes[0] , lanes[1], lanes[2]} ;
+			}else{
+				return new Lane[]{lanes[3] , lanes[4], lanes[5]} ;
+			}
+		}
+		return null;
 	}
 }
