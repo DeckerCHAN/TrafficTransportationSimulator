@@ -17,8 +17,7 @@ public class Road extends Link {
 
     @Override
     protected void refreshLane() {
-        if(this.getA()==null||this.getB()==null)
-        {
+        if (this.getA() == null || this.getB() == null) {
             return;
         }
         Point2D northPosition = this.getA().getPosition();
@@ -49,7 +48,7 @@ public class Road extends Link {
         for (int i = 3; i < 6; i++) {
             Lane lane = this.getLanes()[i];
             for (int j = 0; j < lane.getLength(); j++) {
-                         lane.getVehiclePositions()[j] = new Point2D(lane3EndPoint.getX() + j * progressX + (i-3) * 10D, lane3EndPoint.getY() - j * progressY);
+                lane.getVehiclePositions()[j] = new Point2D(lane3EndPoint.getX() + j * progressX + (i - 3) * 10D, lane3EndPoint.getY() - j * progressY);
             }
         }
 
@@ -81,14 +80,13 @@ public class Road extends Link {
         b[6] = new Point2D(southDotPosition.getX() + 30D, southDotPosition.getY() - 60D);
 
         for (int i = 0; i < 7; i++) {
-            DrawUtils.drawLine(gc, a[i], b[i], Color.GRAY, 2);
+            DrawUtils.drawLine(gc, a[i], b[i], Color.GRAY, 2D);
         }
 
-        DrawUtils.drawText(gc, new Point2D(a[0].getX() - 40D, a[0].getY()), Color.BLUE, "A" + this.getId(),20D);
-        DrawUtils.drawText(gc, new Point2D(b[0].getX() + 100D, b[0].getY()), Color.GREEN, "B" + this.getId(),20D);
+        DrawUtils.drawText(gc, new Point2D(a[0].getX() - 40D, a[0].getY()), Color.BLUE, "A" + this.getId(), 20D);
+        DrawUtils.drawText(gc, new Point2D(b[0].getX() + 100D, b[0].getY()), Color.GREEN, "B" + this.getId(), 20D);
         return;
     }
-
 
 
     public Dot getNorthDot() {

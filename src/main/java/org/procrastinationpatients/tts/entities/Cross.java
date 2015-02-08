@@ -153,25 +153,25 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
                     new Point2D(this.getPosition().getX() - 26D + 10D * i, this.getPosition().getY() - 60D),
                     new Point2D(this.getPosition().getX() - 26D + 10D * i + 2D, this.getPosition().getY() - 60D),
                     this.getNorthTrafficLights()[i].isRedLight() ? Color.RED : Color.GREEN,
-                    8);
+                    8D);
 
             DrawUtils.drawLine(gc,
                     new Point2D(this.getPosition().getX() - 26D + 10D * i, this.getPosition().getY() + 60D),
                     new Point2D(this.getPosition().getX() - 26D + 10D * i + 2D, this.getPosition().getY() + 60D),
                     this.getSouthTrafficLights()[i].isRedLight() ? Color.RED : Color.GREEN,
-                    8);
+                    8D);
 
             DrawUtils.drawLine(gc,
                     new Point2D(this.getPosition().getX() - 60D, this.getPosition().getY() + 26D - 10D * i),
                     new Point2D(this.getPosition().getX() - 60D, this.getPosition().getY() + 26D - 10D * i - 2D),
                     this.getWestTrafficLights()[i].isRedLight() ? Color.RED : Color.GREEN,
-                    8);
+                    8D);
 
             DrawUtils.drawLine(gc,
                     new Point2D(this.getPosition().getX() + 60D, this.getPosition().getY() + 26D - 10D * i),
                     new Point2D(this.getPosition().getX() + 60D, this.getPosition().getY() + 26D - 10D * i - 2D),
                     this.getEastTrafficLights()[i].isRedLight() ? Color.RED : Color.GREEN,
-                    8);
+                    8D);
 
 
         }
