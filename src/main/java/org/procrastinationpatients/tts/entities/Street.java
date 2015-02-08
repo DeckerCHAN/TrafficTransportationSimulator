@@ -81,7 +81,7 @@ public class Street extends Link {
         b[6] = new Point2D(eastDotPosition.getX() - 60D, eastDotPosition.getY() + 30D);
 
         for (int i = 0; i < 7; i++) {
-            DrawUtils.drawLine(gc, a[i], b[i], Color.GRAY, 2);
+            DrawUtils.drawLine(gc, a[i], b[i], Color.GRAY, 2D);
         }
 
         DrawUtils.drawText(gc, new Point2D(a[0].getX(), a[0].getY() + 100D), Color.BLUE, "A" + this.getId(),20D);

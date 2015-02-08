@@ -127,21 +127,16 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 	public void drawDynamicGraphic(GraphicsContext gc) {
 		//统计车的数量
 		Integer pointCount = 0;
-		for (Lane lane : this.getLanes())
-		{
-			for (int i = 0; i < lane.getLength(); i++)
-			{
-				for (Barrier barrier : lane.getBarriers()) {
-					if (i > barrier.getStart() && i < barrier.getEnd()) {
-						DrawUtils.drawBarrier(gc, lane.getVehiclePositions()[i], 8, Color.BLACK);
-					}
 
-				}
-
-				if (lane.getVehicles()[i] != null) {
-					if (lane.getVehiclePositions()[i] == null)
-					{
-						continue;
+        for (Lane lane : this.getLanes()) {
+            for(Barrier barrier:lane.getBarriers())
+            {
+                DrawUtils.drawLine(gc,lane.getVehiclePositions()[barrier.getStart()],lane.getVehiclePositions()[barrier.getEnd()],Color.BLACK,10D);
+            }
+            for (int i = 0; i < lane.getLength(); i++) {
+                if (lane.getVehicles()[i] != null) {
+                    if (lane.getVehiclePositions()[i] == null) {
+                        continue;
 					}
 					if (StaticConfig.DEBUG_MODE) {
 						DrawUtils.drawText(gc, lane.getVehiclePositions()[i].getX(), lane.getVehiclePositions()[i].getY() - 11D, Color.RED, String.format("%s(%s,%s)", lane.getVehicles()[i].getId(), (int) lane.getVehiclePositions()[i].getX(), (int) lane.getVehiclePositions()[i].getY()), 10D);
