@@ -131,30 +131,42 @@ public class EntityLoader {
                     ((Cross) dotB).setWestStreet((Street) linkCache.get(linkID));
                 }
             }
-
-
         }
+    }
 
+    private  void  insertBarrier()
+    {
+        NodeList barriers = ((Element) root).getElementsByTagName("Barrier");
+        for (int i = 0; i < barriers.getLength(); i++) {
+            Element element = ((Element) barriers.item(i).getChildNodes());
+            Integer barrierID = Integer.valueOf(element.getElementsByTagName("ObjectID").item(0).getTextContent());
+            Integer linkID = Integer.valueOf(element.getElementsByTagName("LinkID").item(0).getTextContent());
+            Integer laneID = Integer.valueOf(element.getElementsByTagName("LaneIndex").item(0).getTextContent());
+            Integer start = Integer.valueOf(element.getElementsByTagName("Start").item(0).getTextContent());
+            Integer end = Integer.valueOf(element.getElementsByTagName("End").item(0).getTextContent());
+            Link recptorLink = this.linkCache.get(linkID);
+            recptorLink.getLanes()[laneID].addBarrier(new Barrier(barrierID,start,end));
+        }
     }
 
     private void connectLanes() {
         for (Cross cross : this.crossCache.values()) {
             //North input
             LaneUtils.connectLane(cross.getNorthRoad().getLanes()[0], cross.getNorthLanes()[0], cross.getWestStreet().getLanes()[5]);
-            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[0],cross.getNorthLanes()[1],cross.getWestStreet().getLanes()[4]);
-            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[0],cross.getNorthLanes()[2],cross.getWestStreet().getLanes()[3]);
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[0], cross.getNorthLanes()[1], cross.getWestStreet().getLanes()[4]);
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[0], cross.getNorthLanes()[2], cross.getWestStreet().getLanes()[3]);
 
-            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[1],cross.getNorthLanes()[3],cross.getSouthRoad().getLanes()[1]);
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[1], cross.getNorthLanes()[3], cross.getSouthRoad().getLanes()[1]);
 
             LaneUtils.connectLane(cross.getNorthRoad().getLanes()[2], cross.getNorthLanes()[4], cross.getEastStreet().getLanes()[2]);
-            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[2],cross.getNorthLanes()[5],cross.getEastStreet().getLanes()[1]);
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[2], cross.getNorthLanes()[5], cross.getEastStreet().getLanes()[1]);
             LaneUtils.connectLane(cross.getNorthRoad().getLanes()[2], cross.getNorthLanes()[6], cross.getEastStreet().getLanes()[0]);
 
 
             //East input
-            LaneUtils.connectLane(cross.getEastStreet().getLanes()[5],cross.getEastLanes()[0],cross.getNorthRoad().getLanes()[5]);
-            LaneUtils.connectLane(cross.getEastStreet().getLanes()[5],cross.getEastLanes()[1],cross.getNorthRoad().getLanes()[4]);
-            LaneUtils.connectLane(cross.getEastStreet().getLanes()[5],cross.getEastLanes()[2],cross.getNorthRoad().getLanes()[3]);
+            LaneUtils.connectLane(cross.getEastStreet().getLanes()[5], cross.getEastLanes()[0], cross.getNorthRoad().getLanes()[5]);
+            LaneUtils.connectLane(cross.getEastStreet().getLanes()[5], cross.getEastLanes()[1], cross.getNorthRoad().getLanes()[4]);
+            LaneUtils.connectLane(cross.getEastStreet().getLanes()[5], cross.getEastLanes()[2], cross.getNorthRoad().getLanes()[3]);
 
             LaneUtils.connectLane(cross.getEastStreet().getLanes()[4], cross.getEastLanes()[3], cross.getWestStreet().getLanes()[4]);
 
@@ -168,7 +180,7 @@ public class EntityLoader {
             LaneUtils.connectLane(cross.getSouthRoad().getLanes()[5], cross.getSouthLanes()[1], cross.getEastStreet().getLanes()[1]);
             LaneUtils.connectLane(cross.getSouthRoad().getLanes()[5], cross.getSouthLanes()[2], cross.getEastStreet().getLanes()[2]);
 
-            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[4],cross.getSouthLanes()[3],cross.getNorthRoad().getLanes()[4]);
+            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[4], cross.getSouthLanes()[3], cross.getNorthRoad().getLanes()[4]);
 
             LaneUtils.connectLane(cross.getSouthRoad().getLanes()[3], cross.getSouthLanes()[4], cross.getWestStreet().getLanes()[3]);
             LaneUtils.connectLane(cross.getSouthRoad().getLanes()[3], cross.getSouthLanes()[5], cross.getWestStreet().getLanes()[4]);
@@ -183,14 +195,9 @@ public class EntityLoader {
             LaneUtils.connectLane(cross.getWestStreet().getLanes()[1], cross.getWestLanes()[3], cross.getEastStreet().getLanes()[1]);
 
             LaneUtils.connectLane(cross.getWestStreet().getLanes()[2], cross.getWestLanes()[4], cross.getNorthRoad().getLanes()[3]);
-            LaneUtils.connectLane(cross.getWestStreet().getLanes()[2],cross.getWestLanes()[5],cross.getNorthRoad().getLanes()[4]);
+            LaneUtils.connectLane(cross.getWestStreet().getLanes()[2], cross.getWestLanes()[5], cross.getNorthRoad().getLanes()[4]);
             LaneUtils.connectLane(cross.getWestStreet().getLanes()[2], cross.getWestLanes()[6], cross.getNorthRoad().getLanes()[5]);
         }
-    }
-
-    private void loadBarriers() {
-        NodeList cross = ((Element) root).getElementsByTagName("Barrier");
-
     }
 
     public void LoadFromFile() throws ParserConfigurationException, IOException, SAXException {
@@ -209,6 +216,7 @@ public class EntityLoader {
         this.resolveCross();
         this.connectObjs();
         this.connectLanes();
+        this.insertBarrier();
     }
 
 
