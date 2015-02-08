@@ -49,6 +49,7 @@ public class MainWindow extends Application {
     private Button startBtn;
     private Button pauseBtn;
     private Button resumeBtn;
+    private Button chartBtn;
 
 
     private Timeline timeline;
@@ -85,10 +86,16 @@ public class MainWindow extends Application {
         this.resumeBtn.setLayoutX(this.pauseBtn.getLayoutX() + this.pauseBtn.getWidth() + 100);
         this.resumeBtn.setLayoutY(50);
         this.resumeBtn.setOnMouseClicked(this.getResumeButtonEventHandler());
+        //初始化图标按钮，并设置相关参数
+        this.chartBtn = new Button("Charts");
+        this.chartBtn.setPrefSize(100, 20);
+        this.chartBtn.setLayoutX(this.resumeBtn.getLayoutX() + this.chartBtn.getWidth() + 100);
+        this.chartBtn.setLayoutY(50);
+        this.chartBtn.setOnMouseClicked(this.getChartButtonEventHandler());
 
         this.buttonsContainer = new HBox();
-        buttonsContainer.setPadding(new Insets(15, 12, 15, 12));
-        buttonsContainer.setSpacing(10);
+        this.buttonsContainer.setPadding(new Insets(15, 12, 15, 12));
+        this.buttonsContainer.setSpacing(10);
         this.scrollPane = new ScrollPane();
         this.scrollInnerPane = new StackPane();
         this.root = new BorderPane();
@@ -97,7 +104,7 @@ public class MainWindow extends Application {
         //建立显示的层级嵌套结构
         this.root.setCenter(this.scrollPane);
         this.root.setTop(this.buttonsContainer);
-        this.buttonsContainer.getChildren().addAll(this.loadBtn, this.startBtn, this.pauseBtn, this.resumeBtn);
+        this.buttonsContainer.getChildren().addAll(this.loadBtn, this.startBtn, this.pauseBtn, this.resumeBtn, this.chartBtn);
 
         this.scrollPane.setContent(this.scrollInnerPane);
         this.scrollInnerPane.getChildren().addAll(this.backgroundCanvas, this.dynamicCanvas);
@@ -232,6 +239,25 @@ public class MainWindow extends Application {
             public void handle(MouseEvent mouseEvent) {
                 Engine.getInstance().resume();
                 timeline.play();
+            }
+        };
+    }
+
+    /**
+     * Chart键按下后的响应事件
+     *
+     * @return 响应事件
+     */
+    private EventHandler<MouseEvent> getChartButtonEventHandler() {
+        return new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Application.launch(ChartWindow.class);
+                    }
+                }).start();
             }
         };
     }
