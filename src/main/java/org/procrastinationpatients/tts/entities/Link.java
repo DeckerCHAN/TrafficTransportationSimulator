@@ -171,7 +171,7 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 						DrawUtils.drawText(gc, lane.getVehiclePositions()[i].getX(), lane.getVehiclePositions()[i].getY() - 11D, Color.RED, String.format("%s(%s,%s)", lane.getVehicles()[i].getId(), (int) lane.getVehiclePositions()[i].getX(), (int) lane.getVehiclePositions()[i].getY()), 10D);
 					}
 					DrawUtils.drawBallAtCoordinate(gc, lane.getVehiclePositions()[i], 4, Color.RED);
-//					System.out.println("Drawing:::+++++++" + lane.getVehicles()[i].getId() + "-->"+ lane.getVehicles()[i].getCur_Loc());
+					System.out.println("Drawing:::+++++++" + lane.getVehicles()[i].getId() + "-->"+ lane.getVehicles()[i].getCur_Loc());
 					pointCount++;
 				}
 			}

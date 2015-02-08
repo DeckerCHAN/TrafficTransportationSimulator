@@ -21,234 +21,152 @@ import java.util.HashMap;
 public class EntityLoader {
     private Node root;
     private Document doc;
+    private File xmlFile;
     private HashMap<Integer, Cross> crossCache;
     private HashMap<Integer, Margin> marginCache;
     private HashMap<Integer, Link> linkCache;
+    private HashMap<Integer, Barrier> barrierCache;
 
-    public EntityLoader() {
-
+    public EntityLoader(File xmlFile) throws IOException {
+        this.xmlFile = xmlFile;
+        if (!xmlFile.exists()) {
+            throw new IOException("File not exists");
+        }
+        this.linkCache = new HashMap<>();
+        this.marginCache = new HashMap<>();
+        this.crossCache = new HashMap<>();
+        this.barrierCache = new HashMap<>();
 
     }
 
-    public void LoadFromFile(File xmlFile) throws ParserConfigurationException, IOException, SAXException {
-
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        dbFactory.setIgnoringComments(true);
-        dbFactory.setIgnoringElementContentWhitespace(true);
-        dbFactory.setValidating(false);
-        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        doc = dBuilder.parse(FileUtils.openInputStream(xmlFile));
-        doc.getDocumentElement().normalize();
-        root = doc.getElementsByTagName("Data").item(0);
-        //建立Cross的集合
-        NodeList crosses = ((Element) root).getElementsByTagName("Cross");
-        crossCache = new HashMap<>();
-        for (int i = 0; i < crosses.getLength(); i++) {
-            Node node = crosses.item(i);
-            Element element = ((Element) node.getChildNodes());
-            //获取cross的ID
-            Integer crossID = Integer.valueOf(element.getElementsByTagName("Object_ID").item(0).getTextContent());
-            //获取cross中x的坐标
-            Double crossPositionX = Double.valueOf(element.getElementsByTagName("x").item(0).getTextContent());
-            //获取cross中y的坐标
-            Double crossPositionY = Double.valueOf(element.getElementsByTagName("y").item(0).getTextContent());
-            //在左边和上边留下各60D的空间
-            crossPositionX += 60D;
-            crossPositionY += 60D;
-
-            Cross cross = new Cross(crossID, new Point2D(crossPositionX, crossPositionY));
-            this.crossCache.put(crossID, cross);
-        }
-
-        //建立Margin的集合
-        NodeList margins = ((Element) root).getElementsByTagName("MarginalPoint");
-        marginCache = new HashMap<>();
-        for (int i = 0; i < margins.getLength(); i++) {
-            Node node = margins.item(i);
-            Element element = ((Element) node.getChildNodes());
-            Integer marginID = Integer.valueOf(element.getElementsByTagName("Object_ID").item(0).getTextContent());
-
-            //获取margin中x的坐标
-            Double marginPositionX = Double.valueOf(element.getElementsByTagName("x").item(0).getTextContent());
-            //获取margin中y的坐标
-            Double marginPositionY = Double.valueOf(element.getElementsByTagName("y").item(0).getTextContent());
-
-            //在左边和上边留下各60D的空间
-            marginPositionX += 60D;
-            marginPositionY += 60D;
-
-            Margin margin = new Margin(marginID, new Point2D(marginPositionX, marginPositionY));
-            this.marginCache.put(marginID, margin);
-
-        }
-
-        //建立link集合并连接
+    private void resolveLink() {
         NodeList links = ((Element) root).getElementsByTagName("Link");
-        linkCache = new HashMap<>();
         for (int i = 0; i < links.getLength(); i++) {
-            Node node = links.item(i);
-            Element element = ((Element) node.getChildNodes());
-
-            Integer linkID = Integer.valueOf(element.getElementsByTagName("Object_ID").item(0).getTextContent());
-
-            String connectionATypeString = ((Element) element.getElementsByTagName("Link_Start").item(0)).getElementsByTagName("Object_Type").item(0).getTextContent();
-            Integer connectionAID = Integer.valueOf(((Element) element.getElementsByTagName("Link_Start").item(0)).getElementsByTagName("Object_ID").item(0).getTextContent());
-
-            String connectionBTypeString = ((Element) element.getElementsByTagName("Link_End").item(0)).getElementsByTagName("Object_Type").item(0).getTextContent();
-            Integer connectionBID = Integer.valueOf(((Element) element.getElementsByTagName("Link_End").item(0)).getElementsByTagName("Object_ID").item(0).getTextContent());
-
-
-            //先将两个Dot取出来(有可能是Margin也有可能是Cross)
-            Dot dotA, dotB;
-            if (connectionATypeString.toLowerCase().equals("m")) {
-                dotB = this.marginCache.get(connectionAID);
-            } else {
-                dotB = this.crossCache.get(connectionAID);
-            }
-
-            if (connectionBTypeString.toLowerCase().equals("m")) {
-                dotA = this.marginCache.get(connectionBID);
-            } else {
-                dotA = this.crossCache.get(connectionBID);
-            }
-
-            //去你麻痹的重
-            Boolean isDup = false;
-            for (Link link : this.linkCache.values()) {
-                if (link.getA().getPosition().equals(dotA.getPosition()) && link.getB().getPosition().equals(dotB.getPosition())) {
-                    isDup = true;
+            Element element = ((Element) links.item(i).getChildNodes());
+            Integer linkID = Integer.valueOf(element.getElementsByTagName("ObjectID").item(0).getTextContent());
+            Character type = Character.valueOf(element.getElementsByTagName("Type").item(0).getTextContent().charAt(0));
+            switch (type) {
+                case 'R':
+                    this.linkCache.put(linkID, new Road(linkID));
                     break;
-                }
-                if (link.getA().getPosition().equals(dotB.getPosition()) && link.getB().getPosition().equals(dotA.getPosition())) {
-                    isDup = true;
+                case 'S':
+                    this.linkCache.put(linkID, new Street(linkID));
                     break;
-                }
-            }
-            if (isDup) {
-                continue;
-            }
-
-            //计算两个Cross的X差绝对值
-            Double differX = Math.abs(dotA.getPosition().getX() - dotB.getPosition().getX());
-            //计算两个Cross的Y差绝对值
-            Double differY = Math.abs(dotA.getPosition().getY() - dotB.getPosition().getY());
-
-
-            if (differX < differY) { //若X的差比Y的差要小，说明这是一条连接南北的道路
-                Road road = new Road(linkID);
-                if (dotA.getPosition().getY() < dotB.getPosition().getY()) { //A点要更靠北的话
-                    road.setNorthDot(dotA);
-                    road.setSouthDot(dotB);
-
-                    if (dotA instanceof Cross) {
-                        ((Cross) dotA).setSouthRoad(road);
-                    } else {
-                        ((Margin) dotA).setConnectedLink(road);
-                        ((Margin) dotA).setFirstInputLaneIndex(0);
-                    }
-
-                    if (dotB instanceof Cross) {
-                        ((Cross) dotB).setNorthRoad(road);
-                    } else {
-                        ((Margin) dotB).setConnectedLink(road);
-                        ((Margin) dotB).setFirstInputLaneIndex(3);
-                    }
-                } else {//否则B点更靠北
-                    road.setNorthDot(dotB);
-                    road.setSouthDot(dotA);
-
-                    if (dotA instanceof Cross) {
-                        ((Cross) dotA).setNorthRoad(road);
-
-                    } else {
-                        ((Margin) dotA).setConnectedLink(road);
-                        ((Margin) dotA).setFirstInputLaneIndex(3);
-                    }
-
-                    if (dotB instanceof Cross) {
-                        ((Cross) dotB).setSouthRoad(road);
-                    } else {
-                        ((Margin) dotB).setConnectedLink(road);
-                        ((Margin) dotB).setFirstInputLaneIndex(0);
-                    }
-                }
-                this.linkCache.put(linkID, road);
-            } else { //若Y的差比X的差要小，说明这是一条连接东西的道路
-                Street street = new Street(linkID);
-                if (dotA.getPosition().getX() < dotB.getPosition().getX()) { //A点要更靠西的话
-                    street.setWestDot(dotA);
-                    street.setEastDot(dotB);
-
-                    if (dotA instanceof Cross) {
-                        ((Cross) dotA).setEastStreet(street);
-
-                    } else {
-                        ((Margin) dotA).setConnectedLink(street);
-                        ((Margin) dotA).setFirstInputLaneIndex(0);
-                    }
-
-                    if (dotB instanceof Cross) {
-                        ((Cross) dotB).setWestStreet(street);
-                    } else {
-                        ((Margin) dotB).setConnectedLink(street);
-                        ((Margin) dotB).setFirstInputLaneIndex(3);
-                    }
-
-                } else {//否则B点更靠西
-                    street.setWestDot(dotB);
-                    street.setEastDot(dotA);
-
-                    if (dotA instanceof Cross) {
-                        ((Cross) dotA).setWestStreet(street);
-                    } else {
-                        ((Margin) dotA).setConnectedLink(street);
-                        ((Margin) dotA).setFirstInputLaneIndex(3);
-                    }
-
-                    if (dotB instanceof Cross) {
-                        ((Cross) dotB).setEastStreet(street);
-                    } else {
-                        ((Margin) dotB).setConnectedLink(street);
-                        ((Margin) dotB).setFirstInputLaneIndex(0);
-                    }
-                }
-                this.linkCache.put(linkID, street);
+                default:
+                    throw new RuntimeException("Type out of expect!");
             }
         }
+    }
 
+    private void resolveMargin() {
+        NodeList margins = ((Element) root).getElementsByTagName("MarginalPoint");
+        for (int i = 0; i < margins.getLength(); i++) {
+            Element element = ((Element) margins.item(i).getChildNodes());
+            Integer marginID = Integer.valueOf(element.getElementsByTagName("ObjectID").item(0).getTextContent());
+            Character type = Character.valueOf(element.getElementsByTagName("Type").item(0).getTextContent().charAt(0));
+            Double positionX = Double.valueOf(element.getElementsByTagName("x").item(0).getTextContent());
+            Double positionY = Double.valueOf(element.getElementsByTagName("y").item(0).getTextContent());
+            Margin margin = new Margin(marginID, new Point2D(positionX, positionY));
+            switch (type) {
+                case 'A': {
+                    margin.setFirstInputLaneIndex(0);
+                    break;
+                }
+                case 'B': {
+                    margin.setFirstInputLaneIndex(3);
+                    break;
+                }
+                default:
+                    throw new RuntimeException("Type out of expect!");
+            }
+            this.marginCache.put(marginID, margin);
+        }
+    }
+
+    private void resolveCross() {
+        NodeList cross = ((Element) root).getElementsByTagName("Cross");
+        for (int i = 0; i < cross.getLength(); i++) {
+            Element element = ((Element) cross.item(i).getChildNodes());
+            Integer crossID = Integer.valueOf(element.getElementsByTagName("ObjectID").item(0).getTextContent());
+            Double positionX = Double.valueOf(element.getElementsByTagName("x").item(0).getTextContent());
+            Double positionY = Double.valueOf(element.getElementsByTagName("y").item(0).getTextContent());
+            this.crossCache.put(crossID, new Cross(crossID, new Point2D(positionX, positionY)));
+        }
+    }
+
+    private void connectObjs() {
+        NodeList links = ((Element) root).getElementsByTagName("Link");
+        for (int i = 0; i < links.getLength(); i++) {
+            Element element = ((Element) links.item(i).getChildNodes());
+            Integer linkID = Integer.valueOf(element.getElementsByTagName("ObjectID").item(0).getTextContent());
+            Character type = Character.valueOf(element.getElementsByTagName("Type").item(0).getTextContent().charAt(0));
+            Dot dotA, dotB;
+            Character tagA = ((Element) element.getElementsByTagName("ConnectA").item(0)).getElementsByTagName("Type").item(0).getTextContent().toUpperCase().charAt(0);
+            Integer idA = Integer.valueOf(((Element) element.getElementsByTagName("ConnectA").item(0)).getElementsByTagName("ObjectID").item(0).getTextContent());
+            Character tagB = ((Element) element.getElementsByTagName("ConnectB").item(0)).getElementsByTagName("Type").item(0).getTextContent().toUpperCase().charAt(0);
+            Integer idB = Integer.valueOf(((Element) element.getElementsByTagName("ConnectB").item(0)).getElementsByTagName("ObjectID").item(0).getTextContent());
+            dotA = tagA == 'M' ? this.marginCache.get(idA) : this.crossCache.get(idA);
+            dotB = tagB == 'M' ? this.marginCache.get(idB) : this.crossCache.get(idB);
+
+            this.linkCache.get(linkID).setA(dotA);
+            this.linkCache.get(linkID).setB(dotB);
+
+            if (dotA instanceof Margin) {
+                ((Margin) dotA).setConnectedLink(linkCache.get(linkID));
+            } else if (dotA instanceof Cross) {
+                if (linkCache.get(linkID) instanceof Road) {
+                    ((Cross) dotA).setSouthRoad((Road) linkCache.get(linkID));
+                } else {
+                    ((Cross) dotA).setEastStreet((Street) linkCache.get(linkID));
+                }
+            }
+
+            if (dotB instanceof Margin) {
+                ((Margin) dotB).setConnectedLink(this.linkCache.get(linkID));
+            } else if (dotB instanceof Cross) {
+
+                if (linkCache.get(linkID) instanceof Road) {
+                    ((Cross) dotB).setNorthRoad((Road) linkCache.get(linkID));
+                } else {
+                    ((Cross) dotB).setWestStreet((Street) linkCache.get(linkID));
+                }
+            }
+        }
+    }
+
+    private  void  insertBarrier()
+    {
+        NodeList barriers = ((Element) root).getElementsByTagName("Barrier");
+        for (int i = 0; i < barriers.getLength(); i++) {
+            Element element = ((Element) barriers.item(i).getChildNodes());
+            Integer barrierID = Integer.valueOf(element.getElementsByTagName("ObjectID").item(0).getTextContent());
+            Integer linkID = Integer.valueOf(element.getElementsByTagName("LinkID").item(0).getTextContent());
+            Integer laneID = Integer.valueOf(element.getElementsByTagName("LaneIndex").item(0).getTextContent());
+            Integer start = Integer.valueOf(element.getElementsByTagName("Start").item(0).getTextContent());
+            Integer end = Integer.valueOf(element.getElementsByTagName("End").item(0).getTextContent());
+            Link recptorLink = this.linkCache.get(linkID);
+            recptorLink.getLanes()[laneID].addBarrier(new Barrier(barrierID,start,end));
+        }
+    }
+
+    private void connectLanes() {
         for (Cross cross : this.crossCache.values()) {
-//            for (int i = 0; i < 5; i++) {
-//                if (i < 3) {
-//                    LaneUtils.connectLane(cross.getNorthLanes()[i], cross.getNorthRoad().getLanes()[5 - i]);
-//                    LaneUtils.connectLane(cross.getEastLanes()[i], cross.getEastStreet().getLanes()[5 - i]);
-//
-//                    LaneUtils.connectLane(cross.getWestLanes()[i], cross.getWestStreet().getLanes()[i]);
-//                    LaneUtils.connectLane(cross.getSouthLanes()[i], cross.getSouthRoad().getLanes()[i]);
-//
-//                } else {
-//                    LaneUtils.connectLane(cross.getNorthRoad().getLanes()[5 - i], cross.getNorthLanes()[i]);
-//                    LaneUtils.connectLane(cross.getEastStreet().getLanes()[5 - i], cross.getEastLanes()[i]);
-//
-//                    LaneUtils.connectLane(cross.getWestStreet().getLanes()[i], cross.getWestLanes()[i]);
-//                    LaneUtils.connectLane(cross.getSouthRoad().getLanes()[i], cross.getSouthLanes()[i]);
-//                }
-//            }
             //North input
-            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[0],cross.getNorthLanes()[0],cross.getWestStreet().getLanes()[5]);
-            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[0],cross.getNorthLanes()[1],cross.getWestStreet().getLanes()[4]);
-            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[0],cross.getNorthLanes()[2],cross.getWestStreet().getLanes()[3]);
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[0], cross.getNorthLanes()[0], cross.getWestStreet().getLanes()[5]);
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[0], cross.getNorthLanes()[1], cross.getWestStreet().getLanes()[4]);
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[0], cross.getNorthLanes()[2], cross.getWestStreet().getLanes()[3]);
 
-            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[1],cross.getNorthLanes()[3],cross.getSouthRoad().getLanes()[1]);
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[1], cross.getNorthLanes()[3], cross.getSouthRoad().getLanes()[1]);
 
             LaneUtils.connectLane(cross.getNorthRoad().getLanes()[2], cross.getNorthLanes()[4], cross.getEastStreet().getLanes()[2]);
-            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[2],cross.getNorthLanes()[5],cross.getEastStreet().getLanes()[1]);
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[2], cross.getNorthLanes()[5], cross.getEastStreet().getLanes()[1]);
             LaneUtils.connectLane(cross.getNorthRoad().getLanes()[2], cross.getNorthLanes()[6], cross.getEastStreet().getLanes()[0]);
 
 
             //East input
-            LaneUtils.connectLane(cross.getEastStreet().getLanes()[5],cross.getEastLanes()[0],cross.getNorthRoad().getLanes()[5]);
-            LaneUtils.connectLane(cross.getEastStreet().getLanes()[5],cross.getEastLanes()[1],cross.getNorthRoad().getLanes()[4]);
-            LaneUtils.connectLane(cross.getEastStreet().getLanes()[5],cross.getEastLanes()[2],cross.getNorthRoad().getLanes()[3]);
+            LaneUtils.connectLane(cross.getEastStreet().getLanes()[5], cross.getEastLanes()[0], cross.getNorthRoad().getLanes()[5]);
+            LaneUtils.connectLane(cross.getEastStreet().getLanes()[5], cross.getEastLanes()[1], cross.getNorthRoad().getLanes()[4]);
+            LaneUtils.connectLane(cross.getEastStreet().getLanes()[5], cross.getEastLanes()[2], cross.getNorthRoad().getLanes()[3]);
 
             LaneUtils.connectLane(cross.getEastStreet().getLanes()[4], cross.getEastLanes()[3], cross.getWestStreet().getLanes()[4]);
 
@@ -262,7 +180,7 @@ public class EntityLoader {
             LaneUtils.connectLane(cross.getSouthRoad().getLanes()[5], cross.getSouthLanes()[1], cross.getEastStreet().getLanes()[1]);
             LaneUtils.connectLane(cross.getSouthRoad().getLanes()[5], cross.getSouthLanes()[2], cross.getEastStreet().getLanes()[2]);
 
-            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[4],cross.getSouthLanes()[3],cross.getNorthRoad().getLanes()[4]);
+            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[4], cross.getSouthLanes()[3], cross.getNorthRoad().getLanes()[4]);
 
             LaneUtils.connectLane(cross.getSouthRoad().getLanes()[3], cross.getSouthLanes()[4], cross.getWestStreet().getLanes()[3]);
             LaneUtils.connectLane(cross.getSouthRoad().getLanes()[3], cross.getSouthLanes()[5], cross.getWestStreet().getLanes()[4]);
@@ -277,11 +195,28 @@ public class EntityLoader {
             LaneUtils.connectLane(cross.getWestStreet().getLanes()[1], cross.getWestLanes()[3], cross.getEastStreet().getLanes()[1]);
 
             LaneUtils.connectLane(cross.getWestStreet().getLanes()[2], cross.getWestLanes()[4], cross.getNorthRoad().getLanes()[3]);
-            LaneUtils.connectLane(cross.getWestStreet().getLanes()[2],cross.getWestLanes()[5],cross.getNorthRoad().getLanes()[4]);
+            LaneUtils.connectLane(cross.getWestStreet().getLanes()[2], cross.getWestLanes()[5], cross.getNorthRoad().getLanes()[4]);
             LaneUtils.connectLane(cross.getWestStreet().getLanes()[2], cross.getWestLanes()[6], cross.getNorthRoad().getLanes()[5]);
-
         }
+    }
 
+    public void LoadFromFile() throws ParserConfigurationException, IOException, SAXException {
+
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        dbFactory.setIgnoringComments(true);
+        dbFactory.setIgnoringElementContentWhitespace(true);
+        dbFactory.setValidating(false);
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        doc = dBuilder.parse(FileUtils.openInputStream(this.xmlFile));
+        doc.getDocumentElement().normalize();
+        root = doc.getElementsByTagName("Data").item(0);
+
+        this.resolveLink();
+        this.resolveMargin();
+        this.resolveCross();
+        this.connectObjs();
+        this.connectLanes();
+        this.insertBarrier();
     }
 
 
@@ -295,5 +230,9 @@ public class EntityLoader {
 
     public Link[] getLinks() {
         return this.linkCache.values().toArray(new Link[]{});
+    }
+
+    public Barrier[] getBarriers() {
+        return this.barrierCache.values().toArray(new Barrier[]{});
     }
 }

@@ -174,25 +174,32 @@ public class Lane {
             vehicle.setCur_line(outputLane.getLine());
 //			System.out.println(this.getParent()) ;
 //			System.out.println(outputLane.getParent()) ;
-            outputLane.addVehicle(vehicle);
-        } else {
-            vehicle.setOn_Link(null);
-        }
-    }
+			outputLane.addVehicle(vehicle);
+		}else{
+			vehicle.setOn_Link(null);
+		}
+	}
 
-    public void updateVehicle(Vehicle vehicle) {
-        int Cur_Loc = vehicle.getCur_Loc();
-        int new_loc = Cur_Loc + vehicle.getCur_Spd();
-        vehicles[Cur_Loc] = null;
-        vehicle.setCur_Loc(new_loc);
-        vehicles[new_loc] = vehicle;
-    }
+	public void updateVehicle(Vehicle vehicle) {
+		int Cur_Loc = vehicle.getCur_Loc();
+		int new_loc = Cur_Loc + vehicle.getCur_Spd();
+		for(int i = Cur_Loc+1; i <= new_loc ; i++){
+			if( vehicles[i] != null){
+				vehicles[Cur_Loc] = null;
+				vehicle.setCur_Loc(i-1);
+				vehicles[i-1] = vehicle;
+			}
+		}
+		vehicles[Cur_Loc] = null;
+		vehicle.setCur_Loc(new_loc);
+		vehicles[new_loc] = vehicle;
+	}
 
-    public Point2D[] getVehiclePositions() {
-        return vehiclePositions;
-    }
+	public ArrayList<Barrier> getBarriers() {
+		return barriers;
+	}
 
-    public ArrayList<Barrier> getBarriers() {
-        return barriers;
-    }
+	public Point2D[] getVehiclePositions() {
+		return vehiclePositions;
+	}
 }

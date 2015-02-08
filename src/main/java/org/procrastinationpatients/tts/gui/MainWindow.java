@@ -170,8 +170,8 @@ public class MainWindow extends Application {
                         return;
                     }
                     //通过文件初始化Containers
-                    EntityLoader containersLoader = new EntityLoader();
-                    containersLoader.LoadFromFile(xml);
+                    EntityLoader containersLoader = new EntityLoader(xml);
+                    containersLoader.LoadFromFile();
                     Engine.getInstance().setCrosses(containersLoader.getCrosses());
                     Engine.getInstance().setLinks(containersLoader.getLinks());
                     Engine.getInstance().setMargins(containersLoader.getMargins());

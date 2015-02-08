@@ -1,16 +1,16 @@
 package org.procrastinationpatients.tts.entities;
 
 
-
-public class Barrier {
+public class Barrier extends IdentifiableObject {
 
 	private int start ;
 	private int length ;
 	private Vehicle[] vehicles;
 
-	public Barrier(int start, int length){
-		this.start = start ;
-		this.length = length ;
+    public Barrier(int id, int start, int length) {
+        super(id);
+        this.start = start;
+        this.length = length ;
 		this.vehicles = new Vehicle[length];
 	}
 
