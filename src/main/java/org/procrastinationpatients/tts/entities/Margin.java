@@ -2,6 +2,9 @@ package org.procrastinationpatients.tts.entities;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import org.procrastinationpatients.tts.source.StaticConfig;
+import org.procrastinationpatients.tts.utils.DrawUtils;
 
 
 public class Margin extends IdentifiableObject implements Visible, Dot {
@@ -29,7 +32,10 @@ public class Margin extends IdentifiableObject implements Visible, Dot {
 
     @Override
     public void drawStaticGraphic(GraphicsContext gc) {
+        if (StaticConfig.DEBUG_MODE) {
+            DrawUtils.drawText(gc, this.getPosition().getX(), this.getPosition().getY() - 15D, Color.GREEN, "C:" + this.getId(), 15D);
 
+        }
     }
 
     @Override
