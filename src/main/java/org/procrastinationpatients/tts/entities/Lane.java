@@ -134,20 +134,19 @@ public class Lane {
         this.getBarriers().add(barrier);
         int start = barrier.getStart();
         int end = barrier.getStart() + barrier.getLength() - 1;
-        Vehicle[] vehicles1 = barrier.getVehicles();
-        for (int i = start, k = 0; i <= end; i++, k++) {
-            vehicles[i] = vehicles1[k];
+        for (int i = start; i <= end; i++) {
+            Vehicle vehicle = new Vehicle(this);
+			vehicle.setStop(true);
+			vehicle.setCur_Loc(i);
+			vehicle.setCur_Spd(0);
+			vehicles[i] = vehicle;
         }
     }
 
     public int getSafetyDistanceByID(int index) {
         for (int i = index + 1; i < this.Length; i++) {
             if (vehicles[i] != null) {
-				if(i - index - 5 == 0){
-					System.out.println("++++++++++ByID: 车距:" + i + "、" + index);
-					return i - index - 5;
-				}
-
+				return i - index - 5;
             }
         }
 

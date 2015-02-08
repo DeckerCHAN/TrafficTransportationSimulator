@@ -16,7 +16,7 @@ public class Vehicle {
 	private double start_TIME;
 	private double end_TIME;
 
-	private boolean isStop;
+	private boolean isStop=false;
 	private int goal_line;   //目标线路
 
 	private Lane on_Link;    //当前所在的Lane
@@ -43,7 +43,6 @@ public class Vehicle {
 		}
 
 		int safety_distance = on_Link.getSafetyDistanceByID(this.Cur_Loc);
-		System.out.println(safety_distance);
 		this.Cur_Spd = (safety_distance < this.Cur_Spd) ? (safety_distance) : (this.Cur_Spd);
 		if(this.Cur_Spd < 0){
 			this.Cur_Spd = 0 ;
@@ -64,7 +63,7 @@ public class Vehicle {
 			Vehicle nextVehicle = on_Link.getNextVehicle(this);
 			if(nextVehicle != null) {
 				if (this.Cur_line != 2 && this.Cur_line != 3) {
-					if (this.Cur_Spd > nextVehicle.getCur_Spd()) {
+					if (this.Cur_Spd > nextVehicle.getCur_Spd() && on_Link.getSafetyDistanceByID(this.Cur_Loc) < 20) {
 						fo.changeLine(this);
 					}
 				}
