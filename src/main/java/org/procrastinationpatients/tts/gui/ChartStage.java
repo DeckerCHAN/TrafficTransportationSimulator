@@ -38,10 +38,11 @@ public class ChartStage extends TickStage {
 
 
         for (int i = 0; i < this.canvases.length; i++) {
-            this.canvases[i] = new Canvas(45D, this.targetLanes[i].getLength());
+           this.canvases[i] = new Canvas(45D*StaticConfig.CHART_X_SKIP_MULTIPLE, this.targetLanes[i].getLength()*StaticConfig.CHART_Y_SKIP_MULTIPLE);
+
         }
         this.root = new VBox();
-        this.root.getChildren().addAll(this.canvases);
+       this.root.getChildren().addAll(this.canvases);
         this.setScene(new Scene(this.root));
         this.getTimeline().play();
     }
@@ -49,10 +50,10 @@ public class ChartStage extends TickStage {
     @Override
     protected void drawAllDynamic() {
         for (int i = 0; i < 3; i++) {
-            Double x = (System.currentTimeMillis() - this.startTime) / 1000D;
+            Double x = (System.currentTimeMillis() - this.startTime)*StaticConfig.CHART_X_SKIP_MULTIPLE / 1000D;
             for (int j = 0; j < targetLanes[i].getVehicles().length; j++) {
                 if (targetLanes[i].getVehicles()[j] != null) {
-                    Double y = (double) j;
+                    Double y = (double) j*StaticConfig.CHART_Y_SKIP_MULTIPLE;
                     DrawUtils.drawBallAtCoordinate(canvases[i].getGraphicsContext2D(), x, y, 3, Color.BLACK);
                 }
 

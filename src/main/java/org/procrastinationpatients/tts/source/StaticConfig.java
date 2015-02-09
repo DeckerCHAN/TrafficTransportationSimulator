@@ -14,4 +14,6 @@ public class StaticConfig {
 
     public static final Integer INSPECT_LINK=1;
     public static final Integer INSPECT_LANE_GROUP=0;
+    public static final Double CHART_X_SKIP_MULTIPLE = 15D;
+    public static final Double CHART_Y_SKIP_MULTIPLE = 0.2D;
 }
