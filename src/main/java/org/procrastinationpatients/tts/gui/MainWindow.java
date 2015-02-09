@@ -4,7 +4,6 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
@@ -33,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class MainWindow extends Application {
+public class MainWindow extends TickWindow {
 
     private Point2D canvasMaxSizePoint;
 
@@ -52,8 +51,7 @@ public class MainWindow extends Application {
     private Button chartBtn;
 
 
-    private Timeline timeline;
-    private Boolean isTickPaused;
+
 
     public MainWindow() {
         super();
@@ -109,9 +107,7 @@ public class MainWindow extends Application {
         this.scrollPane.setContent(this.scrollInnerPane);
         this.scrollInnerPane.getChildren().addAll(this.backgroundCanvas, this.dynamicCanvas);
 
-        this.isTickPaused = false;
-        this.timeline = new Timeline(new KeyFrame(Duration.millis(StaticConfig.TICK_INTERVAL), this.getTickHandler()));
-        timeline.setCycleCount(Animation.INDEFINITE);
+
 
 
     }
@@ -134,14 +130,16 @@ public class MainWindow extends Application {
     /**
      * 绘制全部的静态对象
      */
-    private void drawAllStatic() {
+    @Override
+    protected void drawAllStatic() {
         GraphicsContext gc = backgroundCanvas.getGraphicsContext2D();
         for (Visible visualEntity : Engine.getInstance().getVisualEntities()) {
             visualEntity.drawStaticGraphic(gc);
         }
     }
 
-    private void drawAllDynamic() {
+    @Override
+    protected void drawAllDynamic() {
         GraphicsContext gc = dynamicCanvas.getGraphicsContext2D();
         if (!StaticConfig.DRAW_PATH) {
             gc.clearRect(0, 0, dynamicCanvas.getWidth(), dynamicCanvas.getHeight());
@@ -207,7 +205,7 @@ public class MainWindow extends Application {
                 //启动动态绘制线程
                 Engine.getInstance().setProcessor(new Processor());
                 Engine.getInstance().getProcessor().start();
-                timeline.play();
+                getTimeline().play();
             }
         };
     }
@@ -222,7 +220,7 @@ public class MainWindow extends Application {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 Engine.getInstance().pause();
-                timeline.stop();
+                getTimeline().stop();
                 System.out.println("Pause!");
             }
         };
@@ -238,7 +236,7 @@ public class MainWindow extends Application {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 Engine.getInstance().resume();
-                timeline.play();
+                getTimeline().play();
             }
         };
     }
@@ -262,20 +260,5 @@ public class MainWindow extends Application {
         };
     }
 
-    private EventHandler<ActionEvent> getTickHandler() {
-        return new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                Long start = System.currentTimeMillis();
-                drawAllDynamic();
-                Long end = System.currentTimeMillis();
-                if (StaticConfig.DEBUG_MODE || StaticConfig.OUTPUT_DRAW_TIME) {
-                    System.out.println(String.format("Draw cost %s ms.", end - start));
-                }
-
-
-            }
-        };
-    }
 
 }
