@@ -1,13 +1,9 @@
 package org.procrastinationpatients.tts.gui;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -17,9 +13,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import org.procrastinationpatients.tts.core.Engine;
 import org.procrastinationpatients.tts.core.Processor;
 import org.procrastinationpatients.tts.entities.Dot;
@@ -33,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class MainWindow extends Application {
+public class MainStage extends TickStage {
 
     private Point2D canvasMaxSizePoint;
 
@@ -52,10 +48,7 @@ public class MainWindow extends Application {
     private Button chartBtn;
 
 
-    private Timeline timeline;
-    private Boolean isTickPaused;
-
-    public MainWindow() {
+    public MainStage() {
         super();
         //Canvas 的大小最终应当取决于XML文件中的最高和最宽点
         //TODO:将大小修改为最高点和最宽点
@@ -109,39 +102,30 @@ public class MainWindow extends Application {
         this.scrollPane.setContent(this.scrollInnerPane);
         this.scrollInnerPane.getChildren().addAll(this.backgroundCanvas, this.dynamicCanvas);
 
-        this.isTickPaused = false;
-        this.timeline = new Timeline(new KeyFrame(Duration.millis(StaticConfig.TICK_INTERVAL), this.getTickHandler()));
-        timeline.setCycleCount(Animation.INDEFINITE);
 
-
-    }
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        this.mainStage = stage;
         //设置固定窗口
-        stage.setResizable(false);
+        this.setResizable(false);
         //设置stage宽度和高度
-        stage.setWidth(StaticConfig.STAGE_SIZE_WIDTH);
-        stage.setHeight(StaticConfig.STAGE_SIZE_HEIGHT);
+        this.setWidth(StaticConfig.STAGE_SIZE_WIDTH);
+        this.setHeight(StaticConfig.STAGE_SIZE_HEIGHT);
 
-        stage.setTitle("Traffic Transportation Simulator");
-        stage.setScene(new Scene(this.root));
-
-        stage.show();
+        this.setTitle("Traffic Transportation Simulator");
+        this.setScene(new Scene(this.root));
     }
 
     /**
      * 绘制全部的静态对象
      */
-    private void drawAllStatic() {
+    @Override
+    protected void drawAllStatic() {
         GraphicsContext gc = backgroundCanvas.getGraphicsContext2D();
         for (Visible visualEntity : Engine.getInstance().getVisualEntities()) {
             visualEntity.drawStaticGraphic(gc);
         }
     }
 
-    private void drawAllDynamic() {
+    @Override
+    protected void drawAllDynamic() {
         GraphicsContext gc = dynamicCanvas.getGraphicsContext2D();
         if (!StaticConfig.DRAW_PATH) {
             gc.clearRect(0, 0, dynamicCanvas.getWidth(), dynamicCanvas.getHeight());
@@ -207,7 +191,7 @@ public class MainWindow extends Application {
                 //启动动态绘制线程
                 Engine.getInstance().setProcessor(new Processor());
                 Engine.getInstance().getProcessor().start();
-                timeline.play();
+                getTimeline().play();
             }
         };
     }
@@ -222,7 +206,7 @@ public class MainWindow extends Application {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 Engine.getInstance().pause();
-                timeline.stop();
+                getTimeline().stop();
                 System.out.println("Pause!");
             }
         };
@@ -238,7 +222,7 @@ public class MainWindow extends Application {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 Engine.getInstance().resume();
-                timeline.play();
+                getTimeline().play();
             }
         };
     }
@@ -252,30 +236,12 @@ public class MainWindow extends Application {
         return new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Application.launch(ChartWindow.class);
-                    }
-                }).start();
-            }
-        };
-    }
-
-    private EventHandler<ActionEvent> getTickHandler() {
-        return new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                Long start = System.currentTimeMillis();
-                drawAllDynamic();
-                Long end = System.currentTimeMillis();
-                if (StaticConfig.DEBUG_MODE || StaticConfig.OUTPUT_DRAW_TIME) {
-                    System.out.println(String.format("Draw cost %s ms.", end - start));
-                }
-
+                Stage stage = new ChartStage();
+                stage.show();
 
             }
         };
     }
+
 
 }

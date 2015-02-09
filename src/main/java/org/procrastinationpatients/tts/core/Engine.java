@@ -5,7 +5,8 @@ import org.procrastinationpatients.tts.entities.Cross;
 import org.procrastinationpatients.tts.entities.Link;
 import org.procrastinationpatients.tts.entities.Margin;
 import org.procrastinationpatients.tts.entities.Visible;
-import org.procrastinationpatients.tts.gui.MainWindow;
+import org.procrastinationpatients.tts.gui.MainApp;
+import org.procrastinationpatients.tts.gui.MainStage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +27,7 @@ public class Engine {
     /**
      * 窗口的类引用，用于初始化窗口
      */
-    private Class<MainWindow> mainWindowClass;
+    private Class mainAppClass;
     private Cross[] crosses;
     private Link[] links;
     private Margin[] margins;
@@ -38,7 +39,7 @@ public class Engine {
      * 私有构造函数
      */
     private Engine() {
-        this.mainWindowClass = MainWindow.class;
+        this.mainAppClass = MainApp.class;
         this.isPaused = false;
         this.isStopped = false;
     }
@@ -62,7 +63,7 @@ public class Engine {
      */
     public void launch() {
 
-        Application.launch(this.mainWindowClass);
+        Application.launch(this.mainAppClass);
         this.stop();
     }
 
