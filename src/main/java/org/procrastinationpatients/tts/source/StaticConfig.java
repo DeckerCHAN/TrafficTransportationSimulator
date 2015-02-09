@@ -11,4 +11,7 @@ public class StaticConfig {
     public static final Double LANE_POINT_SKIP_DISTANCE = 1D;
     public static final Boolean DRAW_PATH = false;
     public static final Boolean OUTPUT_DRAW_TIME = false;
+
+    public static final Integer INSPECT_LINK=1;
+    public static final Integer INSPECT_LANE_GROUP=0;
 }
