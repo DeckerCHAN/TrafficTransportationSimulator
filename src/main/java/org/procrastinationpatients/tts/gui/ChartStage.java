@@ -2,15 +2,13 @@ package org.procrastinationpatients.tts.gui;
 
 
 import javafx.stage.Stage;
-import org.procrastinationpatients.tts.core.Engine;
 import org.procrastinationpatients.tts.entities.Lane;
-import org.procrastinationpatients.tts.source.StaticConfig;
 
-public class ChartWindow extends TickWindow {
+public class ChartStage extends TickStage {
 
     private Lane[] targetLanes;
 
-    public ChartWindow() {
+    public ChartStage() {
         super();
         this.targetLanes = new Lane[3];
     }
@@ -22,11 +20,6 @@ public class ChartWindow extends TickWindow {
 
     @Override
     protected void drawAllStatic() {
-
-    }
-
-    @Override
-    public void start(Stage stage) throws Exception {
 
     }
 }

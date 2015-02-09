@@ -6,14 +6,15 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.procrastinationpatients.tts.source.StaticConfig;
 
-public abstract class TickWindow extends Application {
+public abstract class TickStage extends Stage {
 
     private Timeline timeline;
 
-    protected TickWindow() {
+    protected TickStage() {
         this.setTimeline(new Timeline(new KeyFrame(Duration.millis(StaticConfig.TICK_INTERVAL), this.getTickHandler())));
         this.getTimeline().setCycleCount(Animation.INDEFINITE);
     }

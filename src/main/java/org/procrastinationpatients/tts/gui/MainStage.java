@@ -1,12 +1,9 @@
 package org.procrastinationpatients.tts.gui;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -16,9 +13,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import org.procrastinationpatients.tts.core.Engine;
 import org.procrastinationpatients.tts.core.Processor;
 import org.procrastinationpatients.tts.entities.Dot;
@@ -32,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class MainWindow extends TickWindow {
+public class MainStage extends TickStage {
 
     private Point2D canvasMaxSizePoint;
 
@@ -51,9 +48,7 @@ public class MainWindow extends TickWindow {
     private Button chartBtn;
 
 
-
-
-    public MainWindow() {
+    public MainStage() {
         super();
         //Canvas 的大小最终应当取决于XML文件中的最高和最宽点
         //TODO:将大小修改为最高点和最宽点
@@ -108,23 +103,14 @@ public class MainWindow extends TickWindow {
         this.scrollInnerPane.getChildren().addAll(this.backgroundCanvas, this.dynamicCanvas);
 
 
-
-
-    }
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        this.mainStage = stage;
         //设置固定窗口
-        stage.setResizable(false);
+        this.setResizable(false);
         //设置stage宽度和高度
-        stage.setWidth(StaticConfig.STAGE_SIZE_WIDTH);
-        stage.setHeight(StaticConfig.STAGE_SIZE_HEIGHT);
+        this.setWidth(StaticConfig.STAGE_SIZE_WIDTH);
+        this.setHeight(StaticConfig.STAGE_SIZE_HEIGHT);
 
-        stage.setTitle("Traffic Transportation Simulator");
-        stage.setScene(new Scene(this.root));
-
-        stage.show();
+        this.setTitle("Traffic Transportation Simulator");
+        this.setScene(new Scene(this.root));
     }
 
     /**
@@ -250,12 +236,9 @@ public class MainWindow extends TickWindow {
         return new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Application.launch(ChartWindow.class);
-                    }
-                }).start();
+                Stage stage = new ChartStage();
+                stage.show();
+
             }
         };
     }
