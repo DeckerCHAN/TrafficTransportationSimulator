@@ -1,6 +1,7 @@
 package org.procrastinationpatients.tts.gui;
 
 import javafx.event.EventHandler;
+import javafx.geometry.BoundingBox;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
@@ -10,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -177,6 +179,10 @@ public class MainStage extends TickStage {
                     dynamicCanvas.setWidth(canvasMaxSizePoint.getX());
                     dynamicCanvas.setHeight(canvasMaxSizePoint.getY());
                     drawAllStatic();
+                    System.out.println(scrollPane.getVmax());
+                    System.out.println(scrollPane.getVmin());
+                    scrollPane.setHvalue(0.6);
+                    scrollPane.setVvalue(0.5);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
