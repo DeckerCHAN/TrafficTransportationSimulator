@@ -6,7 +6,6 @@ import org.procrastinationpatients.tts.entities.Link;
 import org.procrastinationpatients.tts.entities.Margin;
 import org.procrastinationpatients.tts.entities.Visible;
 import org.procrastinationpatients.tts.gui.MainApp;
-import org.procrastinationpatients.tts.gui.MainStage;
 
 import java.util.ArrayList;
 import java.util.Arrays;

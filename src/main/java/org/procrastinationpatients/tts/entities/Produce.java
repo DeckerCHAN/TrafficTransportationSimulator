@@ -4,8 +4,6 @@ import org.procrastinationpatients.tts.core.Engine;
 import org.procrastinationpatients.tts.utils.RandomUtils;
 import org.procrastinationpatients.tts.utils.VehicleList;
 
-import java.util.LinkedList;
-
 
 public class Produce implements Runnable{
 

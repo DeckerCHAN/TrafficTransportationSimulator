@@ -2,7 +2,9 @@ package org.procrastinationpatients.tts.entities;
 
 import org.procrastinationpatients.tts.utils.RandomUtils;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class Vehicle {

@@ -3,7 +3,6 @@ package org.procrastinationpatients.tts.entities;
 import org.procrastinationpatients.tts.core.Engine;
 import org.procrastinationpatients.tts.utils.VehicleList;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 
 
