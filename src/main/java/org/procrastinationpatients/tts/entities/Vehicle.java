@@ -159,17 +159,23 @@ public class Vehicle {
 		int length = margins.length;
 		int index = i % length ;
 		int mapIndex = length-index-1;
+
 		if(mapIndex == index){
 			mapIndex++;
 		}
+
 		Margin input = margins[index] ;
 		Margin output = margins[mapIndex];
-		if(output.getConnectedLink().getLanes()[0].getOutputs().size() == 0)
-			finalCross = output.getConnectedLink().getLanes()[5].getOutputs().get(0).getParent();
-		else
+		if(output.getFirstInputLaneIndex() == 0)
 			finalCross = output.getConnectedLink().getLanes()[0].getOutputs().get(0).getParent();
+		else
+			finalCross = output.getConnectedLink().getLanes()[3].getOutputs().get(0).getParent();
 
-		DFS(transferToLaneArrays(input.getConnectedLink().getLanes()[0]));
+		if(input.getFirstInputLaneIndex() == 0 )
+			DFS(transferToLaneArrays(input.getConnectedLink().getLanes()[0]));
+		else
+			DFS(transferToLaneArrays(input.getConnectedLink().getLanes()[3]));
+
 		Collections.reverse(path);
 
 		this.Cur_line = path.get(0);
