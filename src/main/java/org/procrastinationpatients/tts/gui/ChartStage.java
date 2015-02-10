@@ -1,8 +1,10 @@
 package org.procrastinationpatients.tts.gui;
 
 
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import org.procrastinationpatients.tts.core.Engine;
@@ -38,12 +40,13 @@ public class ChartStage extends TickStage {
 
 
         for (int i = 0; i < this.canvases.length; i++) {
-           this.canvases[i] = new Canvas(45D*StaticConfig.CHART_X_SKIP_MULTIPLE, this.targetLanes[i].getLength()*StaticConfig.CHART_Y_SKIP_MULTIPLE);
+            this.canvases[i] = new Canvas(StaticConfig.INSPECT_TIME * StaticConfig.CHART_X_SKIP_MULTIPLE + StaticConfig.DRAW_BIAS_X, this.targetLanes[i].getLength() * StaticConfig.CHART_Y_SKIP_MULTIPLE + StaticConfig.DRAW_BIAS_Y);
 
         }
         this.root = new VBox();
        this.root.getChildren().addAll(this.canvases);
         this.setScene(new Scene(this.root));
+        this.drawAllStatic();
         this.getTimeline().play();
     }
 
@@ -54,7 +57,7 @@ public class ChartStage extends TickStage {
             for (int j = 0; j < targetLanes[i].getVehicles().length; j++) {
                 if (targetLanes[i].getVehicles()[j] != null) {
                     Double y = (double) j*StaticConfig.CHART_Y_SKIP_MULTIPLE;
-                    DrawUtils.drawBallAtCoordinate(canvases[i].getGraphicsContext2D(), x, y, 3, Color.BLACK);
+                    DrawUtils.drawBallAtCoordinate(canvases[i].getGraphicsContext2D(), x + StaticConfig.DRAW_BIAS_X, y + StaticConfig.DRAW_BIAS_Y, 3, Color.BLACK);
                 }
 
             }
@@ -65,6 +68,23 @@ public class ChartStage extends TickStage {
 
     @Override
     protected void drawAllStatic() {
+        for (int i = 0; i < 3; i++) {
+            GraphicsContext gc = canvases[i].getGraphicsContext2D();
+            DrawUtils.drawHorizontalText(gc, StaticConfig.DRAW_BIAS_X + 50D, 0 + StaticConfig.DRAW_BIAS_Y - 30D, Color.RED, "Longitudinal position(m)/Time(sec)", 15D);
+            DrawUtils.drawBallAtCoordinate(gc, 0 + StaticConfig.DRAW_BIAS_X, 0 + StaticConfig.DRAW_BIAS_Y, 10, Color.RED);
+            DrawUtils.drawLine(gc, new Point2D(0 + StaticConfig.DRAW_BIAS_X, 0 + StaticConfig.DRAW_BIAS_Y), new Point2D(0 + StaticConfig.DRAW_BIAS_X + this.canvases[i].getWidth(), 0 + StaticConfig.DRAW_BIAS_Y), Color.RED, 5D);
+            DrawUtils.drawLine(gc, new Point2D(0 + StaticConfig.DRAW_BIAS_X, 0 + StaticConfig.DRAW_BIAS_Y), new Point2D(0 + StaticConfig.DRAW_BIAS_X, 0 + StaticConfig.DRAW_BIAS_Y + this.canvases[i].getHeight()), Color.RED, 5D);
+            for (int j = 0; j < this.targetLanes[i].getLength(); j++) {
+                if (j % 50 == 0) {
+                    DrawUtils.drawHorizontalText(gc, 0 + StaticConfig.DRAW_BIAS_X - 20D, 0 + StaticConfig.DRAW_BIAS_Y + StaticConfig.CHART_Y_SKIP_MULTIPLE * j, Color.RED, String.valueOf(j), 8D);
+                    DrawUtils.drawBallAtCoordinate(gc, 0 + StaticConfig.DRAW_BIAS_X - 3D, StaticConfig.DRAW_BIAS_Y + StaticConfig.CHART_Y_SKIP_MULTIPLE * j, 4, Color.RED);
+                }
 
+            }
+            for (int j = 0; j < StaticConfig.INSPECT_TIME; j++) {
+                DrawUtils.drawHorizontalText(gc, 0 + StaticConfig.DRAW_BIAS_X + StaticConfig.CHART_X_SKIP_MULTIPLE * j, 0 + StaticConfig.DRAW_BIAS_Y - 10D, Color.RED, String.valueOf(j), 8D);
+                DrawUtils.drawBallAtCoordinate(gc,0 + StaticConfig.DRAW_BIAS_X + StaticConfig.CHART_X_SKIP_MULTIPLE * j,0 + StaticConfig.DRAW_BIAS_Y - 3D,4,Color.RED);
+            }
+        }
     }
 }

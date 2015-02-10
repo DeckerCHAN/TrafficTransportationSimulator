@@ -33,7 +33,7 @@ public class Margin extends IdentifiableObject implements Visible, Dot {
     @Override
     public void drawStaticGraphic(GraphicsContext gc) {
         if (StaticConfig.DEBUG_MODE) {
-            DrawUtils.drawText(gc, this.getPosition().getX(), this.getPosition().getY() - 15D, Color.GREEN, "C:" + this.getId(), 15D);
+            DrawUtils.drawHorizontalText(gc, this.getPosition().getX(), this.getPosition().getY() - 15D, Color.GREEN, "C:" + this.getId(), 15D);
 
         }
     }

@@ -118,7 +118,7 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
         DrawUtils.drawPolygon(gc, Color.AQUA, 3, a, b, c, d, e, f, g, h);
 
         if (StaticConfig.DEBUG_MODE) {
-            DrawUtils.drawText(gc, this.getPosition().getX(), this.getPosition().getY() - 15D, Color.GREEN, "C:" + this.getId(), 15D);
+            DrawUtils.drawHorizontalText(gc, this.getPosition().getX(), this.getPosition().getY() - 15D, Color.GREEN, "C:" + this.getId(), 15D);
 
         }
     }
@@ -134,7 +134,7 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
                             continue;
                         }
                         if (StaticConfig.DEBUG_MODE) {
-                            DrawUtils.drawText(gc, lane.getVehiclePositions()[i].getX(), lane.getVehiclePositions()[i].getY() - 11D, Color.RED, String.format("(%s,%s)", (int) lane.getVehiclePositions()[i].getX(), (int) lane.getVehiclePositions()[i].getY()), 10D);
+                            DrawUtils.drawHorizontalText(gc, lane.getVehiclePositions()[i].getX(), lane.getVehiclePositions()[i].getY() - 11D, Color.RED, String.format("(%s,%s)", (int) lane.getVehiclePositions()[i].getX(), (int) lane.getVehiclePositions()[i].getY()), 10D);
                         }
                         DrawUtils.drawBallAtCoordinate(gc, lane.getVehiclePositions()[i].getX(), lane.getVehiclePositions()[i].getY(), 4, Color.RED);
                         pointCount++;
@@ -143,7 +143,7 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
             }
         }
         if (StaticConfig.DEBUG_MODE) {
-            DrawUtils.drawText(gc, this.getPosition(), Color.RED, String.format("Drew:%s", pointCount), 11D);
+            DrawUtils.drawHorizontalText(gc, this.getPosition(), Color.RED, String.format("Drew:%s", pointCount), 11D);
         }
 
         for (int i = 0; i < 6; i++) {
