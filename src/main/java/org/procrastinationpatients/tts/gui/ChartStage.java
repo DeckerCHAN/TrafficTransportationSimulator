@@ -92,4 +92,9 @@ public class ChartStage extends TickStage {
             }
         }
     }
+
+    public void resetTimeCounter()
+    {
+        this.startTime=System.currentTimeMillis();
+    }
 }
