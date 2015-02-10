@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -39,12 +40,13 @@ public class MainStage extends TickStage {
     private Canvas backgroundCanvas;
     private Canvas dynamicCanvas;
 
-    private HBox buttonsContainer;
+    private HBox menuContainer;
     private Button loadBtn;
     private Button startBtn;
     private Button pauseBtn;
     private Button resumeBtn;
     private Button chartBtn;
+    private Label runingTime;
 
 
     public MainStage() {
@@ -84,10 +86,15 @@ public class MainStage extends TickStage {
         this.chartBtn.setLayoutX(this.resumeBtn.getLayoutX() + this.chartBtn.getWidth() + 100);
         this.chartBtn.setLayoutY(50);
         this.chartBtn.setOnMouseClicked(this.getChartButtonEventHandler());
+        //初始化运行时间，并设置相关参数
+        this.runingTime = new Label("");
+        this.runingTime.setLayoutX(this.chartBtn.getLayoutX() + this.runingTime.getWidth() + 100);
+        this.runingTime.setLayoutY(50);
 
-        this.buttonsContainer = new HBox();
-        this.buttonsContainer.setPadding(new Insets(15, 12, 15, 12));
-        this.buttonsContainer.setSpacing(10);
+
+        this.menuContainer = new HBox();
+        this.menuContainer.setPadding(new Insets(15, 12, 15, 12));
+        this.menuContainer.setSpacing(10);
         this.scrollPane = new ScrollPane();
         this.scrollInnerPane = new StackPane();
         this.root = new BorderPane();
@@ -95,8 +102,8 @@ public class MainStage extends TickStage {
 
         //建立显示的层级嵌套结构
         this.root.setCenter(this.scrollPane);
-        this.root.setTop(this.buttonsContainer);
-        this.buttonsContainer.getChildren().addAll(this.loadBtn, this.startBtn, this.pauseBtn, this.resumeBtn, this.chartBtn);
+        this.root.setTop(this.menuContainer);
+        this.menuContainer.getChildren().addAll(this.loadBtn, this.startBtn, this.pauseBtn, this.resumeBtn, this.chartBtn,this.runingTime);
 
         this.scrollPane.setContent(this.scrollInnerPane);
         this.scrollInnerPane.getChildren().addAll(this.backgroundCanvas, this.dynamicCanvas);
@@ -249,5 +256,10 @@ public class MainStage extends TickStage {
         };
     }
 
+    @Override
+    protected void tick() {
+        super.tick();
+        this.runingTime.setText(String.format("Running:%s(tick) * %s(ms)", this.getTickCounts(), StaticConfig.TICK_INTERVAL));
+    }
 
 }
