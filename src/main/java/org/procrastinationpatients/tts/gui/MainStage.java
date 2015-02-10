@@ -3,7 +3,6 @@ package org.procrastinationpatients.tts.gui;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -13,7 +12,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.procrastinationpatients.tts.core.Engine;
@@ -34,6 +32,7 @@ public class MainStage extends TickStage {
     private Point2D canvasMaxSizePoint;
 
     private Stage mainStage;
+    private ChartStage chartStage;
     private BorderPane root;
     private StackPane scrollInnerPane;
     private ScrollPane scrollPane;
@@ -207,6 +206,9 @@ public class MainStage extends TickStage {
             public void handle(MouseEvent mouseEvent) {
                 Engine.getInstance().pause();
                 getTimeline().stop();
+                if (chartStage != null) {
+                    chartStage.getTimeline().stop();
+                }
                 System.out.println("Pause!");
             }
         };
@@ -222,6 +224,9 @@ public class MainStage extends TickStage {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 Engine.getInstance().resume();
+                if (chartStage != null) {
+                    chartStage.getTimeline().play();
+                }
                 getTimeline().play();
             }
         };
@@ -236,8 +241,8 @@ public class MainStage extends TickStage {
         return new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                Stage stage = new ChartStage();
-                stage.show();
+                chartStage = new ChartStage();
+                chartStage.show();
 
             }
         };
