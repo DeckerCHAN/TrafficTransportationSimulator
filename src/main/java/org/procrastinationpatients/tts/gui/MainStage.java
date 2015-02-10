@@ -32,6 +32,7 @@ public class MainStage extends TickStage {
     private Point2D canvasMaxSizePoint;
 
     private Stage mainStage;
+    private ChartStage chartStage;
     private BorderPane root;
     private StackPane scrollInnerPane;
     private ScrollPane scrollPane;
@@ -205,6 +206,9 @@ public class MainStage extends TickStage {
             public void handle(MouseEvent mouseEvent) {
                 Engine.getInstance().pause();
                 getTimeline().stop();
+                if (chartStage != null) {
+                    chartStage.getTimeline().stop();
+                }
                 System.out.println("Pause!");
             }
         };
@@ -220,6 +224,9 @@ public class MainStage extends TickStage {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 Engine.getInstance().resume();
+                if (chartStage != null) {
+                    chartStage.getTimeline().play();
+                }
                 getTimeline().play();
             }
         };
@@ -234,8 +241,8 @@ public class MainStage extends TickStage {
         return new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                Stage stage = new ChartStage();
-                stage.show();
+                chartStage = new ChartStage();
+                chartStage.show();
 
             }
         };
