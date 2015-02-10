@@ -110,7 +110,7 @@ public class MainStage extends TickStage {
 
 
         //设置固定窗口
-        this.setResizable(false);
+        this.setResizable(true);
         //设置stage宽度和高度
         this.setWidth(StaticConfig.STAGE_SIZE_WIDTH);
         this.setHeight(StaticConfig.STAGE_SIZE_HEIGHT);
