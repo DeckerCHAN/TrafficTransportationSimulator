@@ -245,7 +245,7 @@ public class MainStage extends TickStage {
     @Override
     protected void tick() {
         super.tick();
-        this.runingTime.setText(String.format("Running:%s(tick) * %s(ms)", this.getTickCounts(), StaticConfig.TICK_INTERVAL));
+        this.runingTime.setText(String.format("Running: %s(s)", this.getTickCounts() * StaticConfig.TICK_INTERVAL / 1000));
     }
 
     @Override
