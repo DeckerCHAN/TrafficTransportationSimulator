@@ -168,7 +168,7 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
                         continue;
 					}
 					if (StaticConfig.DEBUG_MODE) {
-						DrawUtils.drawText(gc, lane.getVehiclePositions()[i].getX(), lane.getVehiclePositions()[i].getY() - 11D, Color.RED, String.format("%s(%s,%s)", lane.getVehicles()[i].getId(), (int) lane.getVehiclePositions()[i].getX(), (int) lane.getVehiclePositions()[i].getY()), 10D);
+						DrawUtils.drawHorizontalText(gc, lane.getVehiclePositions()[i].getX(), lane.getVehiclePositions()[i].getY() - 11D, Color.RED, String.format("%s(%s,%s)", lane.getVehicles()[i].getId(), (int) lane.getVehiclePositions()[i].getX(), (int) lane.getVehiclePositions()[i].getY()), 10D);
 					}
 					DrawUtils.drawBallAtCoordinate(gc, lane.getVehiclePositions()[i], 4, Color.RED);
 					System.out.println("Drawing:::+++++++" + lane.getVehicles()[i].getId() + "-->"+ lane.getVehicles()[i].getCur_Loc());
@@ -179,11 +179,11 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
 
 		//在Debug模式下输出车的数量
 		if (StaticConfig.DEBUG_MODE) {
-			DrawUtils.drawText(gc, new Point2D(
-							(this.getA().getPosition().getX() + this.getB().getPosition().getX()) / 2,
-							(this.getA().getPosition().getY() + this.getB().getPosition().getY()) / 2
-					), Color.GREEN, String.format("Drew:%s", pointCount), 11D
-			);
+			DrawUtils.drawHorizontalText(gc, new Point2D(
+                            (this.getA().getPosition().getX() + this.getB().getPosition().getX()) / 2,
+                            (this.getA().getPosition().getY() + this.getB().getPosition().getY()) / 2
+                    ), Color.GREEN, String.format("Drew:%s", pointCount), 11D
+            );
 		}
 	}
 }

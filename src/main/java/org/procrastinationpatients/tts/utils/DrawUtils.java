@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.transform.Rotate;
 
 
 public class DrawUtils {
@@ -17,13 +18,14 @@ public class DrawUtils {
     public static void drawBallAtCoordinate(GraphicsContext gc, Double x, Double y, Integer size, Color color) {
         gc.setFill(color);
         gc.fillOval(x - (size / 2), y - (size / 2), size, size);
+        gc.restore();
     }
 
     public static void drawLine(GraphicsContext gc, Point2D start, Point2D end, Color color, Double width) {
         gc.setStroke(color);
         gc.setLineWidth(width);
         gc.strokeLine(start.getX(), start.getY(), end.getX(), end.getY());
-
+        gc.restore();
     }
 
     public static void drawLine(GraphicsContext gc, Line line, Color color, Double width) {
@@ -43,10 +45,24 @@ public class DrawUtils {
         }
 
         gc.strokePolygon(xs, ys, points.length);
-
+        gc.restore();
+    }
+    public static void drawVerticalText(GraphicsContext gc, Double x, Double y, Color color, String text, Double fontSize) {
+        gc.save();
+        gc.setFont(new Font(fontSize));
+        gc.setTextAlign(TextAlignment.LEFT);
+        gc.setFill(color);
+        gc.setTextBaseline(VPos.TOP);
+        Rotate r = new Rotate(45, 0, 0);
+        gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
+        gc.fillText(
+                text,
+                x, y
+        );
+        gc.restore();
     }
 
-    public static void drawText(GraphicsContext gc, Double x, Double y, Color color, String text,Double fontSize) {
+    public static void drawHorizontalText(GraphicsContext gc, Double x, Double y, Color color, String text, Double fontSize) {
         gc.setFont(new Font(fontSize));
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setFill(color);
@@ -56,7 +72,7 @@ public class DrawUtils {
                 x, y
         );
     }
-    public static void drawText(GraphicsContext gc, Point2D point, Color color,String text,Double fontSize) {
-        drawText(gc, point.getX(), point.getY(), color, text,fontSize);
+    public static void drawHorizontalText(GraphicsContext gc, Point2D point, Color color, String text, Double fontSize) {
+        drawHorizontalText(gc, point.getX(), point.getY(), color, text, fontSize);
     }
 }
