@@ -5,6 +5,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import org.procrastinationpatients.tts.core.Engine;
@@ -16,7 +17,8 @@ public class ChartStage extends TickStage {
 
     private Lane[] targetLanes;
     private Canvas[] canvases;
-    private VBox root;
+    private ScrollPane root;
+    private VBox box;
     private Long startTime;
 
 
@@ -43,8 +45,11 @@ public class ChartStage extends TickStage {
             this.canvases[i] = new Canvas(StaticConfig.INSPECT_TIME * StaticConfig.CHART_X_SKIP_MULTIPLE + StaticConfig.DRAW_BIAS_X, this.targetLanes[i].getLength() * StaticConfig.CHART_Y_SKIP_MULTIPLE + StaticConfig.DRAW_BIAS_Y);
 
         }
-        this.root = new VBox();
-       this.root.getChildren().addAll(this.canvases);
+        this.root = new ScrollPane();
+        this.root.setPrefSize(canvases[0].getWidth(),canvases[0].getHeight());
+        this.box = new VBox();
+        this.box.getChildren().addAll(this.canvases);
+        this.root.setContent(this.box);
         this.setScene(new Scene(this.root));
         this.drawAllStatic();
         this.getTimeline().play();
@@ -70,7 +75,7 @@ public class ChartStage extends TickStage {
     protected void drawAllStatic() {
         for (int i = 0; i < 3; i++) {
             GraphicsContext gc = canvases[i].getGraphicsContext2D();
-            DrawUtils.drawHorizontalText(gc, StaticConfig.DRAW_BIAS_X + 50D, 0 + StaticConfig.DRAW_BIAS_Y - 30D, Color.RED, "Longitudinal position(m)/Time(sec)", 15D);
+            DrawUtils.drawHorizontalText(gc, StaticConfig.DRAW_BIAS_X + 120D, 0 + StaticConfig.DRAW_BIAS_Y - 30D, Color.RED, "Longitudinal position(m)/Time(sec)", 15D);
             DrawUtils.drawBallAtCoordinate(gc, 0 + StaticConfig.DRAW_BIAS_X, 0 + StaticConfig.DRAW_BIAS_Y, 10, Color.RED);
             DrawUtils.drawLine(gc, new Point2D(0 + StaticConfig.DRAW_BIAS_X, 0 + StaticConfig.DRAW_BIAS_Y), new Point2D(0 + StaticConfig.DRAW_BIAS_X + this.canvases[i].getWidth(), 0 + StaticConfig.DRAW_BIAS_Y), Color.RED, 5D);
             DrawUtils.drawLine(gc, new Point2D(0 + StaticConfig.DRAW_BIAS_X, 0 + StaticConfig.DRAW_BIAS_Y), new Point2D(0 + StaticConfig.DRAW_BIAS_X, 0 + StaticConfig.DRAW_BIAS_Y + this.canvases[i].getHeight()), Color.RED, 5D);
