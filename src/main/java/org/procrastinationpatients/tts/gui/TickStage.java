@@ -12,8 +12,10 @@ import org.procrastinationpatients.tts.source.StaticConfig;
 public abstract class TickStage extends Stage {
 
     private Timeline timeline;
+    private Long tickCounts;
 
     protected TickStage() {
+        this.setTickCounts(Long.valueOf(0));
         this.setTimeline(new Timeline(new KeyFrame(Duration.millis(StaticConfig.TICK_INTERVAL), this.getTickHandler())));
         this.getTimeline().setCycleCount(Animation.INDEFINITE);
     }
@@ -26,16 +28,19 @@ public abstract class TickStage extends Stage {
         return new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                Long start = System.currentTimeMillis();
-                drawAllDynamic();
-                Long end = System.currentTimeMillis();
-                if (StaticConfig.DEBUG_MODE || StaticConfig.OUTPUT_DRAW_TIME) {
-                    System.out.println(String.format("Draw cost %s ms.", end - start));
-                }
-
-
+                tick();
             }
         };
+    }
+
+    protected void tick() {
+        Long start = System.currentTimeMillis();
+        drawAllDynamic();
+        Long end = System.currentTimeMillis();
+        if (StaticConfig.DEBUG_MODE || StaticConfig.OUTPUT_DRAW_TIME) {
+            System.out.println(String.format("Draw cost %s ms.", end - start));
+        }
+        setTickCounts(getTickCounts() + 1);
     }
 
     protected Timeline getTimeline() {
@@ -44,5 +49,13 @@ public abstract class TickStage extends Stage {
 
     protected void setTimeline(Timeline timeline) {
         this.timeline = timeline;
+    }
+
+    public Long getTickCounts() {
+        return tickCounts;
+    }
+
+    public void setTickCounts(Long tickCounts) {
+        this.tickCounts = tickCounts;
     }
 }
