@@ -75,7 +75,7 @@ public class ChartStage extends TickStage {
     protected void drawAllStatic() {
         for (int i = 0; i < 3; i++) {
             GraphicsContext gc = canvases[i].getGraphicsContext2D();
-            DrawUtils.drawHorizontalText(gc, StaticConfig.DRAW_BIAS_X + 50D, 0 + StaticConfig.DRAW_BIAS_Y - 30D, Color.RED, "Longitudinal position(m)/Time(sec)", 15D);
+            DrawUtils.drawHorizontalText(gc, StaticConfig.DRAW_BIAS_X + 120D, 0 + StaticConfig.DRAW_BIAS_Y - 30D, Color.RED, "Longitudinal position(m)/Time(sec)", 15D);
             DrawUtils.drawBallAtCoordinate(gc, 0 + StaticConfig.DRAW_BIAS_X, 0 + StaticConfig.DRAW_BIAS_Y, 10, Color.RED);
             DrawUtils.drawLine(gc, new Point2D(0 + StaticConfig.DRAW_BIAS_X, 0 + StaticConfig.DRAW_BIAS_Y), new Point2D(0 + StaticConfig.DRAW_BIAS_X + this.canvases[i].getWidth(), 0 + StaticConfig.DRAW_BIAS_Y), Color.RED, 5D);
             DrawUtils.drawLine(gc, new Point2D(0 + StaticConfig.DRAW_BIAS_X, 0 + StaticConfig.DRAW_BIAS_Y), new Point2D(0 + StaticConfig.DRAW_BIAS_X, 0 + StaticConfig.DRAW_BIAS_Y + this.canvases[i].getHeight()), Color.RED, 5D);
