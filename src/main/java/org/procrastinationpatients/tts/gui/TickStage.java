@@ -43,6 +43,18 @@ public abstract class TickStage extends Stage {
         setTickCounts(getTickCounts() + 1);
     }
 
+    public void pause() {
+        this.getTimeline().stop();
+    }
+
+    public void resume() {
+        this.getTimeline().play();
+    }
+
+    public void start() {
+        this.getTimeline().play();
+    }
+
     protected Timeline getTimeline() {
         return timeline;
     }
