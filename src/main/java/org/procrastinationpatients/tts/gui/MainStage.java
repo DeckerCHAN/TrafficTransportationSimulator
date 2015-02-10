@@ -193,11 +193,7 @@ public class MainStage extends TickStage {
         return new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                System.out.println("Start!");
-                //启动动态绘制线程
-                Engine.getInstance().setProcessor(new Processor());
-                Engine.getInstance().getProcessor().start();
-                getTimeline().play();
+                start();
             }
         };
     }
@@ -211,12 +207,7 @@ public class MainStage extends TickStage {
         return new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                Engine.getInstance().pause();
-                getTimeline().stop();
-                if (chartStage != null) {
-                    chartStage.getTimeline().stop();
-                }
-                System.out.println("Pause!");
+                pause();
             }
         };
     }
@@ -230,12 +221,7 @@ public class MainStage extends TickStage {
         return new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                Engine.getInstance().resume();
-                if (chartStage != null) {
-                    chartStage.resetTimeCounter();
-                    chartStage.getTimeline().play();
-                }
-                getTimeline().play();
+                resume();
             }
         };
     }
@@ -262,4 +248,32 @@ public class MainStage extends TickStage {
         this.runingTime.setText(String.format("Running:%s(tick) * %s(ms)", this.getTickCounts(), StaticConfig.TICK_INTERVAL));
     }
 
+    @Override
+    public void start() {
+        super.start();
+        //启动动运算线程
+        Engine.getInstance().setProcessor(new Processor());
+        Engine.getInstance().getProcessor().start();
+        System.out.println("Start!");
+    }
+
+    @Override
+    public void pause() {
+        super.pause();
+        Engine.getInstance().pause();
+        if (chartStage != null) {
+            chartStage.pause();
+        }
+        System.out.println("Pause!");
+    }
+
+    @Override
+    public void resume() {
+        super.resume();
+        Engine.getInstance().resume();
+        if (chartStage != null) {
+            chartStage.resume();
+        }
+        System.out.println("Resume!");
+    }
 }

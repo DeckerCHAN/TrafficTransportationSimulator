@@ -20,6 +20,7 @@ public class ChartStage extends TickStage {
     private ScrollPane root;
     private VBox box;
     private Long startTime;
+    private Long pauseStartTime;
 
 
     public ChartStage() {
@@ -52,7 +53,7 @@ public class ChartStage extends TickStage {
         this.root.setContent(this.box);
         this.setScene(new Scene(this.root));
         this.drawAllStatic();
-        this.getTimeline().play();
+        this.start();
     }
 
     @Override
@@ -95,8 +96,17 @@ public class ChartStage extends TickStage {
         }
     }
 
-    public void resetTimeCounter()
+    @Override
+    public void pause()
     {
-        this.startTime=System.currentTimeMillis();
+        super.pause();
+        this.pauseStartTime=System.currentTimeMillis();
+    }
+
+    @Override
+    public void resume()
+    {
+        super.resume();
+        this.startTime+=System.currentTimeMillis()-this.pauseStartTime;
     }
 }
