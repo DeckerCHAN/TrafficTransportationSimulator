@@ -4,8 +4,6 @@ import org.procrastinationpatients.tts.core.Engine;
 import org.procrastinationpatients.tts.utils.RandomUtils;
 import org.procrastinationpatients.tts.utils.VehicleList;
 
-import java.util.LinkedList;
-
 
 public class Produce implements Runnable{
 
@@ -28,12 +26,12 @@ public class Produce implements Runnable{
 					Thread.sleep(1);
 					continue;
 				}
-				if (Movement.flag && allVehicle.getCount() < 10) {
+				if (Movement.flag && allVehicle.getCount() < 300) {
 					Movement.flag = false;
 					produceVehicles();
 					int time = (int) (Production.getTime_to_Generation() * 100);
 					Movement.flag = true ;
-					Thread.sleep(time + 200);
+					Thread.sleep(time + 100);
 				}
 			}
 
@@ -43,29 +41,41 @@ public class Produce implements Runnable{
 
 	}
 
-		public void produceVehicles(){
+	public void produceVehicles(){
 
-//			int start = RandomUtils.getRandomNumber(margins.length);
-			int start = 11 ;
-			if (margins[start] != null) {
-				int line ;
-				if(margins[start].getFirstInputLaneIndex() == 0){
-					line = RandomUtils.getStartLine() ;
-				}else{
-					line = RandomUtils.getStartLine() + 3 ;
-				}
-				Lane lane = margins[start].getConnectedLink().getLanes()[line] ;
-				Vehicle vehicle = new Vehicle(lane);
-				vehicle.setId(i);
-				vehicle.setSpeed(1,RandomUtils.getRandomSped());
-				vehicle.setCur_Loc(0);
-				vehicle.setCur_line(line);
-				vehicle.setGoal_line(line);
-				lane.addVehicle(vehicle);
-				allVehicle.add(vehicle);
-				i++;
+		int start = RandomUtils.getRandomNumber(margins.length);
+//		int start = 11 ;
+		if (margins[start] != null) {
+			int line ;
+			if(margins[start].getFirstInputLaneIndex() == 0){
+				line = RandomUtils.getStartLine() ;
+			}else{
+				line = RandomUtils.getStartLine() + 3 ;
 			}
+			Lane lane = margins[start].getConnectedLink().getLanes()[line] ;
+			Vehicle vehicle = new Vehicle(lane);
+			vehicle.setId(i);
+			vehicle.setSpeed(1,RandomUtils.getRandomSped());
+			vehicle.setCur_Loc(0);
+			vehicle.setCur_line(line);
+			vehicle.setGoal_line(line);
+			lane.addVehicle(vehicle);
+			allVehicle.add(vehicle);
+			i++;
 		}
+	}
+
+	public void produceVehicless(){
+		Vehicle vehicle = new Vehicle(null);
+		vehicle.setId(i);
+		vehicle.setSpeed(1,RandomUtils.getRandomSped());
+		vehicle.setCur_Loc(0);
+		vehicle.findPath(margins,i);
+		vehicle.setStart_TIME(System.currentTimeMillis());
+		allVehicle.add(vehicle);
+		i++;
+	}
+
 	public VehicleList getAllVehicle(){
 		return this.allVehicle;
 	}

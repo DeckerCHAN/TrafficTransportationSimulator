@@ -5,185 +5,159 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import org.procrastinationpatients.tts.source.StaticConfig;
 import org.procrastinationpatients.tts.utils.DrawUtils;
-import org.procrastinationpatients.tts.utils.RandomUtils;
 
-import java.util.List;
+import java.util.LinkedList;
 
 
 public abstract class Link extends IdentifiableObject implements Visible, FunctionalObject {
 
-	private Dot a;
-	private Dot b;
-	private int lane_Length;
-	private Lane[] lanes;
+    private Dot a;
+    private Dot b;
+    private int lane_Length;
+    private Lane[] lanes;
 
-	public Link(Integer id) {
-		super(id);
-		this.lanes = new Lane[6];
-		for (int i = 0; i < 6; i++) {
-			lanes[i] = new Lane(this,i);
-		}
-	}
+    public Link(Integer id) {
+        super(id);
+        this.lanes = new Lane[6];
+        for (int i = 0; i < 6; i++) {
+            lanes[i] = new Lane(this, i);
+        }
+    }
 
-	public Lane[] getLanes() {
-		return lanes;
-	}
+    public Lane[] getLanes() {
+        return lanes;
+    }
 
-	public void setLanes(Lane[] lanes) {
-		this.lanes = lanes;
-		if(lanes.length > 0)
-			this.lane_Length = lanes[0].getLength() ;
-		else
-			this.lane_Length = 0 ;
-	}
+    public void setLanes(Lane[] lanes) {
+        this.lanes = lanes;
+        if (lanes.length > 0)
+            this.lane_Length = lanes[0].getLength();
+        else
+            this.lane_Length = 0;
+    }
 
-	public Dot getA() {
-		return a;
-	}
+    public int getLane_Length() {
+        return this.lane_Length;
+    }
 
-	public void setA(Dot a) {
-		this.a = a;
-		refreshLane();
-	}
+    public Dot getA() {
+        return a;
+    }
 
-	public Dot getB() {
-		return b;
-	}
+    public void setA(Dot a) {
+        this.a = a;
+        refreshLane();
+    }
 
-	public void setB(Dot b) {
-		this.b = b;
-		refreshLane();
-	}
+    public Dot getB() {
+        return b;
+    }
 
-	protected abstract void refreshLane();
+    public void setB(Dot b) {
+        this.b = b;
+        refreshLane();
+    }
 
-	public int change_Line_NUMBER(int v_line) {
-		switch (v_line) {
-			case 0:
-				v_line = 1;
-				break;
-			case 1:
-				v_line = 2;
-				break;
-			case 2:
-				v_line = 2;
-				break;
-			case 3:
-				v_line = 3;
-				break;
-			case 4:
-				v_line = 3;
-				break;
-			case 5:
-				v_line = 4;
-		}
-		return v_line;
-	}
+    protected abstract void refreshLane();
 
-	@Override
-	public int changeLine(Vehicle vehicle) {
-		int v_line = vehicle.getCur_line();
-		int v_location = vehicle.getCur_Loc();
-		int new_line = change_Line_NUMBER(v_line);
-		if(this.lanes[new_line].getVehicles()[v_location] == null){
-			this.lanes[v_line].removeVehicle(vehicle) ;
-			vehicle.setCur_Loc(v_location);
-			vehicle.setCur_line(new_line);
-			vehicle.setOn_Link(this.lanes[new_line]);
-			this.lanes[new_line].addChangeLineVehicle(vehicle);
-			return v_line;
-		}
-		return 0;
-	}
+    public int change_Line_NUMBER(int v_line) {
+        switch (v_line) {
+            case 0:
+                v_line = 1;
+                break;
+            case 1:
+                v_line = 2;
+                break;
+            case 2:
+                v_line = 2;
+                break;
+            case 3:
+                v_line = 3;
+                break;
+            case 4:
+                v_line = 3;
+                break;
+            case 5:
+                v_line = 4;
+        }
+        return v_line;
+    }
 
-	@Override
-	public void changeToNextContainer(Vehicle vehicle) {
-		this.removeVehicle(vehicle);
-		List<Lane> outputLanes = lanes[vehicle.getCur_line()].getOutputs();
-		Lane outputLane = outputLanes.get(RandomUtils.getStartLine()) ;
-		vehicle.setCur_Loc(vehicle.getCur_Loc()+vehicle.getCur_Spd()-this.getLane_Length());
-		outputLane.addVehicle(vehicle);
-	}
+    @Override
+    public int changeLine(Vehicle vehicle) {
+        int v_line = vehicle.getCur_line();
+        int v_location = vehicle.getCur_Loc();
+        int new_line = change_Line_NUMBER(v_line);
+        if (this.lanes[new_line].getVehicles()[v_location] == null) {
+            this.lanes[v_line].removeVehicle(vehicle);
+            vehicle.setCur_Loc(v_location);
+            vehicle.setCur_line(new_line);
+            vehicle.setOn_Link(this.lanes[new_line]);
+            this.lanes[new_line].addChangeLineVehicle(vehicle);
+            return new_line;
+        }
+        return 0;
+    }
 
-	@Override
-	public void toGoalLine(Vehicle vehicle) {
-		int v_line = vehicle.getCur_line();
-		int v_goal_line = vehicle.getGoal_line() ;
-		int v_location = vehicle.getCur_Loc();
+    @Override
+    public void toGoalLine(Vehicle vehicle) {
+        int v_line = vehicle.getCur_line();
+        int v_goal_line = vehicle.getGoal_line();
+        int v_location = vehicle.getCur_Loc();
 
-		if (!hasVehicle(v_goal_line, v_location)) {
-			lanes[v_line].removeVehicle(vehicle) ;
-			vehicle.setCur_line(v_goal_line);
-			vehicle.setOn_Link(lanes[v_goal_line]);
-			lanes[v_goal_line].addChangeLineVehicle(vehicle) ;
-		}
-	}
+        if (!hasVehicle(v_goal_line, v_location)) {
+            lanes[v_line].removeVehicle(vehicle);
+            vehicle.setCur_line(v_goal_line);
+            vehicle.setOn_Link(lanes[v_goal_line]);
+            lanes[v_goal_line].addChangeLineVehicle(vehicle);
+        }
+    }
 
-	public void removeVehicle(Vehicle vehicle) {
-		int v_line = vehicle.getCur_line();
-		int v_location = vehicle.getCur_Loc();
+    public boolean hasVehicle(int line, int loc) {
+        if (this.lanes[line].getVehicles()[loc] != null)
+            return true;
+        else
+            return false;
+    }
 
-		if(lanes[v_line].getVehicles()[v_location] != null){
-			this.lanes[v_line].removeVehicle(vehicle) ;
-		}
-	}
-
-	public boolean addVehicle(Vehicle vehicle) {
-		int cur_line = vehicle.getCur_line();
-		for (int j = 0; j < lane_Length; j++) {
-			if (lanes[cur_line].getVehicles()[j] == null) {
-				vehicle.setCur_Loc(j);
-				this.lanes[cur_line].addVehicle(vehicle);
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean hasVehicle(int line , int loc){
-		if(this.lanes[line].getVehicles()[loc] != null)
-			return true ;
-		else
-			return false ;
-	}
-
-	@Override
-	public int getLane_Length() {
-		return this.lane_Length;
-	}
-
-	@Override
-	public void drawDynamicGraphic(GraphicsContext gc) {
-		//统计车的数量
-		Integer pointCount = 0;
+    @Override
+    public void drawDynamicGraphic(GraphicsContext gc) {
+        //统计车的数量
+        Integer pointCount = 0;
 
         for (Lane lane : this.getLanes()) {
-            for(Barrier barrier:lane.getBarriers())
-            {
-                DrawUtils.drawLine(gc,lane.getVehiclePositions()[barrier.getStart()],lane.getVehiclePositions()[barrier.getEnd()],Color.BLACK,10D);
+            for (Barrier barrier : lane.getBarriers()) {
+                DrawUtils.drawLine(gc, lane.getVehiclePositions()[barrier.getStart()], lane.getVehiclePositions()[barrier.getEnd()], Color.BLACK, 10D);
             }
             for (int i = 0; i < lane.getLength(); i++) {
                 if (lane.getVehicles()[i] != null) {
                     if (lane.getVehiclePositions()[i] == null) {
                         continue;
-					}
-					if (StaticConfig.DEBUG_MODE) {
-						DrawUtils.drawHorizontalText(gc, lane.getVehiclePositions()[i].getX(), lane.getVehiclePositions()[i].getY() - 11D, Color.RED, String.format("%s(%s,%s)", lane.getVehicles()[i].getId(), (int) lane.getVehiclePositions()[i].getX(), (int) lane.getVehiclePositions()[i].getY()), 10D);
-					}
-					DrawUtils.drawBallAtCoordinate(gc, lane.getVehiclePositions()[i], 4, Color.RED);
-					System.out.println("Drawing:::+++++++" + lane.getVehicles()[i].getId() + "-->"+ lane.getVehicles()[i].getCur_Loc());
-					pointCount++;
-				}
-			}
-		}
+                    }
+                    if (lane.getVehicles()[i].isStop() == true) {
+                        continue;
+                    }
+                    if (StaticConfig.DEBUG_MODE) {
+                        DrawUtils.drawHorizontalText(gc, lane.getVehiclePositions()[i].getX(), lane.getVehiclePositions()[i].getY() - 11D, Color.RED, String.format("%s(%s,%s)", lane.getVehicles()[i].getId(), (int) lane.getVehiclePositions()[i].getX(), (int) lane.getVehiclePositions()[i].getY()), 10D);
+                    }
+                    DrawUtils.drawBallAtCoordinate(gc, lane.getVehiclePositions()[i], 4, Color.RED);
+//					System.out.println("Drawing:::+++++++" + lane.getVehicles()[i].getId() + "-->"+ lane.getVehicles()[i].getCur_Loc());
+                    pointCount++;
+                }
+            }
+        }
 
-		//在Debug模式下输出车的数量
-		if (StaticConfig.DEBUG_MODE) {
-			DrawUtils.drawHorizontalText(gc, new Point2D(
+        //在Debug模式下输出车的数量
+        if (StaticConfig.DEBUG_MODE) {
+            DrawUtils.drawHorizontalText(gc, new Point2D(
                             (this.getA().getPosition().getX() + this.getB().getPosition().getX()) / 2,
                             (this.getA().getPosition().getY() + this.getB().getPosition().getY()) / 2
                     ), Color.GREEN, String.format("Drew:%s", pointCount), 11D
             );
-		}
-	}
+        }
+    }
+
+    public LinkedList<Vehicle> vehiclesData(int i) {
+        return lanes[i].getAllVehicles();
+    }
 }

@@ -2,6 +2,10 @@ package org.procrastinationpatients.tts.entities;
 
 import org.procrastinationpatients.tts.utils.RandomUtils;
 
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 
 public class Vehicle {
 
@@ -11,14 +15,22 @@ public class Vehicle {
 	private int Cur_Loc;      //当前位置
 	private int Cur_line;     //当前线路
 	private int MAX_Speed;    //最大速度
+	private double start_TIME;
+	private double end_TIME;
 
-	private boolean isStop;
+	private boolean isStop=false;
 	private int goal_line;   //目标线路
 
 	private Lane on_Link;    //当前所在的Lane
 
+	private List<Integer> path;
+	private List<FunctionalObject> visited;
+	private FunctionalObject finalCross;
+
 	public Vehicle(Lane lane){
 		this.on_Link = lane ;
+		this.visited = new LinkedList<>();
+		this.path = new LinkedList<>();
 	}
 
 	public void setSpeed(int Cur_Sped , int MAX_Speed){
@@ -31,6 +43,7 @@ public class Vehicle {
 		if (this.Cur_Spd < this.MAX_Speed) {
 			this.Cur_Spd++;
 		}
+
 		int safety_distance = on_Link.getSafetyDistanceByID(this.Cur_Loc);
 		this.Cur_Spd = (safety_distance < this.Cur_Spd) ? (safety_distance) : (this.Cur_Spd);
 		if(this.Cur_Spd < 0){
@@ -40,21 +53,20 @@ public class Vehicle {
 	}
 
 	//终于开始能动了啦
-	public int move_Next_Location() {
+	public void move_Next_Location() {
 
 		FunctionalObject fo = on_Link.getParent() ;
 		if(fo instanceof Link){
 
 			if (this.Cur_Spd + this.Cur_Loc >= on_Link.getLength()) {
 				on_Link.changeToNextContainer(this);
-				return 1 ;
+				return ;
 			}
 			Vehicle nextVehicle = on_Link.getNextVehicle(this);
 			if(nextVehicle != null) {
-				if (this.Cur_Spd > nextVehicle.getCur_Spd()) {
-					if (this.Cur_line != 2 && this.Cur_line != 3) {
+				if (this.Cur_line != 2 && this.Cur_line != 3) {
+					if (this.Cur_Spd > nextVehicle.getCur_Spd() && on_Link.getSafetyDistanceByID(this.Cur_Loc) < 20) {
 						fo.changeLine(this);
-						return 2;
 					}
 				}
 			}
@@ -63,19 +75,15 @@ public class Vehicle {
 //			}
 
 			on_Link.updateVehicle(this);
-			return 3;
 		}else if(fo instanceof Cross){
 			if (this.Cur_Spd + this.Cur_Loc >= on_Link.getLength()) {
 				on_Link.changeToNextContainer(this);
 				this.updateGoalLine();
 				this.checkRoad();
-				return 1 ;
 			}
 			on_Link.updateVehicle(this);
-			return 3 ;
+			return;
 		}
-
-		return 3 ;
 	}
 
 	public void updateGoalLine(){
@@ -131,5 +139,107 @@ public class Vehicle {
 
 	public void setStop(boolean isStop) {
 		this.isStop = isStop;
+	}
+
+	public double getStart_TIME() {
+		return start_TIME;
+	}
+
+	public void setStart_TIME(double start_TIME) {
+		this.start_TIME = start_TIME;
+	}
+
+	public double getEnd_TIME() {
+		return end_TIME;
+	}
+
+	public void setEnd_TIME(double end_TIME) {
+		this.end_TIME = end_TIME;
+	}
+
+	public void findPath(Margin[] margins,int i){
+		int length = margins.length;
+		int index = i % length ;
+		int mapIndex = length-index-1;
+
+		if(mapIndex == index){
+			mapIndex++;
+		}
+
+		Margin input = margins[index] ;
+		Margin output = margins[mapIndex];
+		if(output.getFirstInputLaneIndex() == 0)
+			finalCross = output.getConnectedLink().getLanes()[0].getOutputs().get(0).getParent();
+		else
+			finalCross = output.getConnectedLink().getLanes()[3].getOutputs().get(0).getParent();
+
+		if(input.getFirstInputLaneIndex() == 0 )
+			DFS(transferToLaneArrays(input.getConnectedLink().getLanes()[0]));
+		else
+			DFS(transferToLaneArrays(input.getConnectedLink().getLanes()[3]));
+
+		Collections.reverse(path);
+
+		this.Cur_line = path.get(0);
+		this.goal_line = path.get(0);
+		Lane lane = input.getConnectedLink().getLanes()[path.get(0)];
+		this.on_Link = lane;
+		lane.addVehicle(this);
+	}
+
+	//深度优先搜索
+	public int DFS(Lane[] outputs){
+		if(outputs[0].getOutputs().size() ==0){
+			return 0;
+		}
+
+		if(outputs[0].getOutputs().get(0).getParent() == finalCross){
+
+			if(outputs[0].getOutputs().get(0).getOutputs().get(0).getOutputs().size() == 0){
+				path.add(0);
+			}
+			if(outputs[1].getOutputs().get(0).getOutputs().get(0).getOutputs().size() == 0){
+				path.add(1);
+			}
+			if(outputs[2].getOutputs().get(0).getOutputs().get(0).getOutputs().size() == 0){
+				path.add(2);
+			}
+			return 1;
+		}
+
+		for(int i = 0 ; i < this.visited.size() ;i++){
+			if(outputs[0].getOutputs().get(0).getParent() == visited.get(i)){
+				return 0;
+			}
+		}
+		visited.add(outputs[0].getOutputs().get(0).getParent());
+
+		if(DFS(transferToLaneArrays(outputs[0].getOutputs().get(0).getOutputs().get(0))) == 1){
+			path.add(0);
+			return 1;
+		}
+		if(DFS(transferToLaneArrays(outputs[1].getOutputs().get(0).getOutputs().get(0))) == 1){
+			path.add(1);
+			return 1;
+		}
+		if(DFS(transferToLaneArrays(outputs[2].getOutputs().get(0).getOutputs().get(0))) == 1){
+			path.add(2);
+			return 1;
+		}
+		return 0;
+	}
+
+	public Lane[] transferToLaneArrays(Lane lane){
+		if(lane.getParent() instanceof  Link){
+			Link link = (Link) lane.getParent();
+			Lane[] lanes = link.getLanes();
+			if(lane.getLine() - 3 < 0)
+			{
+				return new Lane[]{lanes[0] , lanes[1], lanes[2]} ;
+			}else{
+				return new Lane[]{lanes[3] , lanes[4], lanes[5]} ;
+			}
+		}
+		return null;
 	}
 }

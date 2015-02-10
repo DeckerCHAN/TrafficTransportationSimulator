@@ -145,7 +145,7 @@ public class EntityLoader {
             Integer start = Integer.valueOf(element.getElementsByTagName("Start").item(0).getTextContent());
             Integer end = Integer.valueOf(element.getElementsByTagName("End").item(0).getTextContent());
             Link recptorLink = this.linkCache.get(linkID);
-            recptorLink.getLanes()[laneID].addBarrier(new Barrier(barrierID,start,end));
+			recptorLink.getLanes()[laneID].addBarrier(new Barrier(barrierID,start,end));
         }
     }
 
