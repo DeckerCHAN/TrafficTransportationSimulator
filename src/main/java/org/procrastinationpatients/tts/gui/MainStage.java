@@ -225,6 +225,7 @@ public class MainStage extends TickStage {
             public void handle(MouseEvent mouseEvent) {
                 Engine.getInstance().resume();
                 if (chartStage != null) {
+                    chartStage.resetTimeCounter();
                     chartStage.getTimeline().play();
                 }
                 getTimeline().play();
