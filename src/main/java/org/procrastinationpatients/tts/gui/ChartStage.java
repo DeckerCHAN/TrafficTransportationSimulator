@@ -60,14 +60,12 @@ public class ChartStage extends TickStage {
         for (int i = 0; i < 3; i++) {
             Double x = (System.currentTimeMillis() - this.startTime)*StaticConfig.CHART_X_SKIP_MULTIPLE / 1000D;
             for (int j = 0; j < targetLanes[i].getVehicles().length; j++) {
-                if (targetLanes[i].getVehicles()[j] != null) {
+                if (targetLanes[i].getVehicles()[j] != null && targetLanes[i].getVehicles()[j].isStop() == false) {
                     Double y = (double) j*StaticConfig.CHART_Y_SKIP_MULTIPLE;
                     DrawUtils.drawBallAtCoordinate(canvases[i].getGraphicsContext2D(), x + StaticConfig.DRAW_BIAS_X, y + StaticConfig.DRAW_BIAS_Y, 3, Color.BLACK);
                 }
 
             }
-
-
         }
     }
 
