@@ -10,7 +10,6 @@ import java.util.List;
 public class Vehicle {
 
 	private int id ; 		  // ID
-	private String color ;    //颜色
 	private int Cur_Spd;      //当前速度
 	private int Cur_Loc;      //当前位置
 	private int Cur_line;     //当前线路
@@ -122,13 +121,10 @@ public class Vehicle {
 
 	public void setGoal_line(int goal_line) { this.goal_line = goal_line; }
 
-	public String getColor() { return color; }
-
-	public void setColor(String color) { this.color = color; }
-
 	public void setOn_Link(Lane lane){
 		this.on_Link = lane ;
 	}
+
 	public Lane getOn_Link(){
 		return this.on_Link ;
 	}
@@ -182,9 +178,11 @@ public class Vehicle {
 
 		this.Cur_line = path.get(0);
 		this.goal_line = path.get(0);
-		Lane lane = input.getConnectedLink().getLanes()[path.get(0)];
+
+		Lane lane = input.getConnectedLink().getLanes()[Cur_line];
 		this.on_Link = lane;
 		lane.addVehicle(this);
+
 	}
 
 	//深度优先搜索
@@ -196,15 +194,18 @@ public class Vehicle {
 		if(outputs[0].getOutputs().get(0).getParent() == finalCross){
 
 			if(outputs[0].getOutputs().get(0).getOutputs().get(0).getOutputs().size() == 0){
-				path.add(0);
+				path.add(outputs[0].getLine());
+				return 1;
 			}
 			if(outputs[1].getOutputs().get(0).getOutputs().get(0).getOutputs().size() == 0){
-				path.add(1);
+				path.add(outputs[1].getLine());
+				return 1;
 			}
 			if(outputs[2].getOutputs().get(0).getOutputs().get(0).getOutputs().size() == 0){
-				path.add(2);
+				path.add(outputs[1].getLine());
+				return 1;
 			}
-			return 1;
+			return 0;
 		}
 
 		for(int i = 0 ; i < this.visited.size() ;i++){
@@ -215,15 +216,15 @@ public class Vehicle {
 		visited.add(outputs[0].getOutputs().get(0).getParent());
 
 		if(DFS(transferToLaneArrays(outputs[0].getOutputs().get(0).getOutputs().get(0))) == 1){
-			path.add(0);
+			path.add(outputs[0].getLine());
 			return 1;
 		}
 		if(DFS(transferToLaneArrays(outputs[1].getOutputs().get(0).getOutputs().get(0))) == 1){
-			path.add(1);
+			path.add(outputs[1].getLine());
 			return 1;
 		}
 		if(DFS(transferToLaneArrays(outputs[2].getOutputs().get(0).getOutputs().get(0))) == 1){
-			path.add(2);
+			path.add(outputs[2].getLine());
 			return 1;
 		}
 		return 0;
