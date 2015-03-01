@@ -1,5 +1,6 @@
 package org.procrastinationpatients.tts.entities;
 
+import org.procrastinationpatients.tts.source.StaticConfig;
 import org.procrastinationpatients.tts.utils.RandomUtils;
 
 import java.util.Collections;
@@ -13,15 +14,17 @@ public class Vehicle {
 	private int Cur_Spd;      //当前速度
 	private int Cur_Loc;      //当前位置
 	private int Cur_line;     //当前线路
+	private int goal_line;   //目标线路
 	private int MAX_Speed;    //最大速度
+	private Lane on_Link;    //当前所在的Lane
+
 	private double start_TIME;
 	private double end_TIME;
 
-	private boolean isStop=false;
-	private int goal_line;   //目标线路
+	private boolean isStop = false; 	//障碍物
 
-	private Lane on_Link;    //当前所在的Lane
-
+	//寻路
+	private int pathIndex = 0;
 	private List<Integer> path;
 	private List<FunctionalObject> visited;
 	private FunctionalObject finalCross;
@@ -57,28 +60,39 @@ public class Vehicle {
 		FunctionalObject fo = on_Link.getParent() ;
 		if(fo instanceof Link){
 
+			//换路
 			if (this.Cur_Spd + this.Cur_Loc >= on_Link.getLength()) {
+				this.checkRoad();
 				on_Link.changeToNextContainer(this);
+				this.updateGoalLine();
 				return ;
 			}
-			Vehicle nextVehicle = on_Link.getNextVehicle(this);
-			if(nextVehicle != null) {
-				if (this.Cur_line != 2 && this.Cur_line != 3) {
-					if (this.Cur_Spd > nextVehicle.getCur_Spd() && on_Link.getSafetyDistanceByID(this.Cur_Loc) < 20) {
-						fo.changeLine(this);
+
+			//安全距离内检查
+			if(this.Cur_Spd + this.Cur_Loc + StaticConfig.CHECK_POSITI0N >= on_Link.getLength()){
+				if(this.goal_line != -1)
+					this.checkRoad();
+			}else{
+				Vehicle nextVehicle = on_Link.getNextVehicle(this);
+				if(nextVehicle != null) {
+					if (this.Cur_line != 2 && this.Cur_line != 3) {
+						if (this.Cur_Spd > nextVehicle.getCur_Spd() && on_Link.getSafetyDistanceByID(this.Cur_Loc) < StaticConfig.SAFETY_LENGTH) {
+							fo.changeLine(this);
+						}
 					}
 				}
+				if(this.Cur_Spd == 0){
+					fo.changeLine(this) ;
+				}
 			}
-//			if(this.Cur_Spd == 0){
-//				fo.changeLine(this) ;
-//			}
 
+			//直行
 			on_Link.updateVehicle(this);
 		}else if(fo instanceof Cross){
 			if (this.Cur_Spd + this.Cur_Loc >= on_Link.getLength()) {
+				this.checkRoad();
 				on_Link.changeToNextContainer(this);
 				this.updateGoalLine();
-				this.checkRoad();
 			}
 			on_Link.updateVehicle(this);
 			return;
@@ -86,10 +100,15 @@ public class Vehicle {
 	}
 
 	public void updateGoalLine(){
-		this.setGoal_line(RandomUtils.getNewLine(this.Cur_line)); ;
+		int line = this.getNextGoalLane();
+		if(this.getCur_line() > 2)
+			line = line + 3;
+
+		this.setGoal_line(line);
 	}
 
 	public boolean isOnRoad(){
+
 		if(this.Cur_line == this.goal_line)
 			return true ;
 		else
@@ -98,7 +117,8 @@ public class Vehicle {
 
 	public void checkRoad(){
 		if(!isOnRoad())
-			on_Link.getParent().toGoalLine(this);
+			if(on_Link != null)
+				on_Link.getParent().toGoalLine(this);
 	}
 
 	public int getId() { return id; }
@@ -141,6 +161,8 @@ public class Vehicle {
 		return start_TIME;
 	}
 
+	public int getMAX_Speed() { return MAX_Speed; }
+
 	public void setStart_TIME(double start_TIME) {
 		this.start_TIME = start_TIME;
 	}
@@ -153,17 +175,26 @@ public class Vehicle {
 		this.end_TIME = end_TIME;
 	}
 
-	public void findPath(Margin[] margins,int i){
+	//没事就没看这段了
+	public void findPath(Margin[] margins,int inputNum , int outputNum){
 		int length = margins.length;
-		int index = i % length ;
-		int mapIndex = length-index-1;
+		Margin input, output;
 
-		if(mapIndex == index){
-			mapIndex++;
+		if(outputNum == -1){
+
+			int index = inputNum % length ;
+			int mapIndex = length-index-1;
+
+			if(mapIndex == index){
+				mapIndex++;
+			}
+			input = margins[index] ;
+			output = margins[mapIndex];
+		}else{
+			input = margins[inputNum];
+			output = margins[outputNum];
 		}
 
-		Margin input = margins[index] ;
-		Margin output = margins[mapIndex];
 		if(output.getFirstInputLaneIndex() == 0)
 			finalCross = output.getConnectedLink().getLanes()[0].getOutputs().get(0).getParent();
 		else
@@ -176,33 +207,42 @@ public class Vehicle {
 
 		Collections.reverse(path);
 
-		this.Cur_line = path.get(0);
-		this.goal_line = path.get(0);
+		int firstLine = path.get(pathIndex);
 
-		Lane lane = input.getConnectedLink().getLanes()[Cur_line];
+		if(pathIndex + 1 < path.size())
+			pathIndex++;
+
+		Lane lane;
+		if(input.getFirstInputLaneIndex() == 0){
+			lane = input.getConnectedLink().getLanes()[firstLine];
+		}else{
+			lane = input.getConnectedLink().getLanes()[firstLine + 3];
+			firstLine = 5 - firstLine ;
+		}
+		this.Cur_line = firstLine;
+		this.goal_line = firstLine;
 		this.on_Link = lane;
 		lane.addVehicle(this);
-
 	}
 
 	//深度优先搜索
 	public int DFS(Lane[] outputs){
+
 		if(outputs[0].getOutputs().size() ==0){
 			return 0;
 		}
 
 		if(outputs[0].getOutputs().get(0).getParent() == finalCross){
-
 			if(outputs[0].getOutputs().get(0).getOutputs().get(0).getOutputs().size() == 0){
-				path.add(outputs[0].getLine());
+				path.add(0);
 				return 1;
 			}
 			if(outputs[1].getOutputs().get(0).getOutputs().get(0).getOutputs().size() == 0){
-				path.add(outputs[1].getLine());
+				path.add(1);
 				return 1;
 			}
 			if(outputs[2].getOutputs().get(0).getOutputs().get(0).getOutputs().size() == 0){
-				path.add(outputs[1].getLine());
+				path.add(2);
 				return 1;
 			}
 			return 0;
@@ -216,15 +256,15 @@ public class Vehicle {
 		visited.add(outputs[0].getOutputs().get(0).getParent());
 
 		if(DFS(transferToLaneArrays(outputs[0].getOutputs().get(0).getOutputs().get(0))) == 1){
-			path.add(outputs[0].getLine());
+			path.add(0);
 			return 1;
 		}
 		if(DFS(transferToLaneArrays(outputs[1].getOutputs().get(0).getOutputs().get(0))) == 1){
-			path.add(outputs[1].getLine());
+			path.add(1);
 			return 1;
 		}
 		if(DFS(transferToLaneArrays(outputs[2].getOutputs().get(0).getOutputs().get(0))) == 1){
-			path.add(outputs[2].getLine());
+			path.add(2);
 			return 1;
 		}
 		return 0;
@@ -243,4 +283,15 @@ public class Vehicle {
 		}
 		return null;
 	}
+
+	public Integer getNextGoalLane(){
+		if(pathIndex < path.size()){
+			if(pathIndex + 1 < path.size()){
+				pathIndex++;
+			}
+			return path.get(pathIndex);
+		}else
+			return -1;
+	}
+
 }

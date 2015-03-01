@@ -8,7 +8,7 @@ public class StaticConfig {
     //Main draw configs
     public static final Double STAGE_SIZE_WIDTH = 1024D;
     public static final Double STAGE_SIZE_HEIGHT = 768D;
-    public static final Integer TICK_INTERVAL = 200;
+    public static final Integer TICK_INTERVAL = 150;
     public static final Double LANE_POINT_SKIP_DISTANCE = 1D;
     public static final Boolean DRAW_PATH = false;
     public static final Boolean OUTPUT_DRAW_TIME = false;
@@ -23,4 +23,10 @@ public class StaticConfig {
     public static final Double CHART_Y_SKIP_MULTIPLE = 0.2D;
     public static final Double DRAW_BIAS_X=45D;
     public static final Double DRAW_BIAS_Y=40D;
+
+	//Move configs
+	public static final Integer MOVE_TIMESLOT = 150;
+	public static final Integer PRO_TIMESLOT = 150;
+	public static final Integer SAFETY_LENGTH = 100;
+	public static final Integer CHECK_POSITI0N = 100;
 }

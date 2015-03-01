@@ -1,6 +1,7 @@
 package org.procrastinationpatients.tts.entities;
 
 import org.procrastinationpatients.tts.core.Engine;
+import org.procrastinationpatients.tts.source.StaticConfig;
 import org.procrastinationpatients.tts.utils.RandomUtils;
 import org.procrastinationpatients.tts.utils.VehicleList;
 
@@ -13,6 +14,7 @@ public class Produce implements Runnable{
 
 	public Produce(){
 		this.margins = Engine.getInstance().getMargins() ;
+		sortMargin();
 	}
 
 	@Override
@@ -31,7 +33,7 @@ public class Produce implements Runnable{
 					produceVehicless();
 					int time = (int) (Production.getTime_to_Generation() * 100);
 					Movement.flag = true ;
-					Thread.sleep(time + 100);
+					Thread.sleep(time + StaticConfig.PRO_TIMESLOT);
 				}
 			}
 
@@ -68,12 +70,28 @@ public class Produce implements Runnable{
 	public void produceVehicless(){
 		Vehicle vehicle = new Vehicle(null);
 		vehicle.setId(i);
-		vehicle.setSpeed(1,RandomUtils.getRandomSped());
+		vehicle.setSpeed(1, RandomUtils.getRandomSped());
 		vehicle.setCur_Loc(0);
-		vehicle.findPath(margins,i);
+		vehicle.findPath(margins, i , -1);
 		vehicle.setStart_TIME(System.currentTimeMillis());
 		allVehicle.add(vehicle);
 		i++;
+	}
+
+	public void sortMargin(){
+		Margin temp;
+		for(int i = margins.length-1 ; i > 0 ; --i)
+		{
+			for(int j = 0 ; j < i ; ++j)
+			{
+				if(margins[j+1].getId() < margins[j].getId())
+				{
+					temp = margins[j];
+					margins[j] = margins[j+1];
+					margins[j+1] = temp;
+				}
+			}
+		}
 	}
 
 	public VehicleList getAllVehicle(){

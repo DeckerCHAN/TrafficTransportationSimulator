@@ -25,12 +25,6 @@ public class RandomUtils {
 		return random.nextInt(i) ;
 	}
 
-	public static int getRandomSped(){ return random.nextInt(5) + 5 ;}
+	public static int getRandomSped(){ return random.nextInt(4) + 2 ;}
 
-	public static int getNewLine(int index){
-		if( index - 2 <= 0 )
-			return random.nextInt(3) ;
-		else
-			return random.nextInt(3) + 3 ;
-	}
 }

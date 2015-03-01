@@ -1,6 +1,7 @@
 package org.procrastinationpatients.tts.entities;
 
 import org.procrastinationpatients.tts.core.Engine;
+import org.procrastinationpatients.tts.source.StaticConfig;
 import org.procrastinationpatients.tts.utils.VehicleList;
 
 import java.util.LinkedList;
@@ -39,7 +40,7 @@ public class Movement implements Runnable {
 					}
 					flag = true;
 				}
-				Thread.sleep(200);
+				Thread.sleep(StaticConfig.MOVE_TIMESLOT);
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();

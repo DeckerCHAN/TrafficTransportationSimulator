@@ -87,13 +87,15 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
     public int changeLine(Vehicle vehicle) {
         int v_line = vehicle.getCur_line();
         int v_location = vehicle.getCur_Loc();
+
         int new_line = change_Line_NUMBER(v_line);
         if (this.lanes[new_line].getVehicles()[v_location] == null) {
+
             this.lanes[v_line].removeVehicle(vehicle);
             vehicle.setCur_Loc(v_location);
             vehicle.setCur_line(new_line);
             vehicle.setOn_Link(this.lanes[new_line]);
-            this.lanes[new_line].addChangeLineVehicle(vehicle);
+            this.lanes[new_line].addVehicle(vehicle);
             return new_line;
         }
         return 0;
@@ -109,7 +111,7 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
             lanes[v_line].removeVehicle(vehicle);
             vehicle.setCur_line(v_goal_line);
             vehicle.setOn_Link(lanes[v_goal_line]);
-            lanes[v_goal_line].addChangeLineVehicle(vehicle);
+            lanes[v_goal_line].addVehicle(vehicle);
         }
     }
 
@@ -155,9 +157,5 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
                     ), Color.GREEN, String.format("Drew:%s", pointCount), 11D
             );
         }
-    }
-
-    public LinkedList<Vehicle> vehiclesData(int i) {
-        return lanes[i].getAllVehicles();
     }
 }
