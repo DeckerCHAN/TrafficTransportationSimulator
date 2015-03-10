@@ -1,5 +1,6 @@
 package org.procrastinationpatients.tts.entities;
 
+import com.sun.javafx.binding.StringFormatter;
 import org.procrastinationpatients.tts.core.Engine;
 import org.procrastinationpatients.tts.source.StaticConfig;
 import org.procrastinationpatients.tts.utils.VehicleList;
@@ -28,13 +29,13 @@ public class Movement implements Runnable {
 						Vehicle vehicle = vehicles.getVehicles()[i];
 						if (vehicle != null) {
 							if (vehicle.getOn_Link() == null) {
+
 //								showVehicles.add(vehicle);
+								System.out.println(new String().format("Vehicle ID: %d, from %d to %d, Max speed %d, use time %f", vehicle.getId(), vehicle.getInputNum(), vehicle.getOutputNum(), vehicle.getMAX_Speed(), vehicle.getEnd_TIME() - vehicle.getStart_TIME()));
 								vehicles.remove(i);
 							}else{
 								vehicle.Speed_From_VDR();
-//								System.out.println(vehicle.getId() + "-->" + vehicle.getCur_line() + "、" + vehicle.getCur_Loc() + "、" + vehicle.getCur_Spd());
 								vehicle.move_Next_Location();
-//								System.out.println(vehicle.getId() + "-->" + vehicle.getCur_line() + "、" + vehicle.getCur_Loc() + "、" + vehicle.getCur_Spd());
 							}
 						}
 					}

@@ -18,6 +18,9 @@ public class Vehicle {
 	private int MAX_Speed;    //最大速度
 	private Lane on_Link;    //当前所在的Lane
 
+	private int inputNum;
+	private int outputNum;
+
 	private double start_TIME;
 	private double end_TIME;
 
@@ -121,6 +124,14 @@ public class Vehicle {
 				on_Link.getParent().toGoalLine(this);
 	}
 
+	public int getInputNum() {
+		return inputNum;
+	}
+
+	public int getOutputNum() {
+		return outputNum;
+	}
+
 	public int getId() { return id; }
 
 	public void setId(int id) { this.id = id; }
@@ -222,6 +233,8 @@ public class Vehicle {
 		this.Cur_line = firstLine;
 		this.goal_line = firstLine;
 		this.on_Link = lane;
+		this.inputNum = input.getId();
+		this.outputNum = output.getId();
 		lane.addVehicle(this);
 	}
 

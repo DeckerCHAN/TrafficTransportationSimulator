@@ -14,7 +14,7 @@ public class StaticConfig {
     public static final Boolean OUTPUT_DRAW_TIME = false;
 
     //Chart configs
-    public static final Integer INSPECT_LINK=3;
+    public static final Integer INSPECT_LINK=14;
     public static final Integer INSPECT_LANE_GROUP=0;
 
     public static final Integer INSPECT_TIME=45;
