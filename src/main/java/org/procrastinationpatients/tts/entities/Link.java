@@ -63,22 +63,22 @@ public abstract class Link extends IdentifiableObject implements Visible, Functi
     public int change_Line_NUMBER(int v_line) {
         switch (v_line) {
             case 0:
-                v_line = 1;
+                v_line = 0;
                 break;
             case 1:
-                v_line = 2;
+                v_line = 0;
                 break;
             case 2:
-                v_line = 2;
+                v_line = 1;
                 break;
             case 3:
-                v_line = 3;
+                v_line = 4;
                 break;
             case 4:
-                v_line = 3;
+                v_line = 4;
                 break;
             case 5:
-                v_line = 4;
+                v_line = 5;
         }
         return v_line;
     }

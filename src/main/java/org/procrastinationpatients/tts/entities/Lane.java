@@ -150,12 +150,12 @@ public class Lane {
 			Lane outputLane ;
 			if(outputs.size() == 3){
 				if(vehicle.getMAX_Speed() == 2){
-					outputLane = outputs.get(2);
+					outputLane = outputs.get(0);
 				}
 				else if(vehicle.getMAX_Speed() > 2 && vehicle.getMAX_Speed() < 5){
 					outputLane = outputs.get(1);
 				}else{
-					outputLane = outputs.get(0);
+					outputLane = outputs.get(2);
 				}
 			}else{
 				outputLane = outputs.get(0);

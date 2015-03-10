@@ -28,40 +28,41 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
 
     static {
         laneVisualLength = new Double[7];
-        laneVisualLength[0] = Math.sqrt(Math.pow(35D, 2) + Math.pow(35D, 2));
-        laneVisualLength[1] = Math.sqrt(Math.pow(35D, 2) + Math.pow(45D, 2));
-        laneVisualLength[2] = Math.sqrt(Math.pow(35D, 2) + Math.pow(55D, 2));
+        laneVisualLength[6] = Math.sqrt(Math.pow(35D, 2) + Math.pow(35D, 2));
+        laneVisualLength[5] = Math.sqrt(Math.pow(35D, 2) + Math.pow(45D, 2));
+        laneVisualLength[4] = Math.sqrt(Math.pow(35D, 2) + Math.pow(55D, 2));
         laneVisualLength[3] = 120D;
-        laneVisualLength[4] = Math.sqrt(Math.pow(65D, 2) + Math.pow(65D, 2));
-        laneVisualLength[5] = Math.sqrt(Math.pow(65D, 2) + Math.pow(75D, 2));
-        laneVisualLength[6] = Math.sqrt(Math.pow(65D, 2) + Math.pow(85D, 2));
+        laneVisualLength[2] = Math.sqrt(Math.pow(65D, 2) + Math.pow(65D, 2));
+        laneVisualLength[1] = Math.sqrt(Math.pow(65D, 2) + Math.pow(75D, 2));
+        laneVisualLength[0] = Math.sqrt(Math.pow(65D, 2) + Math.pow(85D, 2));
 
         progressA = new Double[7];
         progressB = new Double[7];
 
-        progressA[0] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (35D / laneVisualLength[0]);
-        progressB[0] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (35D / laneVisualLength[0]);
 
-        progressA[1] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (35D / laneVisualLength[1]);
-        progressB[1] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (45D / laneVisualLength[1]);
+		progressA[0] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (65D / laneVisualLength[0]);
+		progressB[0] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (85D / laneVisualLength[0]);
 
-        progressA[2] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (35D / laneVisualLength[2]);
-        progressB[2] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (55D / laneVisualLength[2]);
+		progressA[1] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (65D / laneVisualLength[1]);
+		progressB[1] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (75D / laneVisualLength[1]);
+
+		progressA[2] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (65D / laneVisualLength[2]);
+		progressB[2] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (65D / laneVisualLength[2]);
 
         progressA[3] = 0D;
         progressB[3] = StaticConfig.LANE_POINT_SKIP_DISTANCE;
 
-        progressA[4] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (65D / laneVisualLength[4]);
-        progressB[4] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (65D / laneVisualLength[4]);
+		progressA[4] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (35D / laneVisualLength[3]);
+		progressB[4] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (55D / laneVisualLength[3]);
 
-        progressA[5] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (65D / laneVisualLength[5]);
-        progressB[5] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (75D / laneVisualLength[5]);
+		progressA[5] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (35D / laneVisualLength[4]);
+		progressB[5] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (45D / laneVisualLength[4]);
 
-        progressA[6] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (65D / laneVisualLength[6]);
-        progressB[6] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (85D / laneVisualLength[6]);
+		progressA[6] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (35D / laneVisualLength[5]);
+		progressB[6] = StaticConfig.LANE_POINT_SKIP_DISTANCE * (35D / laneVisualLength[5]);
 
-		northTrafficLights = new TrafficLight[]{new TrafficLight(1,true), new TrafficLight(1,false), new TrafficLight(1,false), new TrafficLight(1,true), new TrafficLight(1,true), new TrafficLight(1,true)};
-		westTrafficLights = new TrafficLight[]{new TrafficLight(1,true), new TrafficLight(0,false), new TrafficLight(0,false), new TrafficLight(1,true), new TrafficLight(1,true), new TrafficLight(1,true)};
+		northTrafficLights = new TrafficLight[]{new TrafficLight(1,true), new TrafficLight(1,true), new TrafficLight(1,true), new TrafficLight(1,true), new TrafficLight(0,false), new TrafficLight(0,false)};
+		westTrafficLights = new TrafficLight[]{new TrafficLight(1,true), new TrafficLight(1,true), new TrafficLight(1,true), new TrafficLight(1,true), new TrafficLight(1,false), new TrafficLight(1,false)};
 		eastTrafficLights = new TrafficLight[6];
 		southTrafficLights = new TrafficLight[6];
 		for (int i = 0; i < 6; i++) {
@@ -74,10 +75,10 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
         super(id);
         this.position = position;
 
-        this.northLanes = new Lane[]{new Lane(this,0,northTrafficLights[0]), new Lane(this,1,northTrafficLights[0]), new Lane(this,2,northTrafficLights[0]), new Lane(this,3,northTrafficLights[1]), new Lane(this,4,northTrafficLights[2]), new Lane(this,5,northTrafficLights[2]), new Lane(this,6,northTrafficLights[2])};
-        this.southLanes = new Lane[]{new Lane(this,0,southTrafficLights[5]), new Lane(this,1,southTrafficLights[5]), new Lane(this,2,southTrafficLights[5]), new Lane(this,3,southTrafficLights[4]), new Lane(this,4,southTrafficLights[3]), new Lane(this,5,southTrafficLights[3]), new Lane(this,6,southTrafficLights[3])};
-        this.eastLanes = new Lane[]{new Lane(this,0,eastTrafficLights[5]), new Lane(this,1,eastTrafficLights[5]), new Lane(this,2,eastTrafficLights[5]), new Lane(this,3,eastTrafficLights[4]), new Lane(this,4,eastTrafficLights[3]), new Lane(this,5,eastTrafficLights[3]), new Lane(this,6,eastTrafficLights[3])};
-        this.westLanes = new Lane[]{new Lane(this,0,westTrafficLights[0]), new Lane(this,1,westTrafficLights[0]), new Lane(this,2,westTrafficLights[1]), new Lane(this,3,westTrafficLights[1]), new Lane(this,4,westTrafficLights[2]), new Lane(this,5,westTrafficLights[2]), new Lane(this,6,westTrafficLights[2])};
+        this.northLanes = new Lane[]{new Lane(this,0,northTrafficLights[3]), new Lane(this,1,northTrafficLights[3]), new Lane(this,2,northTrafficLights[3]), new Lane(this,3,northTrafficLights[4]), new Lane(this,4,northTrafficLights[4]), new Lane(this,5,northTrafficLights[5]), new Lane(this,6,northTrafficLights[5])};
+        this.southLanes = new Lane[]{new Lane(this,0,southTrafficLights[2]), new Lane(this,1,southTrafficLights[2]), new Lane(this,2,southTrafficLights[2]), new Lane(this,3,southTrafficLights[1]), new Lane(this,4,southTrafficLights[0]), new Lane(this,5,southTrafficLights[0]), new Lane(this,6,southTrafficLights[0])};
+        this.eastLanes = new Lane[]{new Lane(this,0,eastTrafficLights[2]), new Lane(this,1,eastTrafficLights[2]), new Lane(this,2,eastTrafficLights[2]), new Lane(this,3,eastTrafficLights[1]), new Lane(this,4,eastTrafficLights[0]), new Lane(this,5,eastTrafficLights[0]), new Lane(this,6,eastTrafficLights[0])};
+        this.westLanes = new Lane[]{new Lane(this,0,westTrafficLights[3]), new Lane(this,1,westTrafficLights[3]), new Lane(this,2,westTrafficLights[3]), new Lane(this,3,westTrafficLights[4]), new Lane(this,4,westTrafficLights[5]), new Lane(this,5,westTrafficLights[5]), new Lane(this,6,westTrafficLights[5])};
 
         this.refreshLaneLength();
 
@@ -193,7 +194,7 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
         Point2D m, n, o;
 
         //south dir
-        m = new Point2D(this.getPosition().getX() + 25D, this.getPosition().getY() + 60D);
+        m = new Point2D(this.getPosition().getX() - 5D, this.getPosition().getY() + 60D);
 
         //  this.getSouthLanes()[0].getVehiclePositions()[0] =  new Point2D(this.getPosition().getX() + 15D, this.getPosition().getY() + 60D);
         for (int i = 0; i < 3; i++) {
@@ -201,11 +202,11 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
                 this.getSouthLanes()[i].getVehiclePositions()[j] = new Point2D(m.getX() + j * progressA[i], m.getY() - j * progressB[i]);
             }
         }
-        n = new Point2D(this.getPosition().getX() + 15D, this.getPosition().getY() + 60D);
+        n = new Point2D(this.getPosition().getX() - 15D, this.getPosition().getY() + 60D);
         for (int j = 0; j < this.getSouthLanes()[3].getVehiclePositions().length; j++) {
             this.getSouthLanes()[3].getVehiclePositions()[j] = new Point2D(n.getX() + j * progressA[3], n.getY() - j * progressB[3]);
         }
-        o = new Point2D(this.getPosition().getX() + 5D, this.getPosition().getY() + 60D);
+        o = new Point2D(this.getPosition().getX() - 25D, this.getPosition().getY() + 60D);
         for (int i = 4; i < 7; i++) {
             for (int j = 0; j < this.getSouthLanes()[i].getVehiclePositions().length; j++) {
                 this.getSouthLanes()[i].getVehiclePositions()[j] = new Point2D(o.getX() - j * progressA[i], o.getY() - j * progressB[i]);
@@ -213,18 +214,18 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
         }
 
         //north dir
-        m = new Point2D(this.getPosition().getX() - 25D, this.getPosition().getY() - 60D);
+        m = new Point2D(this.getPosition().getX() + 5D, this.getPosition().getY() - 60D);
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < this.getNorthLanes()[i].getVehiclePositions().length; j++) {
                 this.getNorthLanes()[i].getVehiclePositions()[j] = new Point2D(m.getX() - j * progressA[i], m.getY() + j * progressB[i]);
             }
         }
-        n = new Point2D(this.getPosition().getX() - 15D, this.getPosition().getY() - 60D);
+        n = new Point2D(this.getPosition().getX() + 15D, this.getPosition().getY() - 60D);
         for (int j = 0; j < this.getNorthLanes()[3].getVehiclePositions().length; j++) {
             this.getNorthLanes()[3].getVehiclePositions()[j] = new Point2D(n.getX() + j * progressA[3], n.getY() + j * progressB[3]);
         }
-        o = new Point2D(this.getPosition().getX() - 5D, this.getPosition().getY() - 60D);
+        o = new Point2D(this.getPosition().getX() + 25D, this.getPosition().getY() - 60D);
         for (int i = 4; i < 7; i++) {
             for (int j = 0; j < this.getNorthLanes()[i].getVehiclePositions().length; j++) {
                 this.getNorthLanes()[i].getVehiclePositions()[j] = new Point2D(o.getX() + j * progressA[i], o.getY() + j * progressB[i]);
@@ -232,18 +233,18 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
         }
 
         //west dir
-        m = new Point2D(this.getPosition().getX() - 60D, this.getPosition().getY() + 25D);
+        m = new Point2D(this.getPosition().getX() - 60D, this.getPosition().getY() - 5D);
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < this.getWestLanes()[i].getVehiclePositions().length; j++) {
                 this.getWestLanes()[i].getVehiclePositions()[j] = new Point2D(m.getX() + j * progressB[i], m.getY() + j * progressA[i]);
             }
         }
-        n = new Point2D(this.getPosition().getX() - 60D, this.getPosition().getY() + 15D);
+        n = new Point2D(this.getPosition().getX() - 60D, this.getPosition().getY() - 15D);
         for (int j = 0; j < this.getWestLanes()[3].getVehiclePositions().length; j++) {
             this.getWestLanes()[3].getVehiclePositions()[j] = new Point2D(n.getX() + j * progressB[3], n.getY() + j * progressA[3]);
         }
-        o = new Point2D(this.getPosition().getX() - 60D, this.getPosition().getY() + 5D);
+        o = new Point2D(this.getPosition().getX() - 60D, this.getPosition().getY() - 25D);
         for (int i = 4; i < 7; i++) {
             for (int j = 0; j < this.getWestLanes()[i].getVehiclePositions().length; j++) {
                 this.getWestLanes()[i].getVehiclePositions()[j] = new Point2D(o.getX() + j * progressB[i], o.getY() - j * progressA[i]);
@@ -251,18 +252,18 @@ public class Cross extends IdentifiableObject implements Visible, Dot, Functiona
         }
 
         //east dir
-        m = new Point2D(this.getPosition().getX() + 60D, this.getPosition().getY() - 25D);
+        m = new Point2D(this.getPosition().getX() + 60D, this.getPosition().getY() + 5D);
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < this.getEastLanes()[i].getVehiclePositions().length; j++) {
                 this.getEastLanes()[i].getVehiclePositions()[j] = new Point2D(m.getX() - j * progressB[i], m.getY() - j * progressA[i]);
             }
         }
-        n = new Point2D(this.getPosition().getX() + 60D, this.getPosition().getY() - 15D);
+        n = new Point2D(this.getPosition().getX() + 60D, this.getPosition().getY() + 15D);
         for (int j = 0; j < this.getEastLanes()[3].getVehiclePositions().length; j++) {
             this.getEastLanes()[3].getVehiclePositions()[j] = new Point2D(n.getX() - j * progressB[3], n.getY() + j * progressA[3]);
         }
-        o = new Point2D(this.getPosition().getX() + 60D, this.getPosition().getY() - 5D);
+        o = new Point2D(this.getPosition().getX() + 60D, this.getPosition().getY() + 25D);
         for (int i = 4; i < 7; i++) {
             for (int j = 0; j < this.getEastLanes()[i].getVehiclePositions().length; j++) {
                 this.getEastLanes()[i].getVehiclePositions()[j] = new Point2D(o.getX() - j * progressB[i], o.getY() + j * progressA[i]);

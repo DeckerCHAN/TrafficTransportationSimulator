@@ -69,11 +69,11 @@ public class EntityLoader {
             Margin margin = new Margin(marginID, new Point2D(positionX, positionY));
             switch (type) {
                 case 'A': {
-                    margin.setFirstInputLaneIndex(0);
+                    margin.setFirstInputLaneIndex(3);
                     break;
                 }
                 case 'B': {
-                    margin.setFirstInputLaneIndex(3);
+                    margin.setFirstInputLaneIndex(0);
                     break;
                 }
                 default:
@@ -152,51 +152,51 @@ public class EntityLoader {
     private void connectLanes() {
         for (Cross cross : this.crossCache.values()) {
             //North input
-            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[0], cross.getNorthLanes()[0], cross.getWestStreet().getLanes()[5]);
-            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[0], cross.getNorthLanes()[1], cross.getWestStreet().getLanes()[4]);
-            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[0], cross.getNorthLanes()[2], cross.getWestStreet().getLanes()[3]);
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[3], cross.getNorthLanes()[0], cross.getWestStreet().getLanes()[2]);
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[3], cross.getNorthLanes()[1], cross.getWestStreet().getLanes()[1]);
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[3], cross.getNorthLanes()[2], cross.getWestStreet().getLanes()[0]);
 
-            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[1], cross.getNorthLanes()[3], cross.getSouthRoad().getLanes()[1]);
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[4], cross.getNorthLanes()[3], cross.getSouthRoad().getLanes()[4]);
 
-            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[2], cross.getNorthLanes()[4], cross.getEastStreet().getLanes()[2]);
-            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[2], cross.getNorthLanes()[5], cross.getEastStreet().getLanes()[1]);
-            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[2], cross.getNorthLanes()[6], cross.getEastStreet().getLanes()[0]);
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[5], cross.getNorthLanes()[4], cross.getEastStreet().getLanes()[3]);
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[5], cross.getNorthLanes()[5], cross.getEastStreet().getLanes()[4]);
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[5], cross.getNorthLanes()[6], cross.getEastStreet().getLanes()[5]);
 
 
             //East input
-            LaneUtils.connectLane(cross.getEastStreet().getLanes()[5], cross.getEastLanes()[0], cross.getNorthRoad().getLanes()[5]);
-            LaneUtils.connectLane(cross.getEastStreet().getLanes()[5], cross.getEastLanes()[1], cross.getNorthRoad().getLanes()[4]);
-            LaneUtils.connectLane(cross.getEastStreet().getLanes()[5], cross.getEastLanes()[2], cross.getNorthRoad().getLanes()[3]);
+            LaneUtils.connectLane(cross.getEastStreet().getLanes()[2], cross.getEastLanes()[0], cross.getNorthRoad().getLanes()[2]);
+            LaneUtils.connectLane(cross.getEastStreet().getLanes()[2], cross.getEastLanes()[1], cross.getNorthRoad().getLanes()[1]);
+            LaneUtils.connectLane(cross.getEastStreet().getLanes()[2], cross.getEastLanes()[2], cross.getNorthRoad().getLanes()[0]);
 
-            LaneUtils.connectLane(cross.getEastStreet().getLanes()[4], cross.getEastLanes()[3], cross.getWestStreet().getLanes()[4]);
+            LaneUtils.connectLane(cross.getEastStreet().getLanes()[1], cross.getEastLanes()[3], cross.getWestStreet().getLanes()[1]);
 
-            LaneUtils.connectLane(cross.getEastStreet().getLanes()[3], cross.getEastLanes()[4], cross.getSouthRoad().getLanes()[2]);
-            LaneUtils.connectLane(cross.getEastStreet().getLanes()[3], cross.getEastLanes()[5], cross.getSouthRoad().getLanes()[1]);
-            LaneUtils.connectLane(cross.getEastStreet().getLanes()[3], cross.getEastLanes()[6], cross.getSouthRoad().getLanes()[0]);
+            LaneUtils.connectLane(cross.getEastStreet().getLanes()[0], cross.getEastLanes()[4], cross.getSouthRoad().getLanes()[3]);
+            LaneUtils.connectLane(cross.getEastStreet().getLanes()[0], cross.getEastLanes()[5], cross.getSouthRoad().getLanes()[4]);
+            LaneUtils.connectLane(cross.getEastStreet().getLanes()[0], cross.getEastLanes()[6], cross.getSouthRoad().getLanes()[5]);
 
 
             //South input
-            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[5], cross.getSouthLanes()[0], cross.getEastStreet().getLanes()[0]);
-            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[5], cross.getSouthLanes()[1], cross.getEastStreet().getLanes()[1]);
-            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[5], cross.getSouthLanes()[2], cross.getEastStreet().getLanes()[2]);
+            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[2], cross.getSouthLanes()[0], cross.getEastStreet().getLanes()[3]);
+            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[2], cross.getSouthLanes()[1], cross.getEastStreet().getLanes()[4]);
+            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[2], cross.getSouthLanes()[2], cross.getEastStreet().getLanes()[5]);
 
-            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[4], cross.getSouthLanes()[3], cross.getNorthRoad().getLanes()[4]);
+            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[1], cross.getSouthLanes()[3], cross.getNorthRoad().getLanes()[1]);
 
-            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[3], cross.getSouthLanes()[4], cross.getWestStreet().getLanes()[3]);
-            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[3], cross.getSouthLanes()[5], cross.getWestStreet().getLanes()[4]);
-            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[3], cross.getSouthLanes()[6], cross.getWestStreet().getLanes()[5]);
+            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[0], cross.getSouthLanes()[4], cross.getWestStreet().getLanes()[2]);
+            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[0], cross.getSouthLanes()[5], cross.getWestStreet().getLanes()[1]);
+            LaneUtils.connectLane(cross.getSouthRoad().getLanes()[0], cross.getSouthLanes()[6], cross.getWestStreet().getLanes()[0]);
 
 
             //West input
-            LaneUtils.connectLane(cross.getWestStreet().getLanes()[0], cross.getWestLanes()[0], cross.getSouthRoad().getLanes()[0]);
-            LaneUtils.connectLane(cross.getWestStreet().getLanes()[0], cross.getWestLanes()[1], cross.getSouthRoad().getLanes()[1]);
-            LaneUtils.connectLane(cross.getWestStreet().getLanes()[0], cross.getWestLanes()[2], cross.getSouthRoad().getLanes()[2]);
+            LaneUtils.connectLane(cross.getWestStreet().getLanes()[3], cross.getWestLanes()[0], cross.getSouthRoad().getLanes()[3]);
+            LaneUtils.connectLane(cross.getWestStreet().getLanes()[3], cross.getWestLanes()[1], cross.getSouthRoad().getLanes()[4]);
+            LaneUtils.connectLane(cross.getWestStreet().getLanes()[3], cross.getWestLanes()[2], cross.getSouthRoad().getLanes()[5]);
 
-            LaneUtils.connectLane(cross.getWestStreet().getLanes()[1], cross.getWestLanes()[3], cross.getEastStreet().getLanes()[1]);
+            LaneUtils.connectLane(cross.getWestStreet().getLanes()[4], cross.getWestLanes()[3], cross.getEastStreet().getLanes()[4]);
 
-            LaneUtils.connectLane(cross.getWestStreet().getLanes()[2], cross.getWestLanes()[4], cross.getNorthRoad().getLanes()[3]);
-            LaneUtils.connectLane(cross.getWestStreet().getLanes()[2], cross.getWestLanes()[5], cross.getNorthRoad().getLanes()[4]);
-            LaneUtils.connectLane(cross.getWestStreet().getLanes()[2], cross.getWestLanes()[6], cross.getNorthRoad().getLanes()[5]);
+            LaneUtils.connectLane(cross.getWestStreet().getLanes()[5], cross.getWestLanes()[4], cross.getNorthRoad().getLanes()[2]);
+            LaneUtils.connectLane(cross.getWestStreet().getLanes()[5], cross.getWestLanes()[5], cross.getNorthRoad().getLanes()[1]);
+            LaneUtils.connectLane(cross.getWestStreet().getLanes()[5], cross.getWestLanes()[6], cross.getNorthRoad().getLanes()[0]);
         }
     }
 

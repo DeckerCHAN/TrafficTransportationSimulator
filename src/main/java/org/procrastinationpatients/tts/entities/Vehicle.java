@@ -75,7 +75,7 @@ public class Vehicle {
 			}else{
 				Vehicle nextVehicle = on_Link.getNextVehicle(this);
 				if(nextVehicle != null) {
-					if (this.Cur_line != 2 && this.Cur_line != 3) {
+					if (this.Cur_line != 0 && this.Cur_line != 5) {
 						if (this.Cur_Spd > nextVehicle.getCur_Spd() && on_Link.getSafetyDistanceByID(this.Cur_Loc) < StaticConfig.SAFETY_LENGTH) {
 							fo.changeLine(this);
 						}
