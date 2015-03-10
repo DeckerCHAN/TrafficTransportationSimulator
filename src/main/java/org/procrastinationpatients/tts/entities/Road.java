@@ -42,13 +42,13 @@ public class Road extends Link {
         for (int i = 0; i < 3; i++) {
             Lane lane = this.getLanes()[i];
             for (int j = 0; j < lane.getLength(); j++) {
-                lane.getVehiclePositions()[j] = new Point2D(lane0StartPoint.getX() - j * progressX + i * 10D, lane0StartPoint.getY() + j * progressY);
+                lane.getVehiclePositions()[lane.getLength()-1-j] = new Point2D(lane0StartPoint.getX() - j * progressX + i * 10D, lane0StartPoint.getY() + j * progressY);
             }
         }
         for (int i = 3; i < 6; i++) {
             Lane lane = this.getLanes()[i];
             for (int j = 0; j < lane.getLength(); j++) {
-                lane.getVehiclePositions()[j] = new Point2D(lane3EndPoint.getX() + j * progressX + (i - 3) * 10D, lane3EndPoint.getY() - j * progressY);
+                lane.getVehiclePositions()[lane.getLength()-1-j] = new Point2D(lane3EndPoint.getX() + j * progressX + (i - 3) * 10D, lane3EndPoint.getY() - j * progressY);
             }
         }
 

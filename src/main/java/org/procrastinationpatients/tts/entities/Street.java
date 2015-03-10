@@ -45,13 +45,13 @@ public class Street extends Link {
         for (int i = 0; i < 3; i++) {
             Lane lane = this.getLanes()[i];
             for (int j = 0; j < lane.getLength(); j++) {
-                lane.getVehiclePositions()[j] = new Point2D(lane0StartPoint.getX() + j * progressX, lane0StartPoint.getY() - j * progressY - i * 10D);
+                lane.getVehiclePositions()[lane.getLength()-1-j] = new Point2D(lane0StartPoint.getX() + j * progressX, lane0StartPoint.getY() - j * progressY - i * 10D);
             }
         }
         for (int i = 3; i < 6; i++) {
             Lane lane = this.getLanes()[i];
             for (int j = 0; j < lane.getLength(); j++) {
-                lane.getVehiclePositions()[j] = new Point2D(lane3EndPoint.getX() - j * progressX  , lane3EndPoint.getY() + j * progressY-(i - 3) * 10D);
+                lane.getVehiclePositions()[lane.getLength()-1-j] = new Point2D(lane3EndPoint.getX() - j * progressX  , lane3EndPoint.getY() + j * progressY-(i - 3) * 10D);
             }
         }
     }

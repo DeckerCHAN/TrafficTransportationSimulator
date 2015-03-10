@@ -16,6 +16,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class EntityLoader {
@@ -69,11 +70,11 @@ public class EntityLoader {
             Margin margin = new Margin(marginID, new Point2D(positionX, positionY));
             switch (type) {
                 case 'A': {
-                    margin.setFirstInputLaneIndex(0);
+                    margin.setFirstInputLaneIndex(3);
                     break;
                 }
                 case 'B': {
-                    margin.setFirstInputLaneIndex(3);
+                    margin.setFirstInputLaneIndex(0);
                     break;
                 }
                 default:
@@ -152,7 +153,7 @@ public class EntityLoader {
     private void connectLanes() {
         for (Cross cross : this.crossCache.values()) {
             //North input
-            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[0], cross.getNorthLanes()[0], cross.getWestStreet().getLanes()[5]);
+            LaneUtils.connectLane(cross.getNorthRoad().getLanes()[3], cross.getWestLanes()[6], cross.getWestStreet().getLanes()[2]);
             LaneUtils.connectLane(cross.getNorthRoad().getLanes()[0], cross.getNorthLanes()[1], cross.getWestStreet().getLanes()[4]);
             LaneUtils.connectLane(cross.getNorthRoad().getLanes()[0], cross.getNorthLanes()[2], cross.getWestStreet().getLanes()[3]);
 
